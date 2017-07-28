@@ -86,20 +86,16 @@
                 rules: {
                     SiteName: "required",
                     Address: "required",
-                    SiteLogo: {
-                        remote: {
-                            url: '@Url.Action("IsLogoExist","GeneralSettings")'
-                        }
-                    },
+                    @if (!(bool)ViewData["IsLogoExist"])
+                    {
+                        <text>
+                        SiteLogo: "required",
+                        </text>
+                    }
                     SmsUrl: "required",
                     SmsUser: "required",
                     SmsPassword: "required",
                     SmsSender: "required"
-                },
-                messages: {
-                    SiteLogo: {
-                        remote: "Logo not exist. Select a new image."
-                    }
                 }
             });
     </script>

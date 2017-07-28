@@ -33,6 +33,8 @@ namespace App.Web.Controllers
             ViewData["SmsSender"] = generalSettings["SmsSender"].SettingValue ?? string.Empty;
             ViewData["SmsUrl"] = generalSettings["SmsUrl"].SettingValue ?? string.Empty;
             ViewData["SmsUser"] = generalSettings["SmsUser"].SettingValue ?? string.Empty;
+
+            ViewData["IsLogoExist"] = _db.GeneralSettings.Count(x=>x.SettingName == "SiteLogo")>0;
             return View();
         }
 
@@ -98,9 +100,9 @@ namespace App.Web.Controllers
             return RedirectToAction("Index", "GeneralSettings");
         }
 
-        public JsonResult IsLogoExist()
+        public JsonResult IsLogoHaveToAdd()
         {
-            var flag =  _db.GeneralSettings.Count(x => x.SettingName == "SiteLogo") > 0;
+            var flag =  _db.GeneralSettings.Count(x => x.SettingName == "SiteLogo") <= 0;
             return Json(flag, JsonRequestBehavior.AllowGet);
         }
     }
