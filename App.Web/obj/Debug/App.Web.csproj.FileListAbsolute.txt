@@ -59,3 +59,6 @@ N:\Projects\Development\CRM\App.Web\bin\App.Data.dll
 N:\Projects\Development\CRM\App.Web\bin\App.Entity.dll
 N:\Projects\Development\CRM\App.Web\bin\App.Data.pdb
 N:\Projects\Development\CRM\App.Web\bin\App.Entity.pdb
+N:\Projects\Development\CRM\App.Web\bin\EntityFramework.Extended.dll
+N:\Projects\Development\CRM\App.Web\bin\EntityFramework.Utilities.dll
+N:\Projects\Development\CRM\App.Web\bin\EntityFramework.Extended.xml

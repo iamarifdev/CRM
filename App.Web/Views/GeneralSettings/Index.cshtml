@@ -7,8 +7,8 @@
     <h6 class="card-header">GENERAL SETTINGS</h6>
     <div class="card-block">
         <div class="row">
-            
-            @using (Html.BeginForm("Add", "GeneralSettings", FormMethod.Post, new { @class = "form-horizontal", @enctype = "multipart/form-data" }))
+
+            @using (Html.BeginForm("Index", "GeneralSettings", FormMethod.Post, new { @class = "form-horizontal", @enctype = "multipart/form-data", @id = "generalSettingForm" }))
             {
                 <div class="form-group offset-md-2 col-md-8">
                     <div class="offset-sm-8 col-sm-3">
@@ -76,4 +76,32 @@
         </div>
     </div>
 </div>
+
+@section AdditionalScripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#generalSettingForm")
+            .validate({
+                rules: {
+                    SiteName: "required",
+                    Address: "required",
+                    SiteLogo: {
+                        remote: {
+                            url: '@Url.Action("IsLogoExist","GeneralSettings")'
+                        }
+                    },
+                    SmsUrl: "required",
+                    SmsUser: "required",
+                    SmsPassword: "required",
+                    SmsSender: "required"
+                },
+                messages: {
+                    SiteLogo: {
+                        remote: "Logo not exist. Select a new image."
+                    }
+                }
+            });
+    </script>
+}
 

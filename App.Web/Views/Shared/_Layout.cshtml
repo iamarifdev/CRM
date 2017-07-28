@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="~/vendor/switchery/dist/switchery.min.css">
     <link rel="stylesheet" href="~/vendor/morris/morris.css">
     <link rel="stylesheet" href="~/vendor/jvectormap/jquery-jvectormap-2.0.3.css">
-    @RenderSection("AdditionalStyles", required:false)
+    @RenderSection("AdditionalStyles", required: false)
 
     <!-- Neptune CSS -->
     <link rel="stylesheet" href="~/Content/template/core.css">
@@ -40,9 +40,18 @@
         <!-- Sidebar -->
         <div class="site-sidebar-overlay"></div>
         <div class="site-sidebar">
-            <a class="logo" href="index.html">
-                <span class="l-text">Neptune</span>
-                <span class="l-icon"></span>
+            <a class="logo" href="@Url.Action("Index", "Home")">
+
+                @if (File.Exists(Server.MapPath("~/Content/Template/img/site/site-logo" + ".png")))
+                {
+                    <span class="l-text">
+                        <img src="~/Content/Template/img/site/site-logo.png" width="60" height="60" alt="CRM" />
+                    </span>
+                }
+                else
+                {
+                    <span> CRM </span>
+                }
             </a>
             <div class="custom-scroll custom-scroll-light">
                 <ul class="sidebar-menu">
@@ -140,7 +149,7 @@
                             <li><a href="javascript: void(0);">SMS Report</a></li>
                         </ul>
                     </li>
-                    
+
                     <li class="with-sub">
                         <a href="#" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
@@ -148,7 +157,7 @@
                             <span class="s-text">Setup</span>
                         </a>
                         <ul>
-                            <li>@Html.ActionLink("General Setting","Index","GeneralSettings")</li>
+                            <li>@Html.ActionLink("General Setting", "Index", "GeneralSettings")</li>
                             <li><a href="aa.html">Designation</a></li>
                             <li><a href="aa.html">Service</a></li>
                             <li><a href="aa.html">Branch</a></li>
@@ -218,6 +227,7 @@
     </div>
 
     <!-- Vendor JS -->
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="~/vendor/jquery/jquery-1.12.3.min.js"></script>
     <script type="text/javascript" src="~/vendor/tether/js/tether.min.js"></script>
     <script type="text/javascript" src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
