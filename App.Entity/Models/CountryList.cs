@@ -4,6 +4,7 @@ namespace App.Entity.Models
 {
     public class CountryList
     {
+        [Key]
         public int CountryId { get; set; }
 
         [Required]

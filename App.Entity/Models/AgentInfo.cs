@@ -42,7 +42,7 @@ namespace App.Entity.Models
         [StringLength(50)]
         public string Password { get; set; }
 
-        public sbyte ResetStatus { get; set; }
+        public int ResetStatus { get; set; }
 
         [StringLength(10)]
         public string Channel { get; set; }

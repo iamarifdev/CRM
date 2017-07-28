@@ -5656,6 +5656,16 @@
   <ItemGroup>
     <TypeScriptCompile Include="vendor\autoNumeric\typings.d.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\App.Data\App.Data.csproj">
+      <Project>{5162e16d-746a-4a56-8505-7158cd2d127b}</Project>
+      <Name>App.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Entity\App.Entity.csproj">
+      <Project>{9bcd92c8-ae95-483d-a210-b8a90e0ce3e6}</Project>
+      <Name>App.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
