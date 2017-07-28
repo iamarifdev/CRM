@@ -53,3 +53,5 @@ N:\Projects\Development\CRM\App.Web\bin\Microsoft.Owin.Security.MicrosoftAccount
 N:\Projects\Development\CRM\App.Web\obj\Debug\App.Web.csprojResolveAssemblyReference.cache
 N:\Projects\Development\CRM\App.Web\obj\Debug\App.Web.dll
 N:\Projects\Development\CRM\App.Web\obj\Debug\App.Web.pdb
+N:\Projects\Development\CRM\App.Web\bin\DataTables.AspNet.Core.dll
+N:\Projects\Development\CRM\App.Web\bin\DataTables.AspNet.Mvc5.dll

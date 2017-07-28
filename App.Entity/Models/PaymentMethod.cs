@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace App.Entity.Models
 {
-    public class PaymentMethods
+    public class PaymentMethod
     {
         public int Id { get; set; }
 
