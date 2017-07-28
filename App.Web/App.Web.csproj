@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -5640,6 +5641,7 @@
     <Content Include="vendor\weather-icons\_docs\less\variables.less" />
     <Content Include="vendor\x-editable\LICENSE-MIT" />
     <Content Include="vendor\x-editable\README.md" />
+    <Content Include="Views\GeneralSettings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,7 +47,7 @@
             <div class="custom-scroll custom-scroll-light">
                 <ul class="sidebar-menu">
                     <li>
-                        <a href="aa.html" class="waves-effect  waves-light">
+                        <a href="@Url.Action("Index","Home")" class="waves-effect  waves-light">
                             <span class="s-icon"><i class="ti-dashboard"></i></span>
                             <span class="s-text">Dashboard</span>
                         </a>
@@ -56,7 +56,7 @@
                     <li class="with-sub">
                         <a href="#" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="ti-package"></i></span>
+                            <span class="s-icon"><i class="fa fa-user-secret"></i></span>
                             <span class="s-text">CRM</span>
                         </a>
                         <ul>
@@ -69,7 +69,7 @@
                     <li class="with-sub">
                         <a href="#" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="ti-paint-bucket"></i></span>
+                            <span class="s-icon"><i class="fa fa-print"></i></span>
                             <span class="s-text">Billing</span>
                         </a>
                         <ul>
@@ -82,7 +82,7 @@
                     <li class="with-sub">
                         <a href="#" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="ti-pencil-alt"></i></span>
+                            <span class="s-icon"><i class="fa fa-envelope"></i></span>
                             <span class="s-text">Accounts</span>
                         </a>
                         <ul>
@@ -98,7 +98,7 @@
                     <li class="with-sub compact-hide">
                         <a href="javascript: void(0);" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="ti-menu"></i></span>
+                            <span class="s-icon"><i class="fa fa-bar-chart"></i></span>
                             <span class="s-text">Report</span>
                         </a>
                         <ul>
@@ -144,11 +144,11 @@
                     <li class="with-sub">
                         <a href="#" class="waves-effect  waves-light">
                             <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="ti-package"></i></span>
+                            <span class="s-icon"><i class="fa fa-wrench"></i></span>
                             <span class="s-text">Setup</span>
                         </a>
                         <ul>
-                            <li><a href="aa.html">General Setting</a></li>
+                            <li>@Html.ActionLink("General Setting","Index","GeneralSettings")</li>
                             <li><a href="aa.html">Designation</a></li>
                             <li><a href="aa.html">Service</a></li>
                             <li><a href="aa.html">Branch</a></li>
@@ -160,7 +160,7 @@
 
                     <li>
                         <a href="aa.html" class="waves-effect  waves-light">
-                            <span class="s-icon"><i class="ti-package"></i></span>
+                            <span class="s-icon"><i class="fa fa-key"></i></span>
                             <span class="s-text">Change Password</span>
                         </a>
                     </li>
