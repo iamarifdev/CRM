@@ -185,6 +185,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Alert.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -5657,6 +5658,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Backup\" />
     <Folder Include="Content\template\img\site\" />
     <Folder Include="vendor\flot\examples\gauge\" />
     <Folder Include="vendor\typicons\support\font-builder\" />

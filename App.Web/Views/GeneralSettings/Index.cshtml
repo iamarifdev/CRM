@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+}
+
 <div class="card">
     <h6 class="card-header">GENERAL SETTINGS</h6>
     <div class="card-block">
@@ -12,7 +17,7 @@
             {
                 <div class="form-group offset-md-2 col-md-8">
                     <div class="offset-sm-8 col-sm-3">
-                        <a class="btn btn-success pull-right" href="@Url.Action("Index","Home")"> <span class="fa fa-database"></span> Create Database Backup</a>
+                        <a class="btn btn-success pull-right" href="@Url.Action("CreateDbBackUp","GeneralSettings")"> <span class="fa fa-database"></span> Create Database Backup</a>
                     </div>
                 </div>
 
@@ -70,7 +75,6 @@
                         <button type="submit" id="btnSaveGeneralSetting" class="btn btn-success pull-right"> <span class="fa fa-save"></span> Save</button>
                     </div>
                 </div>
-
             }
 
         </div>
@@ -80,24 +84,29 @@
 @section AdditionalScripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
-        $("#generalSettingForm")
-            .validate({
-                rules: {
-                    SiteName: "required",
-                    Address: "required",
-                    @if (!(bool)ViewData["IsLogoExist"])
-                    {
-                        <text>
-                        SiteLogo: "required",
-                        </text>
-                    }
-                    SmsUrl: "required",
-                    SmsUser: "required",
-                    SmsPassword: "required",
-                    SmsSender: "required"
+        $("#generalSettingForm").validate({
+            rules: {
+                SiteName: "required",
+                Address: "required",
+                @if (!(bool)ViewData["IsLogoExist"])
+                {
+                    <text>
+                SiteLogo: "required",
+                </text>
                 }
-            });
+                SmsUrl: "required",
+                SmsUser: "required",
+                SmsPassword: "required",
+                SmsSender: "required"
+            }
+        });
+
+        @if (TempData["Toastr"]!=null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
     </script>
 }
 
