@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using App.Data.Context;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -15,6 +16,7 @@ namespace App.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly CrmDbContext _db = new CrmDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -57,6 +59,8 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            string logoName = _db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").ToArray()[0].SettingValue;
+            ViewBag.LogoName = logoName;
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

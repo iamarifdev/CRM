@@ -212,6 +212,7 @@
         <div class="site-content">
             <!-- Content -->
             <div class="content-area p-y-1">
+                @Html.Partial("_LoginPartial")
                 <div class="container-fluid">
                     @RenderBody()
                 </div>
@@ -248,8 +249,8 @@
     <script type="text/javascript" src="~/vendor/morris/morris.min.js"></script>
     <script type="text/javascript" src="~/vendor/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
     <script type="text/javascript" src="~/vendor/jvectormap/jquery-jvectormap-world-mill.js"></script>
-    @RenderSection("AdditionalScripts", required: false)
     <!-- Neptune JS -->
     <script type="text/javascript" src="~/Scripts/template/app.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

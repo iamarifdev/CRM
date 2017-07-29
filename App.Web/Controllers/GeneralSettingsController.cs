@@ -12,12 +12,13 @@ using WebGrease.Css.Extensions;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class GeneralSettingsController : Controller
     {
         #region Private Fields
 
         private readonly CrmDbContext _db = new CrmDbContext();
-        private readonly List<string> _allowedLogoFileTypes = new List<string> {".png", "jpg", ".jpeg", ".gif", ".bmp"};
+        private readonly List<string> _allowedLogoFileTypes = new List<string> { ".png", "jpg", ".jpeg", ".gif", ".bmp" };
 
         #endregion
 
@@ -70,14 +71,14 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var setting = new GeneralSetting {SettingName = "SiteLogo", SettingValue = siteLogo.FileName};
+                var setting = new GeneralSetting { SettingName = "SiteLogo", SettingValue = siteLogo.FileName };
                 generalSettings.Add(setting);
                 siteLogo.SaveAs(Server.MapPath("~/Content/Template/img/site/site-logo" + extension));
             }
 
             collection.AllKeys.ForEach(key =>
             {
-                var setting = new GeneralSetting {SettingName = key, SettingValue = collection[key].ToString()};
+                var setting = new GeneralSetting { SettingName = key, SettingValue = collection[key].ToString() };
                 generalSettings.Add(setting);
             });
 
@@ -91,7 +92,7 @@ namespace App.Web.Controllers
                         {
                             _db.GeneralSettings
                                 .Where(x => x.SettingName == setting.SettingName)
-                                .Update(u => new GeneralSetting {SettingValue = setting.SettingValue});
+                                .Update(u => new GeneralSetting { SettingValue = setting.SettingValue });
 
                             _db.SaveChanges();
                         }
@@ -125,9 +126,13 @@ namespace App.Web.Controllers
             try
             {
                 var backUpDirectory = Server.MapPath("~/Backup/");
-                var fileName = "CRM_"+DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".bak";
+                var fileName = "CRM_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".bak";
                 var backupPath = Path.Combine(backUpDirectory, fileName);
                 if (!Directory.Exists(backUpDirectory)) Directory.CreateDirectory(backUpDirectory);
+                foreach (string file in Directory.GetFiles(backUpDirectory, "*.bak").Where(item => item.EndsWith(".bak")))
+                {
+                    System.IO.File.Delete(file);
+                }
 
                 var query = string.Format("BACKUP DATABASE [CRM_DB] TO DISK ='{0}'", backupPath);
                 _db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
@@ -140,7 +145,7 @@ namespace App.Web.Controllers
                 TempData["Toastr"] = @"toastr.error('Database backup cannot be created!', 'DB Error!');";
                 return RedirectToAction("Index");
             }
-            
+
         }
     }
 }
