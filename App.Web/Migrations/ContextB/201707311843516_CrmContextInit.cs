@@ -1,9 +1,9 @@
-namespace App.Data.Migrations
+namespace App.Web.Migrations.ContextB
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init : DbMigration
+    public partial class CrmContextInit : DbMigration
     {
         public override void Up()
         {
@@ -245,18 +245,12 @@ namespace App.Data.Migrations
                         GroupId = c.Int(nullable: false),
                         IpAddress = c.String(nullable: false, maxLength: 45),
                         Username = c.String(maxLength: 100),
-                        Password = c.String(nullable: false, maxLength: 255),
-                        Salt = c.String(maxLength: 255),
                         Email = c.String(nullable: false, maxLength: 100),
-                        ActivationCode = c.String(maxLength: 40),
-                        ForgottenPasswordCode = c.String(maxLength: 40),
-                        ForgottenPasswordTime = c.Long(),
-                        RememberCode = c.String(maxLength: 40),
                         CreatedOn = c.Long(nullable: false),
                         LastLogin = c.Long(),
                         Active = c.Boolean(),
-                        EmployeeId = c.String(nullable: false, maxLength: 20),
-                        BranchId = c.String(nullable: false, maxLength: 20),
+                        EmployeeId = c.String(maxLength: 20),
+                        BranchId = c.String(maxLength: 20),
                         Level = c.String(nullable: false, maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id);

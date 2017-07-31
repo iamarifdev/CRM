@@ -57,12 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\CrmDbContext.cs" />
-    <Compile Include="Migrations\201707280416264_Init.cs" />
-    <Compile Include="Migrations\201707280416264_Init.Designer.cs">
-      <DependentUpon>201707280416264_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,11 +72,6 @@
       <Project>{9bcd92c8-ae95-483d-a210-b8a90e0ce3e6}</Project>
       <Name>App.Entity</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707280416264_Init.resx">
-      <DependentUpon>201707280416264_Init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

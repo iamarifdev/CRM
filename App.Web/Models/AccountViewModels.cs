@@ -65,6 +65,10 @@ namespace App.Web.Models
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(20)]
+        public string UserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

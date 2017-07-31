@@ -1,0 +1,19 @@
+﻿I just bumped into the same problem and I used the following solution (all from Package Manager Console)
+
+PM> Enable-Migrations -MigrationsDirectory "Migrations\ContextA" -ContextTypeName MyProject.Models.ContextA
+PM> Enable-Migrations -MigrationsDirectory "Migrations\ContextB" -ContextTypeName MyProject.Models.ContextB
+
+This will create 2 separate folders in the Migrations folder. Each will contain the generated Configuration.cs file. Unfortunately you still have to rename those Configuration.cs files otherwise there will be complaints about having two of them. I renamed my files to ConfigA.cs and  ConfigB.cs
+
+EDIT: (courtesy Kevin McPheat) Remember when renaming the Configuration.cs files, also rename the class names and constructors /EDIT
+
+With this structure you can simply do
+
+PM> Add-Migration -ConfigurationTypeName ConfigA <MigrationName>
+PM> Add-Migration -ConfigurationTypeName ConfigB <MigrationName>
+
+Which will create the code files for the migration inside the folder next to the config files (this is nice to keep those files together)
+
+PM> Update-Database -ConfigurationTypeName ConfigA
+PM> Update-Database -ConfigurationTypeName ConfigB
+And last but not least those two commands will apply the correct migrations to their corrseponding databases.

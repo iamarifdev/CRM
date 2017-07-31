@@ -6,14 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Entity.Models;
 
-namespace App.Data.Context
+namespace App.Web.Context
 {
     public class CrmDbContext : DbContext
     {
-        public CrmDbContext() : base("CrmDbContext")
-        {
-
-        }
+        public CrmDbContext() : base("CrmDbContext") { }
         public DbSet<AgentInfo> AgentInfos { get; set; }
         public DbSet<AirLineInfo> AirLineInfos { get; set; }
         public DbSet<BranchInfo> BranchInfos { get; set; }

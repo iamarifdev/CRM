@@ -195,6 +195,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -203,7 +204,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Alert.cs" />
+    <Compile Include="Migrations\ContextA\201707311843099_ApplicationContextInit.cs" />
+    <Compile Include="Migrations\ContextA\201707311843099_ApplicationContextInit.Designer.cs">
+      <DependentUpon>201707311843099_ApplicationContextInit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextA\ConfigA.cs" />
+    <Compile Include="Migrations\ContextB\201707311843516_CrmContextInit.cs" />
+    <Compile Include="Migrations\ContextB\201707311843516_CrmContextInit.Designer.cs">
+      <DependentUpon>201707311843516_CrmContextInit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -237,6 +249,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="command.text" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -5708,6 +5721,14 @@
       <Project>{9bcd92c8-ae95-483d-a210-b8a90e0ce3e6}</Project>
       <Name>App.Entity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\ContextA\201707311843099_ApplicationContextInit.resx">
+      <DependentUpon>201707311843099_ApplicationContextInit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201707311843516_CrmContextInit.resx">
+      <DependentUpon>201707311843516_CrmContextInit.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

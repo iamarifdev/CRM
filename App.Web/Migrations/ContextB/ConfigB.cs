@@ -1,20 +1,19 @@
-using App.Entity.Models;
-
-namespace App.Data.Migrations
+namespace App.Web.Migrations.ContextB
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<App.Data.Context.CrmDbContext>
+    internal sealed class ConfigB : DbMigrationsConfiguration<App.Web.Context.CrmDbContext>
     {
-        public Configuration()
+        public ConfigB()
         {
             AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"Migrations\ContextB";
         }
 
-        protected override void Seed(App.Data.Context.CrmDbContext context)
+        protected override void Seed(App.Web.Context.CrmDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -28,20 +27,6 @@ namespace App.Data.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
-            //context.Groups.AddOrUpdate(
-            //    new Group
-            //    {
-            //        Name = "admin", 
-            //        Description = "Administrator", 
-            //        Crm = "YES",
-            //        Billing = "YES",
-            //        Accounts = "YES",
-            //        Report = "YES",
-            //        Hrm = "YES",
-            //        Setup = "YES"
-            //    }
-            //);
         }
     }
 }
