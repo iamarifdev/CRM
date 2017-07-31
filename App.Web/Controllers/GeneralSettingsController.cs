@@ -12,7 +12,7 @@ using WebGrease.Css.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class GeneralSettingsController : Controller
     {
         #region Private Fields

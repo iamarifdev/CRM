@@ -1,3 +1,5 @@
+using App.Entity.Models;
+
 namespace App.Data.Migrations
 {
     using System;
@@ -26,6 +28,20 @@ namespace App.Data.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            //context.Groups.AddOrUpdate(
+            //    new Group
+            //    {
+            //        Name = "admin", 
+            //        Description = "Administrator", 
+            //        Crm = "YES",
+            //        Billing = "YES",
+            //        Accounts = "YES",
+            //        Report = "YES",
+            //        Hrm = "YES",
+            //        Setup = "YES"
+            //    }
+            //);
         }
     }
 }
