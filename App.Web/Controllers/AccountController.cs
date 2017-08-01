@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using App.Entity.Models;
 using App.Web.Context;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -17,6 +18,7 @@ namespace App.Web.Controllers
     public class AccountController : Controller
     {
         private readonly CrmDbContext _db = new CrmDbContext();
+        private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -79,7 +81,7 @@ namespace App.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -143,6 +145,13 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
+
+            ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
+            ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
+            ViewBag.Active =  new SelectList(Enum.GetValues(typeof(Status))
+                                    .Cast<Status>()
+                                    .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString()}).ToList(),"Value","Text");
             return View();
         }
 
@@ -155,7 +164,7 @@ namespace App.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -167,8 +176,17 @@ namespace App.Web.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    await UserManager.AddToRoleAsync(user.Id, model.UserRoles);
+
+                    return RedirectToAction("Index", "Users");
                 }
+                ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin"))
+                                          .ToList(), "Name", "Name");
+                ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
+                ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
+                ViewBag.Active = new SelectList(Enum.GetValues(typeof(Status))
+                                        .Cast<Status>()
+                                        .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
                 AddErrors(result);
             }
 

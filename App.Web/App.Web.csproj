@@ -200,18 +200,20 @@
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Alert.cs" />
-    <Compile Include="Migrations\ContextA\201707311843099_ApplicationContextInit.cs" />
-    <Compile Include="Migrations\ContextA\201707311843099_ApplicationContextInit.Designer.cs">
-      <DependentUpon>201707311843099_ApplicationContextInit.cs</DependentUpon>
+    <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.cs" />
+    <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.Designer.cs">
+      <DependentUpon>201708011643287_InitApplicationContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextA\ConfigA.cs" />
-    <Compile Include="Migrations\ContextB\201707311843516_CrmContextInit.cs" />
-    <Compile Include="Migrations\ContextB\201707311843516_CrmContextInit.Designer.cs">
-      <DependentUpon>201707311843516_CrmContextInit.cs</DependentUpon>
+    <Compile Include="Migrations\ContextB\201708011646297_InitCrmContext.cs" />
+    <Compile Include="Migrations\ContextB\201708011646297_InitCrmContext.Designer.cs">
+      <DependentUpon>201708011646297_InitCrmContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -5697,6 +5699,8 @@
     <Content Include="vendor\x-editable\LICENSE-MIT" />
     <Content Include="vendor\x-editable\README.md" />
     <Content Include="Views\GeneralSettings\Index.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5723,11 +5727,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\ContextA\201707311843099_ApplicationContextInit.resx">
-      <DependentUpon>201707311843099_ApplicationContextInit.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\ContextA\201708011643287_InitApplicationContext.resx">
+      <DependentUpon>201708011643287_InitApplicationContext.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\ContextB\201707311843516_CrmContextInit.resx">
-      <DependentUpon>201707311843516_CrmContextInit.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\ContextB\201708011646297_InitCrmContext.resx">
+      <DependentUpon>201708011646297_InitCrmContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

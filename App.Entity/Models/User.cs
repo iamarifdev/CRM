@@ -1,8 +1,16 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace App.Entity.Models
 {
+    public enum Status
+    {
+        [Description("Inactive")]
+        Inactive,
+        [Description("Active")]
+        Active
+    }
     public class User
     {
         public User()
@@ -49,7 +57,7 @@ namespace App.Entity.Models
 
         public long? LastLogin { get; set; }
 
-        public bool? Active { get; set; }
+        public Status? Active { get; set; }
 
         //[Required]
         [StringLength(20)]

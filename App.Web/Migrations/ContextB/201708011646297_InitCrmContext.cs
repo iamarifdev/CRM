@@ -3,7 +3,7 @@ namespace App.Web.Migrations.ContextB
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CrmContextInit : DbMigration
+    public partial class InitCrmContext : DbMigration
     {
         public override void Up()
         {
@@ -61,7 +61,8 @@ namespace App.Web.Migrations.ContextB
                         EntryDate = c.DateTime(),
                         EntryBy = c.String(maxLength: 20),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.BranchId, unique: true, name: "IX_Branch_Id");
             
             CreateTable(
                 "dbo.ClientInfoes",
@@ -178,7 +179,8 @@ namespace App.Web.Migrations.ContextB
                         EntryBy = c.String(maxLength: 20),
                         EntryDate = c.DateTime(),
                     })
-                .PrimaryKey(t => t.RowId);
+                .PrimaryKey(t => t.RowId)
+                .Index(t => t.EmployeeId, unique: true, name: "IX_Employee_Id");
             
             CreateTable(
                 "dbo.EmployeeDesignations",
@@ -248,7 +250,7 @@ namespace App.Web.Migrations.ContextB
                         Email = c.String(nullable: false, maxLength: 100),
                         CreatedOn = c.Long(nullable: false),
                         LastLogin = c.Long(),
-                        Active = c.Boolean(),
+                        Active = c.Int(),
                         EmployeeId = c.String(maxLength: 20),
                         BranchId = c.String(maxLength: 20),
                         Level = c.String(nullable: false, maxLength: 20),
@@ -396,6 +398,8 @@ namespace App.Web.Migrations.ContextB
             DropForeignKey("dbo.UserGroups", "GroupId", "dbo.Groups");
             DropIndex("dbo.UserGroups", new[] { "GroupId" });
             DropIndex("dbo.UserGroups", new[] { "UserId" });
+            DropIndex("dbo.EmployeeBasicInfoes", "IX_Employee_Id");
+            DropIndex("dbo.BranchInfoes", "IX_Branch_Id");
             DropTable("dbo.VenueInfoes");
             DropTable("dbo.TransactionsInfoes");
             DropTable("dbo.SuppliersInfoes");

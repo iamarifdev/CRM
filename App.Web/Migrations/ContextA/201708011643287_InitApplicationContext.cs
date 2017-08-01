@@ -3,7 +3,7 @@ namespace App.Web.Migrations.ContextA
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ApplicationContextInit : DbMigration
+    public partial class InitApplicationContext : DbMigration
     {
         public override void Up()
         {

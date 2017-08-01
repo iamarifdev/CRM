@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
@@ -8,6 +9,7 @@ namespace App.Entity.Models
         public int Id { get; set; }
 
         [Required]
+        [Index("IX_Branch_Id",1,IsUnique = true)]
         [StringLength(20)]
         public string BranchId { get; set; }
 

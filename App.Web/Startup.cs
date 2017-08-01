@@ -55,7 +55,7 @@ namespace App.Web
 
                 const string userName = "admin";
                 const string email = "arif.basis.net@gmail.com";
-                var uId = string.Format("UI-{0:000000}", db.Users.Count());
+                var uId = string.Format("UI-{0:000000}", db.Users.Count()+1);
 
                 var user = new ApplicationUser
                 {
@@ -67,9 +67,9 @@ namespace App.Web
                     Username = userName,
                     Email = email,
                     IpAddress = "127.0.0.1",
-                    CreatedOn = new DateTimeOffset(DateTime.Now).Millisecond,
+                    CreatedOn = DateTime.Now.Ticks,
                     GroupId = adminGroup.Id,
-                    Active = true,
+                    Active = Status.Active,
                     Level = "Head Office",
                     Uid = uId
                 };

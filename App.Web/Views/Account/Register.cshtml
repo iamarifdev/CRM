@@ -40,12 +40,47 @@
     </div>
     
     <div class="form-group">
-        @Html.Label("User Role", new { @class = "col-md-2 control-lable" })
+        @Html.Label("User Role", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, "Select One")
+            @Html.DropDownList("UserRoles", (SelectList)ViewBag.UserRoles, "Select One", new {@class="form-control"})
         </div>
     </div>
-    
+
+    <div class="form-group">
+        @Html.Label("Branch", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("BranchId", null, "Select One", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Employee", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("EmployeeId", null, "Select One", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Employee", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("EmployeeId", null, "Select One", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Status", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("Active", null, "Select One", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Level", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBox("Level", new { @class = "form-control" })
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default" value="Register" />

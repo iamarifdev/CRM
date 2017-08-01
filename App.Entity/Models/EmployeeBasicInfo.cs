@@ -10,6 +10,7 @@ namespace App.Entity.Models
         public int RowId { get; set; }
 
         [StringLength(20)]
+        [Index("IX_Employee_Id", 1, IsUnique = true)]
         public string EmployeeId { get; set; }
 
         [StringLength(100)]

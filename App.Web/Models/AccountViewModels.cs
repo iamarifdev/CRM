@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using App.Entity.Models;
 
 namespace App.Web.Models
 {
@@ -49,9 +50,8 @@ namespace App.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
         [EmailAddress]
-        public string Email { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -69,6 +69,10 @@ namespace App.Web.Models
         public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "UserRoles")]
+        public string UserRoles { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -83,6 +87,18 @@ namespace App.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [StringLength(20)]
+        public string EmployeeId { get; set; }
+
+        [StringLength(20)]
+        public string BranchId { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string Level { get; set; }
+
+        public Status? Active { get; set; }
     }
 
     public class ResetPasswordViewModel
