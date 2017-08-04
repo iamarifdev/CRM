@@ -50,7 +50,6 @@ namespace App.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
         public string UserName { get; set; }
 
         [Required]

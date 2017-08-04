@@ -110,6 +110,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -214,6 +215,10 @@
     <Compile Include="Migrations\ContextB\201708011646297_InitCrmContext.cs" />
     <Compile Include="Migrations\ContextB\201708011646297_InitCrmContext.Designer.cs">
       <DependentUpon>201708011646297_InitCrmContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708041410102_GroupModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708041410102_GroupModelChanged.Designer.cs">
+      <DependentUpon>201708041410102_GroupModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -394,11 +399,6 @@
     <Content Include="vendor\animate.css\source\zooming_exits\zoomOutRight.css" />
     <Content Include="vendor\animate.css\source\zooming_exits\zoomOutUp.css" />
     <Content Include="vendor\animate.css\source\_base.css" />
-    <Content Include="vendor\autoNumeric\autoNumeric-2.0\autoNumeric-2.0-BETA.js" />
-    <Content Include="vendor\autoNumeric\autoNumeric-min.js" />
-    <Content Include="vendor\autoNumeric\autoNumeric.js" />
-    <Content Include="vendor\autoNumeric\index.html" />
-    <Content Include="vendor\autoNumeric\license.txt" />
     <Content Include="vendor\bootstrap-colorpicker\.gitignore" />
     <Content Include="vendor\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="vendor\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
@@ -4856,13 +4856,6 @@
     <Content Include="vendor\animate.css\LICENSE" />
     <Content Include="vendor\animate.css\package.json" />
     <Content Include="vendor\animate.css\README.md" />
-    <Content Include="vendor\autoNumeric\autoNumeric-2.0\autoNumeric-2.0-BETA change log.md" />
-    <Content Include="vendor\autoNumeric\autoNumeric-2.0\readme.md" />
-    <Content Include="vendor\autoNumeric\autoNumeric.jquery.json" />
-    <Content Include="vendor\autoNumeric\bower.json" />
-    <Content Include="vendor\autoNumeric\change log.md" />
-    <Content Include="vendor\autoNumeric\package.json" />
-    <Content Include="vendor\autoNumeric\readme.md" />
     <Content Include="vendor\bootstrap-colorpicker\.editorconfig" />
     <Content Include="vendor\bootstrap-colorpicker\.jshintrc" />
     <Content Include="vendor\bootstrap-colorpicker\.travis.yml" />
@@ -5714,9 +5707,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="vendor\autoNumeric\typings.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\App.Data\App.Data.csproj">
       <Project>{5162e16d-746a-4a56-8505-7158cd2d127b}</Project>
       <Name>App.Data</Name>
@@ -5732,6 +5722,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708011646297_InitCrmContext.resx">
       <DependentUpon>201708011646297_InitCrmContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708041410102_GroupModelChanged.resx">
+      <DependentUpon>201708041410102_GroupModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -175,7 +175,7 @@
                     </li>
 
                     <li>
-                        <a href="aa.html" class="waves-effect  waves-light">
+                        <a href="javascript:void()" class="waves-effect waves-light logOut">
                             <span class="s-icon"><i class="fa fa-sign-out"></i></span>
                             <span class="s-text">Logout</span>
                         </a>
@@ -196,13 +196,17 @@
                 </ul>
                 <ul class="nav navbar-nav pull-xs-right">
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="aa.html" data-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link" href="javascript:void()" data-toggle="dropdown" aria-expanded="false">
                             <div class="avatar box-32">
                                 <img src="~/Content/template/img/avatars/1.jpg" alt="">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animated flipInY">
-                            <a class="dropdown-item" href="aa.html"><i class="fa fa-sign-out m-r-0-5"></i> Logout</a>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+                            <a class="dropdown-item logOut" href="javascript:void()"><i class="fa fa-sign-out m-r-0-5"></i> Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -250,6 +254,11 @@
     <script type="text/javascript" src="~/vendor/jvectormap/jquery-jvectormap-world-mill.js"></script>
     <!-- Neptune JS -->
     <script type="text/javascript" src="~/Scripts/template/app.js"></script>
+    <script type="text/javascript">
+        $(".logOut").on("click", function() {
+            $("#logoutForm").submit();
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

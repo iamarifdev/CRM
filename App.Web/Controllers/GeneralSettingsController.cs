@@ -12,7 +12,7 @@ using WebGrease.Css.Extensions;
 
 namespace App.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class GeneralSettingsController : Controller
     {
         #region Private Fields
@@ -26,13 +26,14 @@ namespace App.Web.Controllers
         public ActionResult Index()
         {
             var generalSettings = _db.GeneralSettings.ToDictionary(x => x.SettingName);
-            ViewData["Address"] = generalSettings["Address"].SettingValue ?? string.Empty;
+
+            ViewData["Address"] = generalSettings.ContainsKey("Address") ? generalSettings["Address"].SettingValue : string.Empty;
             //ViewData["SiteLogo"] = generalSettings[1].ToString();
-            ViewData["SiteName"] = generalSettings["SiteName"].SettingValue ?? string.Empty;
-            ViewData["SmsPassword"] = generalSettings["SmsPassword"].SettingValue ?? string.Empty;
-            ViewData["SmsSender"] = generalSettings["SmsSender"].SettingValue ?? string.Empty;
-            ViewData["SmsUrl"] = generalSettings["SmsUrl"].SettingValue ?? string.Empty;
-            ViewData["SmsUser"] = generalSettings["SmsUser"].SettingValue ?? string.Empty;
+            ViewData["SiteName"] = generalSettings.ContainsKey("SiteName") ? generalSettings["SiteName"].SettingValue : string.Empty;
+            ViewData["SmsPassword"] = generalSettings.ContainsKey("SmsPassword") ? generalSettings["SmsPassword"].SettingValue : string.Empty;
+            ViewData["SmsSender"] = generalSettings.ContainsKey("SmsSender") ?generalSettings["SmsSender"].SettingValue : string.Empty;
+            ViewData["SmsUrl"] = generalSettings.ContainsKey("SmsUrl") ? generalSettings["SmsUrl"].SettingValue : string.Empty;
+            ViewData["SmsUser"] = generalSettings.ContainsKey("SmsUser") ? generalSettings["SmsUser"].SettingValue : string.Empty;
 
             ViewData["IsLogoExist"] = _db.GeneralSettings.Count(x => x.SettingName == "SiteLogo") > 0;
             return View();

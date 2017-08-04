@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         // GET: Users

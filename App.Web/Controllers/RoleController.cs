@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         private readonly ApplicationDbContext _context;

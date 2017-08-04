@@ -20,28 +20,22 @@ namespace App.Entity.Models
         public string Description { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Crm { get; set; }
+        public bool Crm { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Billing { get; set; }
+        public bool Billing { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Accounts { get; set; }
+        public bool Accounts { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Report { get; set; }
+        public bool Report { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Hrm { get; set; }
+        public bool Hrm { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string Setup { get; set; }
+        public bool Setup { get; set; }
 
         public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
