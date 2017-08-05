@@ -1,16 +1,8 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace App.Entity.Models
 {
-    public enum Status
-    {
-        [Description("Inactive")]
-        Inactive,
-        [Description("Active")]
-        Active
-    }
     public class User
     {
         public User()
@@ -18,7 +10,7 @@ namespace App.Entity.Models
             UserGroups = new List<UserGroup>();
         }
 
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(20)]

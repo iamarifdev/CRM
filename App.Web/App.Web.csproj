@@ -198,6 +198,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -219,6 +220,10 @@
     <Compile Include="Migrations\ContextB\201708041410102_GroupModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708041410102_GroupModelChanged.Designer.cs">
       <DependentUpon>201708041410102_GroupModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708051621492_BranchAndUserModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708051621492_BranchAndUserModelChanged.Designer.cs">
+      <DependentUpon>201708051621492_BranchAndUserModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -5694,6 +5699,11 @@
     <Content Include="Views\GeneralSettings\Index.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Branch\Create.cshtml" />
+    <Content Include="Views\Branch\Delete.cshtml" />
+    <Content Include="Views\Branch\Details.cshtml" />
+    <Content Include="Views\Branch\Edit.cshtml" />
+    <Content Include="Views\Branch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5725,6 +5735,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708041410102_GroupModelChanged.resx">
       <DependentUpon>201708041410102_GroupModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708051621492_BranchAndUserModelChanged.resx">
+      <DependentUpon>201708051621492_BranchAndUserModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

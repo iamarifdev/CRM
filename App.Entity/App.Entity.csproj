@@ -64,6 +64,7 @@
     <Compile Include="Models\SectorInfo.cs" />
     <Compile Include="Models\ServiceInfo.cs" />
     <Compile Include="Models\SmsSentHistory.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="Models\SuppliersInfo.cs" />
     <Compile Include="Models\TransactionsInfo.cs" />
     <Compile Include="Models\User.cs" />
