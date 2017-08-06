@@ -60,6 +60,7 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\LoginAttempts.cs" />
     <Compile Include="Models\Meta.cs" />
+    <Compile Include="Models\MVCGridToolbarModel.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\SectorInfo.cs" />
     <Compile Include="Models\ServiceInfo.cs" />

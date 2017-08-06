@@ -10,6 +10,7 @@ using App.Entity.Models;
 using App.Web.Context;
 using DataTables.AspNet.Core;
 using DataTables.AspNet.Mvc5;
+using Microsoft.AspNet.Identity;
 using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
@@ -48,7 +49,8 @@ namespace App.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.Status = new SelectList(Enum.GetValues(typeof(Status)).Cast<Status>()
-                            .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
+                    .Select(v => new SelectListItem {Text = v.ToString(), Value = ((int) v).ToString()}).ToList(), "Value",
+                "Text");
             return View();
         }
 
@@ -59,16 +61,41 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "BranchName,BranchCode,Status")] BranchInfo branchInfo)
         {
-            if (ModelState.IsValid)
+            using (var dbTransaction = _db.Database.BeginTransaction())
             {
-                _db.BranchInfos.Add(branchInfo);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                try
+                {
+                    ModelState.Clear();
+                    branchInfo.BranchId = string.Format("BI-{0:000000}", _db.BranchInfos.Count() + 1);
+                    branchInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    branchInfo.EntryDate = DateTime.Now;
+                    TryValidateModel(branchInfo);
+                    if (ModelState.IsValid)
+                    {
+                        _db.BranchInfos.Add(branchInfo);
+                        _db.SaveChanges();
 
-            ViewBag.Status = new SelectList(Enum.GetValues(typeof(Status)).Cast<Status>()
-                            .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
-            return View(branchInfo);
+                        dbTransaction.Commit();
+
+                        return RedirectToAction("Index");
+                    }
+                    dbTransaction.Rollback();
+                    return View(branchInfo);
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    throw ex;
+                }
+                finally
+                {
+
+                    ViewBag.Status = new SelectList(Enum.GetValues(typeof(Status)).Cast<Status>()
+                            .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(),
+                        "Value", "Text");
+                }
+                
+            }
         }
 
         // GET: Branch/Edit/5
@@ -131,7 +158,7 @@ namespace App.Web.Controllers
         [HttpGet]
         public ActionResult GetBranch(IDataTablesRequest request)
         {
-            var data =_db.BranchInfos;
+            var data = _db.BranchInfos;
 
             var filteredData = data.Where(item => item.BranchName.Contains(request.Search.Value));
 
