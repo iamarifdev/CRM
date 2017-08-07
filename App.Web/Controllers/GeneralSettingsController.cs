@@ -92,8 +92,8 @@ namespace App.Web.Controllers
                         if (_db.GeneralSettings.Count(x => x.SettingName == setting.SettingName) > 0)
                         {
                             _db.GeneralSettings
-                                .Where(x => x.SettingName == setting.SettingName)
-                                .Update(u => new GeneralSetting { SettingValue = setting.SettingValue });
+                               .Where(x => x.SettingName == setting.SettingName)
+                               .Update(u => new GeneralSetting { SettingValue = setting.SettingValue });
 
                             _db.SaveChanges();
                         }

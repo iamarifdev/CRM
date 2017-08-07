@@ -248,6 +248,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MvcGridPagination.css" />
     <Content Include="Content\template\core.css" />
     <Content Include="Content\template\img\avatars\1.jpg" />
     <Content Include="Content\template\img\avatars\10.jpg" />
@@ -4834,7 +4835,9 @@
     <Content Include="vendor\x-editable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysiwyg-color.css" />
     <Content Include="vendor\x-editable\inputs-ext\wysihtml5\wysihtml5.js" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -1,86 +1,73 @@
 ﻿@model App.Entity.Models.BranchInfo
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Branch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
+@section AdditionalStyles
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>BranchInfo</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BranchId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BranchName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BranchName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BranchCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DelStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DelStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DelStatus, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EntryDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EntryBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EntryBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EntryBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="card">
+    <h6 class="card-header bg-primary">BRANCH / EDIT</h6>
+    <div class="card-block">
+        <div class="row">
+            @using (Html.BeginForm("Edit", "Branch", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-horizontal">
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.BranchName, htmlAttributes: new { @class = "control-label col-sm-3" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BranchName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label col-sm-3" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.BranchCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-sm-3" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.Statuses, "Select One", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        <div class="offset-sm-6 col-sm-3">
+                            <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Save Changes </button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-3">
+                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+            </div>
+
+        </div>
+    </div>
 </div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script>
+        @if (TempData["Toastr"]!=null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
+    </script>
+}
+
+
