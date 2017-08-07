@@ -28,7 +28,7 @@ namespace App.Entity.Models
         public int Status { get; set; }
 
         public bool DelStatus { get; set; }
-        public DateTime? EntryDate { get; set; }
+        public DateTime EntryDate { get; set; }
 
         [ForeignKey("User")]
         public int EntryBy { get; set; }
