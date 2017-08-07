@@ -216,8 +216,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\Alert.cs" />
     <Compile Include="Helper\HelperExtension.cs" />
+    <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.Designer.cs">
       <DependentUpon>201708011643287_InitApplicationContext.cs</DependentUpon>
@@ -273,6 +273,8 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="command.text" />
+    <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\MyProfile.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

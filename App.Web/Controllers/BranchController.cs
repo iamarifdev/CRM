@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
+using App.Web.Helper;
 using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
@@ -41,12 +42,12 @@ namespace App.Web.Controllers
                 var branchInfo = _db.BranchInfos.Find(id);
                 if (branchInfo != null) return View(branchInfo);
 
-                TempData["Toastr"] = "toastr.error('Information not found!', ' Error!');";
+                TempData["Toastr"] = Toastr.HttpNotFound;
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["Toastr"] = string.Format("toastr.error('{0}', ' Database Error!');", ex.Message);
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
                 return RedirectToAction("Index");
             }
 
@@ -55,8 +56,7 @@ namespace App.Web.Controllers
         // GET: Branch/Create
         public ActionResult Create()
         {
-            ViewBag.Status = new SelectList(Enum.GetValues(typeof(Status)).Cast<Status>().Select(v => new
-                SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
+            ViewBag.Status = new SelectList(_aiStatus, "Value", "Text");
             return View();
         }
 
@@ -82,6 +82,7 @@ namespace App.Web.Controllers
                         _db.SaveChanges();
 
                         dbTransaction.Commit();
+                        TempData["Toastr"] = Toastr.Added;
 
                         return RedirectToAction("Index");
                     }
@@ -91,12 +92,12 @@ namespace App.Web.Controllers
                 catch (Exception ex)
                 {
                     dbTransaction.Rollback();
-                    throw ex;
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Enum.GetValues(typeof(Status)).Cast<Status>().Select(v => new
-                        SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
+                    ViewBag.Status = new SelectList(_aiStatus, "Value", "Text");
                 }
 
             }
@@ -109,13 +110,13 @@ namespace App.Web.Controllers
             {
                 if (id == null)
                 {
-                    TempData["Toastr"] = "toastr.error('Bad request!', 'Error!');";
+                    TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
                 var branchInfo = _db.BranchInfos.Find(id);
                 if (branchInfo == null)
                 {
-                    TempData["Toastr"] = "toastr.error('Information not found!', 'Error!');";
+                    TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
                 ViewBag.Statuses = new SelectList(_aiStatus, "Value", "Text", branchInfo.Status);
@@ -124,7 +125,7 @@ namespace App.Web.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Toastr"] = string.Format("toastr.error('{0}', ' Database Error!');", ex.Message);
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
                 return RedirectToAction("Index");
             }
         }
@@ -159,13 +160,13 @@ namespace App.Web.Controllers
                        .Update(u => new BranchInfo { BranchName = branchInfo.BranchName, BranchCode = branchInfo.BranchCode, Status = branchInfo.Status});
                     dbTransaction.Commit();
 
-                    TempData["Toastr"] = "toastr.success('Information successfully updated!', ' Success!');";
+                    TempData["Toastr"] = Toastr.Updated;
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     dbTransaction.Rollback();
-                    TempData["Toastr"] = string.Format("toastr.error('{0}', ' Database Error!');", ex.Message);
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
             }
@@ -196,25 +197,25 @@ namespace App.Web.Controllers
                 {
                     if (id == null)
                     {
-                        TempData["Toastr"] = "toastr.error('Bad request!', 'Error!');";
+                        TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
                     var branchInfo = _db.BranchInfos.Find(id);
                     if (branchInfo == null)
                     {
-                        TempData["Toastr"] = "toastr.error('Information not found!', 'Error!');";
+                        TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
                     _db.BranchInfos.Remove(branchInfo);
                     _db.SaveChanges();
                     dbTransaction.Commit();
-                    TempData["Toastr"] = "toastr.success('Information deleted successfully!', 'Success!');";
+                    TempData["Toastr"] = Toastr.Deleted;
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     dbTransaction.Rollback();
-                    TempData["Toastr"] = string.Format("toastr.error('{0}', ' Database Error!');", ex.Message);
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
             }
