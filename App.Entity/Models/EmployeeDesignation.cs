@@ -13,6 +13,7 @@ namespace App.Entity.Models
         [Display(Name = "Designation Id")]
         public string DesignationId { get; set; }
 
+        [Required]
         [StringLength(100)]
         [Display(Name = "Designation Name (EN)")]
         public string DesignationTitleEn { get; set; }
@@ -22,6 +23,7 @@ namespace App.Entity.Models
         public string DesignationTitleBn { get; set; }
 
         [StringLength(20)]
+        [Display(Name = "Designation Depertment")]
         public string DesignationDepertment { get; set; }
 
         public int Status { get; set; }

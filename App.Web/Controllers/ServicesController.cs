@@ -9,71 +9,65 @@ using EntityFramework.Extensions;
 namespace App.Web.Controllers
 {
     [Authorize]
-    public class BranchController : Controller
+    public class ServicesController : Controller
     {
+
         #region Private Zone
         private readonly CrmDbContext _db;
         #endregion
-        
-        public BranchController()
+
+        public ServicesController()
         {
             _db = new CrmDbContext();
         }
-        // GET: Branch
+
+        // GET: Services
         public ActionResult Index()
         {
             return View();
         }
 
-        //// GET: Branch/Details/5
+        //// GET: Services/Details/5
         //public ActionResult Details(int? id)
         //{
-        //    try
+        //    if (id == null)
         //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        var branchInfo = _db.BranchInfos.Find(id);
-        //        if (branchInfo != null) return View(branchInfo);
-
-        //        TempData["Toastr"] = Toastr.HttpNotFound;
-        //        return RedirectToAction("Index");
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //    }
-        //    catch (Exception ex)
+        //    ServiceInfo serviceInfo = _db.ServiceInfos.Find(id);
+        //    if (serviceInfo == null)
         //    {
-        //        TempData["Toastr"] = Toastr.DbError(ex.Message);
-        //        return RedirectToAction("Index");
+        //        return HttpNotFound();
         //    }
-
+        //    return View(serviceInfo);
         //}
 
-        // GET: Branch/Create
+        // GET: Services/Create
         public ActionResult Create()
         {
-            ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
             return View();
         }
 
-        // POST: Branch/Create
+        // POST: Services/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BranchName,BranchCode,Status")] BranchInfo branchInfo)
+        public ActionResult Create([Bind(Include = "Id,ServiceName,Description,Status")] ServiceInfo serviceInfo)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
                     ModelState.Clear();
-                    branchInfo.BranchId = string.Format("BI-{0:000000}", _db.BranchInfos.Count() + 1);
-                    branchInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
-                    branchInfo.EntryDate = DateTime.Now;
-                    TryValidateModel(branchInfo);
+                    serviceInfo.ServiceId = string.Format("DI-{0:000000}", _db.ServiceInfos.Count() + 1);
+                    serviceInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    serviceInfo.EntryDate = DateTime.Now;
+                    TryValidateModel(serviceInfo);
                     if (ModelState.IsValid)
                     {
-                        _db.BranchInfos.Add(branchInfo);
+                        _db.ServiceInfos.Add(serviceInfo);
                         _db.SaveChanges();
 
                         dbTransaction.Commit();
@@ -82,7 +76,7 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
                     dbTransaction.Rollback();
-                    return View(branchInfo);
+                    return View(serviceInfo);
                 }
                 catch (Exception ex)
                 {
@@ -98,7 +92,7 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Branch/Edit/5
+        // GET: Services/Edit/5
         public ActionResult Edit(int? id)
         {
             try
@@ -108,15 +102,15 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var branchInfo = _db.BranchInfos.Find(id);
-                if (branchInfo == null)
+                var service = _db.ServiceInfos.Find(id);
+                if (service == null)
                 {
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
+                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
 
-                return View(branchInfo);
+                return View(service);
             }
             catch (Exception ex)
             {
@@ -125,42 +119,55 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: Branch/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Services/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BranchName,BranchCode,Status")] BranchInfo branchInfo, int? id)
+        public ActionResult Edit([Bind(Include = "Id,ServiceName,Description,Status")] ServiceInfo service, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (id == null) return HttpNotFound();
-                    if (_db.BranchInfos.Count(x => x.Id == id) < 1) return HttpNotFound();
-                    var branch = _db.BranchInfos.Single(x => x.Id == id);
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (_db.EmployeeDesignations.Count(x => x.Id == id) < 1)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    var serviceInfo = _db.ServiceInfos.Single(x => x.Id == id);
+                    if (serviceInfo == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
 
                     ModelState.Clear();
+                    service.ServiceId = serviceInfo.ServiceId;
+                    service.EntryBy = serviceInfo.EntryBy;
+                    service.EntryDate = serviceInfo.EntryDate;
+                    service.DelStatus = serviceInfo.DelStatus;
 
-                    branchInfo.BranchId = branch.BranchId;
-                    branchInfo.DelStatus = branch.DelStatus;
-                    branchInfo.EntryBy = branch.EntryBy;
-                    branchInfo.EntryDate = branch.EntryDate;
+                    TryValidateModel(service);
 
-                    TryValidateModel(branchInfo);
-                    if (!ModelState.IsValid) return View(branchInfo);
+                    if (!ModelState.IsValid) return View(service);
 
-                    _db.BranchInfos
+                    _db.ServiceInfos
                         .Where(x => x.Id == id)
-                        .Update( u => new BranchInfo {
-                            BranchName = branchInfo.BranchName,
-                            BranchCode = branchInfo.BranchCode,
-                            Status = branchInfo.Status
+                        .Update(u => new ServiceInfo
+                        {
+                            ServiceName = service.ServiceName,
+                            Description = service.Description,
+                            Status = service.Status
                         });
                     dbTransaction.Commit();
 
                     TempData["Toastr"] = Toastr.Updated;
                     return RedirectToAction("Index");
+
                 }
                 catch (Exception ex)
                 {
@@ -170,27 +177,27 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
+                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
                 }
             }
         }
 
-        //// GET: Branch/Delete/5
+        //// GET: Services/Delete/5
         //public ActionResult Delete(int? id)
         //{
         //    if (id == null)
         //    {
         //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //    }
-        //    BranchInfo branchInfo = _db.BranchInfos.Find(id);
-        //    if (branchInfo == null)
+        //    ServiceInfo serviceInfo = _db.ServiceInfos.Find(id);
+        //    if (serviceInfo == null)
         //    {
         //        return HttpNotFound();
         //    }
-        //    return View(branchInfo);
+        //    return View(serviceInfo);
         //}
 
-        // POST: Branch/Delete/5
+        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
@@ -203,15 +210,16 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var branchInfo = _db.BranchInfos.Find(id);
-                    if (branchInfo == null)
+                    var service = _db.ServiceInfos.Find(id);
+                    if (service == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    _db.BranchInfos.Remove(branchInfo);
+                    _db.ServiceInfos.Remove(service);
                     _db.SaveChanges();
                     dbTransaction.Commit();
+
                     TempData["Toastr"] = Toastr.Deleted;
                     return RedirectToAction("Index");
                 }

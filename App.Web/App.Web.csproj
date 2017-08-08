@@ -208,15 +208,17 @@
     <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\DesignationsController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\HelperExtension.cs" />
+    <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.Designer.cs">
@@ -238,6 +240,14 @@
     <Compile Include="Migrations\ContextB\201708071823036_EmployeeDesignationAndBranchInfoModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708071823036_EmployeeDesignationAndBranchInfoModelChanged.Designer.cs">
       <DependentUpon>201708071823036_EmployeeDesignationAndBranchInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708081743313_EmployeeDesignationModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708081743313_EmployeeDesignationModelChanged.Designer.cs">
+      <DependentUpon>201708081743313_EmployeeDesignationModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.Designer.cs">
+      <DependentUpon>201708081826161_ServiceInfoModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4840,6 +4850,16 @@
     <Content Include="vendor\x-editable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.min.js" />
     <Content Include="vendor\x-editable\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysiwyg-color.css" />
     <Content Include="vendor\x-editable\inputs-ext\wysihtml5\wysihtml5.js" />
+    <Content Include="Views\Designations\Create.cshtml" />
+    <Content Include="Views\Designations\Delete.cshtml" />
+    <Content Include="Views\Designations\Details.cshtml" />
+    <Content Include="Views\Designations\Edit.cshtml" />
+    <Content Include="Views\Designations\Index.cshtml" />
+    <Content Include="Views\Services\Create.cshtml" />
+    <Content Include="Views\Services\Delete.cshtml" />
+    <Content Include="Views\Services\Details.cshtml" />
+    <Content Include="Views\Services\Edit.cshtml" />
+    <Content Include="Views\Services\Index.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5761,6 +5781,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708071823036_EmployeeDesignationAndBranchInfoModelChanged.resx">
       <DependentUpon>201708071823036_EmployeeDesignationAndBranchInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708081743313_EmployeeDesignationModelChanged.resx">
+      <DependentUpon>201708081743313_EmployeeDesignationModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.resx">
+      <DependentUpon>201708081826161_ServiceInfoModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

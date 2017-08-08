@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -9,80 +10,77 @@ using EntityFramework.Extensions;
 namespace App.Web.Controllers
 {
     [Authorize]
-    public class BranchController : Controller
+    public class DesignationsController : Controller
     {
         #region Private Zone
+
         private readonly CrmDbContext _db;
+
         #endregion
-        
-        public BranchController()
+
+        public DesignationsController()
         {
             _db = new CrmDbContext();
         }
-        // GET: Branch
+
+        // GET: Designations
         public ActionResult Index()
         {
             return View();
         }
 
-        //// GET: Branch/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    try
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        var branchInfo = _db.BranchInfos.Find(id);
-        //        if (branchInfo != null) return View(branchInfo);
+        // GET: Designations/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var employeeDesignation = _db.EmployeeDesignations.Find(id);
+            if (employeeDesignation == null)
+            {
+                return HttpNotFound();
+            }
+            return View(employeeDesignation);
+        }
 
-        //        TempData["Toastr"] = Toastr.HttpNotFound;
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["Toastr"] = Toastr.DbError(ex.Message);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //}
-
-        // GET: Branch/Create
+        // GET: Designations/Create
         public ActionResult Create()
         {
             ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
             return View();
         }
 
-        // POST: Branch/Create
+        // POST: Designations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BranchName,BranchCode,Status")] BranchInfo branchInfo)
+        public ActionResult Create(
+            [Bind(Include = "Id,DesignationTitleEn,DesignationTitleBn,DesignationDepertment,Status")] EmployeeDesignation designation)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
                     ModelState.Clear();
-                    branchInfo.BranchId = string.Format("BI-{0:000000}", _db.BranchInfos.Count() + 1);
-                    branchInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
-                    branchInfo.EntryDate = DateTime.Now;
-                    TryValidateModel(branchInfo);
+                    designation.DesignationId = string.Format("ED-{0:000000}", _db.EmployeeDesignations.Count() + 1);
+                    designation.DelStatus = false;
+                    designation.EntryDate = DateTime.Now;
+                    designation.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    TryValidateModel(designation);
+
                     if (ModelState.IsValid)
                     {
-                        _db.BranchInfos.Add(branchInfo);
+                        _db.EmployeeDesignations.Add(designation);
                         _db.SaveChanges();
-
                         dbTransaction.Commit();
                         TempData["Toastr"] = Toastr.Added;
-
                         return RedirectToAction("Index");
                     }
+
                     dbTransaction.Rollback();
-                    return View(branchInfo);
+                    return View(designation);
                 }
                 catch (Exception ex)
                 {
@@ -92,13 +90,13 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
                 }
-
             }
+
         }
 
-        // GET: Branch/Edit/5
+        // GET: Designations/Edit/5
         public ActionResult Edit(int? id)
         {
             try
@@ -108,15 +106,14 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var branchInfo = _db.BranchInfos.Find(id);
-                if (branchInfo == null)
+                var designation = _db.EmployeeDesignations.Find(id);
+                if (designation == null)
                 {
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
-
-                return View(branchInfo);
+                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", designation.Status);
+                return View(designation);
             }
             catch (Exception ex)
             {
@@ -125,42 +122,55 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: Branch/Edit/5
+        // POST: Designations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BranchName,BranchCode,Status")] BranchInfo branchInfo, int? id)
+        public ActionResult Edit([Bind(Include = "Id,DesignationTitleEn,DesignationTitleBn,DesignationDepertment,Status")] EmployeeDesignation designation, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (id == null) return HttpNotFound();
-                    if (_db.BranchInfos.Count(x => x.Id == id) < 1) return HttpNotFound();
-                    var branch = _db.BranchInfos.Single(x => x.Id == id);
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (_db.EmployeeDesignations.Count(x => x.Id == id) < 1)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    var empDesignation = _db.EmployeeDesignations.Single(x => x.Id == id);
+                    if (empDesignation == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
 
                     ModelState.Clear();
+                    designation.DesignationId = empDesignation.DesignationId;
+                    designation.EntryBy = empDesignation.EntryBy;
+                    designation.EntryDate = empDesignation.EntryDate;
+                    designation.DelStatus = empDesignation.DelStatus;
+                    TryValidateModel(designation);
 
-                    branchInfo.BranchId = branch.BranchId;
-                    branchInfo.DelStatus = branch.DelStatus;
-                    branchInfo.EntryBy = branch.EntryBy;
-                    branchInfo.EntryDate = branch.EntryDate;
+                    if (!ModelState.IsValid) return View(designation);
 
-                    TryValidateModel(branchInfo);
-                    if (!ModelState.IsValid) return View(branchInfo);
-
-                    _db.BranchInfos
+                    _db.EmployeeDesignations
                         .Where(x => x.Id == id)
-                        .Update( u => new BranchInfo {
-                            BranchName = branchInfo.BranchName,
-                            BranchCode = branchInfo.BranchCode,
-                            Status = branchInfo.Status
+                        .Update( u => new EmployeeDesignation {
+                            DesignationTitleEn = designation.DesignationTitleEn,
+                            DesignationTitleBn = designation.DesignationTitleBn,
+                            Status = designation.Status
                         });
                     dbTransaction.Commit();
 
                     TempData["Toastr"] = Toastr.Updated;
                     return RedirectToAction("Index");
+
                 }
                 catch (Exception ex)
                 {
@@ -170,27 +180,27 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
+                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", designation.Status);
                 }
             }
         }
 
-        //// GET: Branch/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    BranchInfo branchInfo = _db.BranchInfos.Find(id);
-        //    if (branchInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(branchInfo);
-        //}
+        // GET: Designations/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            EmployeeDesignation employeeDesignation = _db.EmployeeDesignations.Find(id);
+            if (employeeDesignation == null)
+            {
+                return HttpNotFound();
+            }
+            return View(employeeDesignation);
+        }
 
-        // POST: Branch/Delete/5
+        // POST: Designations/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
@@ -203,13 +213,13 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var branchInfo = _db.BranchInfos.Find(id);
-                    if (branchInfo == null)
+                    var designation = _db.EmployeeDesignations.Find(id);
+                    if (designation == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    _db.BranchInfos.Remove(branchInfo);
+                    _db.EmployeeDesignations.Remove(designation);
                     _db.SaveChanges();
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Deleted;
