@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
@@ -9,21 +10,27 @@ namespace App.Entity.Models
 
         [Required]
         [StringLength(20)]
+        [Display(Name = "AirLine Id")]
         public string AirLineId { get; set; }
 
+        [Required]
         [StringLength(100)]
+        [Display(Name = "AirLine Name")]
         public string AirLineName { get; set; }
 
+        [Required]
         [StringLength(250)]
         public string Description { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
+        public int Status { get; set; }
 
-        public int DelStatus { get; set; }
-        public DateTime? EntryDate { get; set; }
+        [Display(Name = "Delete Status")]
+        public bool DelStatus { get; set; }
+        public DateTime EntryDate { get; set; }
 
-        [StringLength(20)]
-        public string EntryBy { get; set; }
+        [ForeignKey("User")]
+        public int EntryBy { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

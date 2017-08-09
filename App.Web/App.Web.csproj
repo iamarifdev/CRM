@@ -207,6 +207,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AirLinesController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
@@ -253,6 +254,10 @@
     <Compile Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.Designer.cs">
       <DependentUpon>201708091210218_SectorInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.Designer.cs">
+      <DependentUpon>201708091247080_AirLineInfoModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4870,6 +4875,11 @@
     <Content Include="Views\Sectors\Details.cshtml" />
     <Content Include="Views\Sectors\Edit.cshtml" />
     <Content Include="Views\Sectors\Index.cshtml" />
+    <Content Include="Views\AirLines\Create.cshtml" />
+    <Content Include="Views\AirLines\Delete.cshtml" />
+    <Content Include="Views\AirLines\Details.cshtml" />
+    <Content Include="Views\AirLines\Edit.cshtml" />
+    <Content Include="Views\AirLines\Index.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5800,6 +5810,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.resx">
       <DependentUpon>201708091210218_SectorInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.resx">
+      <DependentUpon>201708091247080_AirLineInfoModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

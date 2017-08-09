@@ -304,6 +304,69 @@ namespace App.Web
                 })
             );
 
+            //Airlines Table
+            MVCGridDefinitionTable.Add("airLineTable", new MVCGridBuilder<AirLineInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("AirLineId").WithHeaderText("AirLine Id").WithValueExpression(p => p.AirLineId).WithSorting(true);
+                    cols.Add("AirLineName").WithHeaderText("AirLine Name").WithValueExpression(p => p.AirLineName).WithSorting(true);
+                    cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "AirLineId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<AirLineInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.AirLineInfos.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.AirLineId.Contains(globalSearch)
+                                    || x.AirLineName.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "airlineid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AirLineId) : query.OrderBy(p => p.AirLineId);
+                                    break;
+                                case "airlinename":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AirLineName) : query.OrderBy(p => p.AirLineName);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
+
         }
     }
 }

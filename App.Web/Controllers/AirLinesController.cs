@@ -1,74 +1,78 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
     [Authorize]
-    public class SectorsController : Controller
+    public class AirLinesController : Controller
     {
-        #region Private Zone
+         #region Private Zone
         private readonly CrmDbContext _db;
         #endregion
 
-        public SectorsController()
+        public AirLinesController()
         {
             _db = new CrmDbContext();
         }
 
-        // GET: Sectors
+        // GET: AirLines
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Sectors/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SectorInfo sectorInfo = _db.SectorInfos.Find(id);
-            if (sectorInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sectorInfo);
-        }
+        //// GET: AirLines/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    AirLineInfo airLineInfo = _db.AirLineInfos.Find(id);
+        //    if (airLineInfo == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(airLineInfo);
+        //}
 
-        // GET: Sectors/Create
+        // GET: AirLines/Create
         public ActionResult Create()
         {
             ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
             return View();
         }
 
-        // POST: Sectors/Create
+        // POST: AirLines/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SectorName,SectorCode,Status")] SectorInfo sector)
+        public ActionResult Create([Bind(Include = "Id,AirLineName,Description,Status")] AirLineInfo airLine)
         {
-
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
                     ModelState.Clear();
-                    sector.SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1);
-                    sector.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
-                    sector.EntryDate = DateTime.Now;
-                    TryValidateModel(sector);
+                    airLine.AirLineId = string.Format("BI-{0:000000}", _db.AirLineInfos.Count() + 1);
+                    airLine.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    airLine.EntryDate = DateTime.Now;
+                    TryValidateModel(airLine);
                     if (ModelState.IsValid)
                     {
-                        _db.SectorInfos.Add(sector);
+                        _db.AirLineInfos.Add(airLine);
                         _db.SaveChanges();
 
                         dbTransaction.Commit();
@@ -77,7 +81,7 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
                     dbTransaction.Rollback();
-                    return View(sector);
+                    return View(airLine);
                 }
                 catch (Exception ex)
                 {
@@ -91,9 +95,10 @@ namespace App.Web.Controllers
                 }
 
             }
+
         }
 
-        // GET: Sectors/Edit/5
+        // GET: AirLines/Edit/5
         public ActionResult Edit(int? id)
         {
             try
@@ -103,15 +108,15 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var sector = _db.SectorInfos.Find(id);
-                if (sector == null)
+                var airLine = _db.AirLineInfos.Find(id);
+                if (airLine == null)
                 {
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
+                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", airLine.Status);
 
-                return View(sector);
+                return View(airLine);
             }
             catch (Exception ex)
             {
@@ -120,12 +125,12 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: Sectors/Edit/5
+        // POST: AirLines/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,SectorName,SectorCode,Status")] SectorInfo sector, int? id)
+        public ActionResult Edit([Bind(Include = "Id,AirLineName,Description,Status")] AirLineInfo airLine, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -136,35 +141,35 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    if (_db.SectorInfos.Count(x => x.Id == id) < 1)
+                    if (_db.AirLineInfos.Count(x => x.Id == id) < 1)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    var sectorInfo = _db.SectorInfos.Single(x => x.Id == id);
-                    if (sectorInfo == null)
+                    var airLineInfo = _db.AirLineInfos.Single(x => x.Id == id);
+                    if (airLineInfo == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
 
                     ModelState.Clear();
-                    sector.SectorId = sectorInfo.SectorId;
-                    sector.EntryBy = sectorInfo.EntryBy;
-                    sector.EntryDate = sectorInfo.EntryDate;
-                    sector.DelStatus = sectorInfo.DelStatus;
+                    airLine.AirLineId = airLineInfo.AirLineId;
+                    airLine.EntryBy = airLineInfo.EntryBy;
+                    airLine.EntryDate = airLineInfo.EntryDate;
+                    airLine.DelStatus = airLineInfo.DelStatus;
 
-                    TryValidateModel(sector);
+                    TryValidateModel(airLine);
 
-                    if (!ModelState.IsValid) return View(sector);
+                    if (!ModelState.IsValid) return View(airLine);
 
-                    _db.SectorInfos
+                    _db.AirLineInfos
                         .Where(x => x.Id == id)
-                        .Update(u => new SectorInfo
+                        .Update(u => new AirLineInfo
                         {
-                            SectorName = sector.SectorName,
-                            SectorCode = sector.SectorCode,
-                            Status = sector.Status
+                            AirLineName = airLine.AirLineName,
+                            Description = airLine.Description,
+                            Status = airLine.Status
                         });
                     dbTransaction.Commit();
 
@@ -180,31 +185,30 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
+                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", airLine.Status);
                 }
             }
         }
 
-        //// GET: Sectors/Delete/5
+        //// GET: AirLines/Delete/5
         //public ActionResult Delete(int? id)
         //{
         //    if (id == null)
         //    {
         //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //    }
-        //    SectorInfo sectorInfo = _db.SectorInfos.Find(id);
-        //    if (sectorInfo == null)
+        //    AirLineInfo airLineInfo = _db.AirLineInfos.Find(id);
+        //    if (airLineInfo == null)
         //    {
         //        return HttpNotFound();
         //    }
-        //    return View(sectorInfo);
+        //    return View(airLineInfo);
         //}
 
-        // POST: Sectors/Delete/5
+        // POST: AirLines/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
@@ -214,13 +218,13 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var sector = _db.SectorInfos.Find(id);
-                    if (sector == null)
+                    var airLine = _db.AirLineInfos.Find(id);
+                    if (airLine == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    _db.SectorInfos.Remove(sector);
+                    _db.AirLineInfos.Remove(airLine);
                     _db.SaveChanges();
                     dbTransaction.Commit();
 
