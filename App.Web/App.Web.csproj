@@ -213,6 +213,7 @@
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PaymentMethodsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SectorsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
@@ -263,6 +264,10 @@
     <Compile Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.Designer.cs">
       <DependentUpon>201708091323118_SuppliersInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.Designer.cs">
+      <DependentUpon>201708091545178_PaymentMethodModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4885,6 +4890,11 @@
     <Content Include="Views\AirLines\Details.cshtml" />
     <Content Include="Views\AirLines\Edit.cshtml" />
     <Content Include="Views\AirLines\Index.cshtml" />
+    <Content Include="Views\PaymentMethods\Create.cshtml" />
+    <Content Include="Views\PaymentMethods\Delete.cshtml" />
+    <Content Include="Views\PaymentMethods\Details.cshtml" />
+    <Content Include="Views\PaymentMethods\Edit.cshtml" />
+    <Content Include="Views\PaymentMethods\Index.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5826,6 +5836,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.resx">
       <DependentUpon>201708091323118_SuppliersInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.resx">
+      <DependentUpon>201708091545178_PaymentMethodModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

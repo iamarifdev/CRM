@@ -434,6 +434,64 @@ namespace App.Web
                     return result;
                 })
             );
+
+            //Payment Methods Table
+            MVCGridDefinitionTable.Add("paymentMethodTable", new MVCGridBuilder<PaymentMethod>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("MethodId").WithHeaderText("Id").WithValueExpression(p => p.MethodId).WithSorting(true);
+                    cols.Add("MethodName").WithHeaderText("Payment Method").WithValueExpression(p => p.MethodName).WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "MethodId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<PaymentMethod>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.PaymentMethods.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.MethodId.Contains(globalSearch)
+                                    || x.MethodName.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "methodid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MethodId) : query.OrderBy(p => p.MethodId);
+                                    break;
+                                case "methodname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MethodName) : query.OrderBy(p => p.MethodName);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
         }
     }
 }
