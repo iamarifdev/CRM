@@ -213,6 +213,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SectorsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -248,6 +249,10 @@
     <Compile Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.Designer.cs">
       <DependentUpon>201708081826161_ServiceInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.Designer.cs">
+      <DependentUpon>201708091210218_SectorInfoModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4860,6 +4865,11 @@
     <Content Include="Views\Services\Details.cshtml" />
     <Content Include="Views\Services\Edit.cshtml" />
     <Content Include="Views\Services\Index.cshtml" />
+    <Content Include="Views\Sectors\Create.cshtml" />
+    <Content Include="Views\Sectors\Delete.cshtml" />
+    <Content Include="Views\Sectors\Details.cshtml" />
+    <Content Include="Views\Sectors\Edit.cshtml" />
+    <Content Include="Views\Sectors\Index.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5787,6 +5797,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708081826161_ServiceInfoModelChanged.resx">
       <DependentUpon>201708081826161_ServiceInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708091210218_SectorInfoModelChanged.resx">
+      <DependentUpon>201708091210218_SectorInfoModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
@@ -11,19 +12,25 @@ namespace App.Entity.Models
         [StringLength(20)]
         public string SectorId { get; set; }
 
+        [Required]
         [StringLength(100)]
+        [Display(Name = "Sector Name")]
         public string SectorName { get; set; }
 
+        [Required]
         [StringLength(100)]
+        [Display(Name = "Sector Code")]
         public string SectorCode { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
+        public int Status { get; set; }
 
-        public int DelStatus { get; set; }
-        public DateTime? EntryDate { get; set; }
+        [Display(Name = "Delete Status")]
+        public bool DelStatus { get; set; }
+        public DateTime EntryDate { get; set; }
 
-        [StringLength(20)]
-        public string EntryBy { get; set; }
+        [ForeignKey("User")]
+        public int EntryBy { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

@@ -1,73 +1,79 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
     [Authorize]
-    public class ServicesController : Controller
+    public class SectorsController : Controller
     {
-
         #region Private Zone
         private readonly CrmDbContext _db;
         #endregion
 
-        public ServicesController()
+        public SectorsController()
         {
             _db = new CrmDbContext();
         }
 
-        // GET: Services
+        // GET: Sectors
         public ActionResult Index()
         {
             return View();
         }
 
-        //// GET: Services/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ServiceInfo serviceInfo = _db.ServiceInfos.Find(id);
-        //    if (serviceInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(serviceInfo);
-        //}
+        // GET: Sectors/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SectorInfo sectorInfo = _db.SectorInfos.Find(id);
+            if (sectorInfo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sectorInfo);
+        }
 
-        // GET: Services/Create
+        // GET: Sectors/Create
         public ActionResult Create()
         {
             ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
             return View();
         }
 
-        // POST: Services/Create
+        // POST: Sectors/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ServiceName,Description,Status")] ServiceInfo serviceInfo)
+        public ActionResult Create([Bind(Include = "Id,SectorName,SectorCode,Status")] SectorInfo sector)
         {
+
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
                     ModelState.Clear();
-                    serviceInfo.ServiceId = string.Format("DI-{0:000000}", _db.ServiceInfos.Count() + 1);
-                    serviceInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
-                    serviceInfo.EntryDate = DateTime.Now;
-                    TryValidateModel(serviceInfo);
+                    sector.SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1);
+                    sector.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    sector.EntryDate = DateTime.Now;
+                    TryValidateModel(sector);
                     if (ModelState.IsValid)
                     {
-                        _db.ServiceInfos.Add(serviceInfo);
+                        _db.SectorInfos.Add(sector);
                         _db.SaveChanges();
 
                         dbTransaction.Commit();
@@ -76,7 +82,7 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
                     dbTransaction.Rollback();
-                    return View(serviceInfo);
+                    return View(sector);
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +98,7 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Services/Edit/5
+        // GET: Sectors/Edit/5
         public ActionResult Edit(int? id)
         {
             try
@@ -102,27 +108,43 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var service = _db.ServiceInfos.Find(id);
-                if (service == null)
+                var sector = _db.SectorInfos.Find(id);
+                if (sector == null)
                 {
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
+                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
 
-                return View(service);
+                return View(sector);
             }
             catch (Exception ex)
             {
                 TempData["Toastr"] = Toastr.DbError(ex.Message);
                 return RedirectToAction("Index");
             }
+
+
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SectorInfo sectorInfo = _db.SectorInfos.Find(id);
+            if (sectorInfo == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.EntryBy = new SelectList(_db.Users, "Id", "Uid", sectorInfo.EntryBy);
+            return View(sectorInfo);
         }
 
-        // POST: Services/Edit/5
+        // POST: Sectors/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ServiceName,Description,Status")] ServiceInfo service, int? id)
+        public ActionResult Edit([Bind(Include = "Id,SectorName,SectorCode,Status")] SectorInfo sector, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -133,35 +155,35 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    if (_db.ServiceInfos.Count(x => x.Id == id) < 1)
+                    if (_db.SectorInfos.Count(x => x.Id == id) < 1)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    var serviceInfo = _db.ServiceInfos.Single(x => x.Id == id);
-                    if (serviceInfo == null)
+                    var sectorInfo = _db.SectorInfos.Single(x => x.Id == id);
+                    if (sectorInfo == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
 
                     ModelState.Clear();
-                    service.ServiceId = serviceInfo.ServiceId;
-                    service.EntryBy = serviceInfo.EntryBy;
-                    service.EntryDate = serviceInfo.EntryDate;
-                    service.DelStatus = serviceInfo.DelStatus;
+                    sector.SectorId = sectorInfo.SectorId;
+                    sector.EntryBy = sectorInfo.EntryBy;
+                    sector.EntryDate = sectorInfo.EntryDate;
+                    sector.DelStatus = sectorInfo.DelStatus;
 
-                    TryValidateModel(service);
+                    TryValidateModel(sector);
 
-                    if (!ModelState.IsValid) return View(service);
+                    if (!ModelState.IsValid) return View(sector);
 
-                    _db.ServiceInfos
+                    _db.SectorInfos
                         .Where(x => x.Id == id)
-                        .Update(u => new ServiceInfo
+                        .Update(u => new SectorInfo
                         {
-                            ServiceName = service.ServiceName,
-                            Description = service.Description,
-                            Status = service.Status
+                            SectorName = sector.SectorName,
+                            SectorCode = sector.SectorCode,
+                            Status = sector.Status
                         });
                     dbTransaction.Commit();
 
@@ -177,30 +199,31 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
+                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
                 }
             }
         }
 
-        //// GET: Services/Delete/5
+        //// GET: Sectors/Delete/5
         //public ActionResult Delete(int? id)
         //{
         //    if (id == null)
         //    {
         //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //    }
-        //    ServiceInfo serviceInfo = _db.ServiceInfos.Find(id);
-        //    if (serviceInfo == null)
+        //    SectorInfo sectorInfo = _db.SectorInfos.Find(id);
+        //    if (sectorInfo == null)
         //    {
         //        return HttpNotFound();
         //    }
-        //    return View(serviceInfo);
+        //    return View(sectorInfo);
         //}
 
-        // POST: Services/Delete/5
+        // POST: Sectors/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
+
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
@@ -210,13 +233,13 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var service = _db.ServiceInfos.Find(id);
-                    if (service == null)
+                    var sector = _db.SectorInfos.Find(id);
+                    if (sector == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    _db.ServiceInfos.Remove(service);
+                    _db.SectorInfos.Remove(sector);
                     _db.SaveChanges();
                     dbTransaction.Commit();
 

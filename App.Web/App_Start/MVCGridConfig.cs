@@ -237,6 +237,73 @@ namespace App.Web
                 })
             );
 
+            //Sector Table
+            MVCGridDefinitionTable.Add("sectorTable", new MVCGridBuilder<SectorInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("SectorId").WithHeaderText("Airport Id").WithValueExpression(p => p.SectorId).WithSorting(true);
+                    cols.Add("SectorName").WithHeaderText("Airport Name").WithValueExpression(p => p.SectorName).WithSorting(true);
+                    cols.Add("SectorCode").WithHeaderText("Airport Code").WithValueExpression(p => p.SectorCode).WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "SectorId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<SectorInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.SectorInfos.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.SectorId.Contains(globalSearch)
+                                    || x.SectorName.Contains(globalSearch)
+                                    || x.SectorCode.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "sectorid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SectorId) : query.OrderBy(p => p.SectorId);
+                                    break;
+                                case "sectorname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SectorName) : query.OrderBy(p => p.SectorName);
+                                    break;
+                                case "sectorcode":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SectorCode) : query.OrderBy(p => p.SectorCode);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
+
         }
     }
 }
