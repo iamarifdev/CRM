@@ -216,6 +216,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SectorsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -258,6 +259,10 @@
     <Compile Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.Designer.cs">
       <DependentUpon>201708091247080_AirLineInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.Designer.cs">
+      <DependentUpon>201708091323118_SuppliersInfoModelChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -5764,6 +5769,11 @@
     <Content Include="Views\Branch\Details.cshtml" />
     <Content Include="Views\Branch\Edit.cshtml" />
     <Content Include="Views\Branch\Index.cshtml" />
+    <Content Include="Views\Suppliers\Create.cshtml" />
+    <Content Include="Views\Suppliers\Delete.cshtml" />
+    <Content Include="Views\Suppliers\Details.cshtml" />
+    <Content Include="Views\Suppliers\Edit.cshtml" />
+    <Content Include="Views\Suppliers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5813,6 +5823,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708091247080_AirLineInfoModelChanged.resx">
       <DependentUpon>201708091247080_AirLineInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708091323118_SuppliersInfoModelChanged.resx">
+      <DependentUpon>201708091323118_SuppliersInfoModelChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -367,6 +367,73 @@ namespace App.Web
                 })
             );
 
+            //Suppliers Table
+            MVCGridDefinitionTable.Add("supplierTable", new MVCGridBuilder<SuppliersInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("SupplierId").WithHeaderText("Supplier Id").WithValueExpression(p => p.SupplierId).WithSorting(true);
+                    cols.Add("SupplierName").WithHeaderText("Name").WithValueExpression(p => p.SupplierName).WithSorting(true);
+                    cols.Add("SupplierEmail").WithHeaderText("Email").WithValueExpression(p => p.SupplierEmail).WithSorting(true);
+                    cols.Add("SupplierMobileNo").WithHeaderText("Mobile No.").WithValueExpression(p => p.SupplierMobileNo).WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "SupplierId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<SuppliersInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.SuppliersInfos.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.SupplierId.Contains(globalSearch)
+                                    || x.SupplierEmail.Contains(globalSearch)
+                                    || x.SupplierName.Contains(globalSearch)
+                                    || x.SupplierMobileNo.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "supplierid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SupplierId) : query.OrderBy(p => p.SupplierId);
+                                    break;
+                                case "suppliername":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SupplierName) : query.OrderBy(p => p.SupplierName);
+                                    break;
+                                case "supplieremail":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SupplierEmail) : query.OrderBy(p => p.SupplierEmail);
+                                    break;
+                                case "suppliermobileno":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.SupplierMobileNo) : query.OrderBy(p => p.SupplierMobileNo);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
         }
     }
 }
