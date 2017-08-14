@@ -42,19 +42,6 @@ namespace App.Web
                         // first we create Admin role   
                         var role = new IdentityRole { Name = "Admin" };
                         roleManager.Create(role);
-                        var adminGroup = new Group
-                        {
-                            Name = "Admin",
-                            Description = "Administrator",
-                            Accounts = true,
-                            Billing = true,
-                            Crm = true,
-                            Hrm = true,
-                            Report = true,
-                            Setup = true
-                        };
-                        db.Groups.Add(adminGroup);
-                        db.SaveChanges();
 
                         //Here we create a Admin super user who will maintain the website                  
 
@@ -73,7 +60,6 @@ namespace App.Web
                             Email = email,
                             IpAddress = "127.0.0.1",
                             CreatedOn = DateTime.Now.Ticks,
-                            GroupId = adminGroup.Id,
                             Active = Status.Active,
                             Level = "Head Office",
                             Uid = uId
@@ -89,12 +75,6 @@ namespace App.Web
                         if (checkUser.Succeeded && crmCheckUser)
                         {
                             userManager.AddToRole(user.Id, "Admin");
-                            db.UserGroups.Add(new UserGroup
-                            {
-                                GroupId = adminGroup.Id,
-                                UserId = crmUser.Id
-                            });
-                            db.SaveChanges();
                         }
                     }
 
@@ -103,9 +83,6 @@ namespace App.Web
                     {
                         var role = new IdentityRole { Name = "Agent" };
                         roleManager.Create(role);
-
-                        db.Groups.Add(new Group { Name = "Agent", Description = "this column value is managed internally in program..." });
-                        db.SaveChanges();
                     }
 
                     scope.Complete();
@@ -118,13 +95,6 @@ namespace App.Web
                 
             }
             
-
-            //// creating Creating Employee role    
-            //if (!roleManager.RoleExists("Employee"))
-            //{
-            //    var role = new IdentityRole {Name = "Employee"};
-            //    roleManager.Create(role);
-            //}
         }
     }
 }

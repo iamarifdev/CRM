@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using App.Entity.Models;
 
 namespace App.Web.Context
@@ -20,7 +15,6 @@ namespace App.Web.Context
         public DbSet<EmployeeBasicInfo> EmployeeBasicInfos { get; set; }
         public DbSet<EmployeeDesignation> EmployeeDesignations { get; set; }
         public DbSet<GeneralSetting> GeneralSettings { get; set; }
-        public DbSet<Group> Groups { get; set; }
         public DbSet<LoginAttempts> LoginAttemptses { get; set; }
         public DbSet<Meta> Metas { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
@@ -30,7 +24,6 @@ namespace App.Web.Context
         public DbSet<SuppliersInfo> SuppliersInfos { get; set; }
         public DbSet<TransactionsInfo> TransactionsInfos { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<VenueInfo> VenueInfos { get; set; }
     }
 }

@@ -60,7 +60,6 @@
     <Compile Include="Models\EmployeeBasicInfo.cs" />
     <Compile Include="Models\EmployeeDesignation.cs" />
     <Compile Include="Models\GeneralSetting.cs" />
-    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\LoginAttempts.cs" />
     <Compile Include="Models\Meta.cs" />
     <Compile Include="Models\MVCGridToolbarModel.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="Models\SuppliersInfo.cs" />
     <Compile Include="Models\TransactionsInfo.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserGroup.cs" />
     <Compile Include="Models\VenueInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

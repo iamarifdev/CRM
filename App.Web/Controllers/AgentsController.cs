@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -13,9 +8,6 @@ using App.Web.Models;
 using EntityFramework.Extensions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Owin;
-using Microsoft.Owin;
 using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
@@ -27,7 +19,6 @@ namespace App.Web.Controllers
         private readonly CrmDbContext _db;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private HttpContext _httpContext = System.Web.HttpContext.Current;
         #endregion
 
         public AgentsController()
@@ -143,7 +134,7 @@ namespace App.Web.Controllers
         // POST: Agents/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OfficeName,AgentName,ContactName,MobileNo,Address,OfficeNo,FaxNo,Email,UserName,Password")] AgentInfo agent, int? id)
+        public ActionResult Edit([Bind(Include = "Id,OfficeName,AgentName,ContactName,MobileNo,Address,OfficeNo,FaxNo,Email,UserName,Password,Status")] AgentInfo agent, int? id)
         {
 
             using (var dbTransaction = _db.Database.BeginTransaction())
@@ -219,30 +210,60 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Agents/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AgentInfo agentInfo = _db.AgentInfos.Find(id);
-            if (agentInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(agentInfo);
-        }
+        //// GET: Agents/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    AgentInfo agentInfo = _db.AgentInfos.Find(id);
+        //    if (agentInfo == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(agentInfo);
+        //}
 
         // POST: Agents/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            AgentInfo agentInfo = _db.AgentInfos.Find(id);
-            _db.AgentInfos.Remove(agentInfo);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var agent = _db.AgentInfos.Find(id);
+                    if (agent == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+
+                    var appUser = _userManager.FindByName(agent.UserName);
+                    _context.Users.Remove(appUser);
+                    _context.SaveChanges();
+
+                    _db.AgentInfos.Remove(agent);
+                    _db.SaveChanges();
+
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)
