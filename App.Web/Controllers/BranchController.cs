@@ -8,7 +8,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class BranchController : Controller
     {
         #region Private Zone

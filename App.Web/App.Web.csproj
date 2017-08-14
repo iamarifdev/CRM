@@ -207,6 +207,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\AirLinesController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
@@ -268,6 +269,14 @@
     <Compile Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.cs" />
     <Compile Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.Designer.cs">
       <DependentUpon>201708091545178_PaymentMethodModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708120240057_AgentInfoModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201708120240057_AgentInfoModelChanged.Designer.cs">
+      <DependentUpon>201708120240057_AgentInfoModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708120956172_AddedRemoteCheckInAgentInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708120956172_AddedRemoteCheckInAgentInfoModel.Designer.cs">
+      <DependentUpon>201708120956172_AddedRemoteCheckInAgentInfoModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4895,6 +4904,12 @@
     <Content Include="Views\PaymentMethods\Details.cshtml" />
     <Content Include="Views\PaymentMethods\Edit.cshtml" />
     <Content Include="Views\PaymentMethods\Index.cshtml" />
+    <Content Include="Views\Agents\Create.cshtml" />
+    <Content Include="Views\Agents\Delete.cshtml" />
+    <Content Include="Views\Agents\Details.cshtml" />
+    <Content Include="Views\Agents\Edit.cshtml" />
+    <Content Include="Views\Agents\Index.cshtml" />
+    <Content Include="Views\Home\DisplayMainInfo.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5839,6 +5854,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708091545178_PaymentMethodModelChanged.resx">
       <DependentUpon>201708091545178_PaymentMethodModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708120240057_AgentInfoModelChanged.resx">
+      <DependentUpon>201708120240057_AgentInfoModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708120956172_AddedRemoteCheckInAgentInfoModel.resx">
+      <DependentUpon>201708120956172_AddedRemoteCheckInAgentInfoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

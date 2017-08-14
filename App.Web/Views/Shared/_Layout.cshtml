@@ -11,7 +11,7 @@
 
     <!-- Title -->
     <title>CRM | @ViewBag.Title</title>
-    @RenderSection("RareCase",required:false)
+    @RenderSection("RareCase", required: false)
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/vendor/themify-icons/themify-icons.css">
@@ -71,8 +71,11 @@
                         </a>
                         <ul>
                             <li><a href="aa.html">Client Info</a></li>
-                            <li><a href="aa.html">Agent Info</a></li>
-                            <li><a href="aa.html">Flight Progress</a></li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li>@Html.ActionLink("Agent Info", "Index", "Agents")</li>
+                                <li><a href="aa.html">Flight Progress</a></li>
+                            }
                         </ul>
                     </li>
 
@@ -83,92 +86,99 @@
                             <span class="s-text">Billing</span>
                         </a>
                         <ul>
-                            <li><a href="aa.html">Agent Payment</a></li>
                             <li><a href="aa.html">Client Payment</a></li>
-                            <li><a href="aa.html">Payment to Supplier</a></li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li><a href="aa.html">Agent Payment</a></li>
+                                <li><a href="aa.html">Payment to Supplier</a></li>
+                            }
                         </ul>
                     </li>
 
-                    <li class="with-sub">
-                        <a href="#" class="waves-effect  waves-light">
-                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="fa fa-envelope"></i></span>
-                            <span class="s-text">Accounts</span>
-                        </a>
-                        <ul>
-                            <li><a href="aa.html">Deposits</a></li>
-                            <li><a href="aa.html">Expenses</a></li>
-                            <li><a href="aa.html">Transactions</a></li>
-                            <li><a href="aa.html">Transfer</a></li>
-                            <li><a href="aa.html">Balance Sheet</a></li>
-                            <li><a href="aa.html">Statement</a></li>
-                        </ul>
-                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="with-sub">
+                            <a href="#" class="waves-effect  waves-light">
+                                <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                <span class="s-icon"><i class="fa fa-envelope"></i></span>
+                                <span class="s-text">Accounts</span>
+                            </a>
+                            <ul>
+                                <li><a href="aa.html">Deposits</a></li>
+                                <li><a href="aa.html">Expenses</a></li>
+                                <li><a href="aa.html">Transactions</a></li>
+                                <li><a href="aa.html">Transfer</a></li>
+                                <li><a href="aa.html">Balance Sheet</a></li>
+                                <li><a href="aa.html">Statement</a></li>
+                            </ul>
+                        </li>
 
-                    <li class="with-sub compact-hide">
-                        <a href="javascript: void(0);" class="waves-effect  waves-light">
-                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="fa fa-bar-chart"></i></span>
-                            <span class="s-text">Report</span>
-                        </a>
-                        <ul>
-                            <li class="with-sub">
-                                <a href="javascript: void(0);">
-                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                    <span class="s-text">Client</span>
-                                </a>
-                                <ul>
-                                    <li><a href="javascript: void(0);">Info Report</a></li>
-                                    <li><a href="javascript: void(0);">Payment Report</a></li>
-                                    <li><a href="javascript: void(0);">Due Report</a></li>
-                                </ul>
-                            </li>
-                            <li class="with-sub">
-                                <a href="javascript: void(0);">
-                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                    <span class="s-text">Agent</span>
-                                </a>
-                                <ul>
-                                    <li><a href="javascript: void(0);">Info Report</a></li>
-                                    <li><a href="javascript: void(0);">Payment Report</a></li>
-                                    <li><a href="javascript: void(0);">Due Report</a></li>
-                                </ul>
-                            </li>
-                            <li class="with-sub">
-                                <a href="javascript: void(0);">
-                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                    <span class="s-text">Supplier</span>
-                                </a>
-                                <ul>
-                                    <li><a href="javascript: void(0);">Info Report</a></li>
-                                    <li><a href="javascript: void(0);">Payment Report</a></li>
-                                    <li><a href="javascript: void(0);">Due Report</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="javascript: void(0);">Daily Payment Report</a></li>
-                            <li><a href="javascript: void(0);">Profit Report</a></li>
-                            <li><a href="javascript: void(0);">SMS Report</a></li>
-                        </ul>
-                    </li>
+                        <li class="with-sub compact-hide">
+                            <a href="javascript: void(0);" class="waves-effect  waves-light">
+                                <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                <span class="s-icon"><i class="fa fa-bar-chart"></i></span>
+                                <span class="s-text">Report</span>
+                            </a>
+                            <ul>
+                                <li class="with-sub">
+                                    <a href="javascript: void(0);">
+                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                        <span class="s-text">Client</span>
+                                    </a>
+                                    <ul>
+                                        <li><a href="javascript: void(0);">Info Report</a></li>
+                                        <li><a href="javascript: void(0);">Payment Report</a></li>
+                                        <li><a href="javascript: void(0);">Due Report</a></li>
+                                    </ul>
+                                </li>
+                                <li class="with-sub">
+                                    <a href="javascript: void(0);">
+                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                        <span class="s-text">Agent</span>
+                                    </a>
+                                    <ul>
+                                        <li><a href="javascript: void(0);">Info Report</a></li>
+                                        <li><a href="javascript: void(0);">Payment Report</a></li>
+                                        <li><a href="javascript: void(0);">Due Report</a></li>
+                                    </ul>
+                                </li>
+                                <li class="with-sub">
+                                    <a href="javascript: void(0);">
+                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                        <span class="s-text">Supplier</span>
+                                    </a>
+                                    <ul>
+                                        <li><a href="javascript: void(0);">Info Report</a></li>
+                                        <li><a href="javascript: void(0);">Payment Report</a></li>
+                                        <li><a href="javascript: void(0);">Due Report</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript: void(0);">Daily Payment Report</a></li>
+                                <li><a href="javascript: void(0);">Profit Report</a></li>
+                                <li><a href="javascript: void(0);">SMS Report</a></li>
+                            </ul>
+                        </li>
 
-                    <li class="with-sub">
-                        <a href="#" class="waves-effect  waves-light">
-                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="fa fa-wrench"></i></span>
-                            <span class="s-text">Setup</span>
-                        </a>
-                        <ul>
-                            <li>@Html.ActionLink("General Setting", "Index", "GeneralSettings")</li>
-                            <li>@Html.ActionLink("Designation", "Index", "Designations")</li>
-                            <li>@Html.ActionLink("Service", "Index", "Services")</li>
-                            <li>@Html.ActionLink("Branch", "Index", "Branch")</li>
-                            <li>@Html.ActionLink("Sector Info", "Index", "Sectors")</li>
-                            <li>@Html.ActionLink("AirLines", "Index", "AirLines")</li>
-                            <li>@Html.ActionLink("SMS Purchase", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Suppliers", "Index", "Suppliers")</li>
-                            <li>@Html.ActionLink("Payment Methods", "Index", "PaymentMethods")</li>
-                        </ul>
-                    </li>
+                        <li class="with-sub">
+                            <a href="#" class="waves-effect  waves-light">
+                                <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                <span class="s-icon"><i class="fa fa-wrench"></i></span>
+                                <span class="s-text">Setup</span>
+                            </a>
+                            <ul>
+                                <li>@Html.ActionLink("General Setting", "Index", "GeneralSettings")</li>
+                                <li>@Html.ActionLink("Designation", "Index", "Designations")</li>
+                                <li>@Html.ActionLink("Service", "Index", "Services")</li>
+                                <li>@Html.ActionLink("Branch", "Index", "Branch")</li>
+                                <li>@Html.ActionLink("Sector Info", "Index", "Sectors")</li>
+                                <li>@Html.ActionLink("AirLines", "Index", "AirLines")</li>
+                                <li>@Html.ActionLink("SMS Purchase", "Index", "Home")</li>
+                                <li>@Html.ActionLink("Suppliers", "Index", "Suppliers")</li>
+                                <li>@Html.ActionLink("Payment Methods", "Index", "PaymentMethods")</li>
+                            </ul>
+                        </li>
+                    }
+
 
                     <li>
                         <a href="aa.html" class="waves-effect  waves-light">
@@ -259,7 +269,7 @@
     <!-- Neptune JS -->
     <script type="text/javascript" src="~/Scripts/template/app.js"></script>
     <script type="text/javascript">
-        $(".logOut").on("click", function() {
+        $(".logOut").on("click", function () {
             $("#logoutForm").submit();
         });
     </script>

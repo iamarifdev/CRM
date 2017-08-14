@@ -492,6 +492,93 @@ namespace App.Web
                     return result;
                 })
             );
+
+            //Agent Table
+            MVCGridDefinitionTable.Add("agentTable", new MVCGridBuilder<AgentInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("AgentId").WithHeaderText("Agent ID").WithValueExpression(p => p.AgentId).WithSorting(true);
+                    cols.Add("AgentName").WithHeaderText("Agent Name").WithValueExpression(p => p.AgentName).WithSorting(true);
+                    cols.Add("ContactName").WithHeaderText("Contact Name").WithValueExpression(p => p.ContactName).WithSorting(true);
+                    cols.Add("MobileNo").WithHeaderText("Mobile No").WithValueExpression(p => p.MobileNo).WithSorting(true);
+                    cols.Add("OfficeNo").WithHeaderText("Office No").WithValueExpression(p => p.OfficeNo).WithSorting(true);
+                    cols.Add("Email").WithHeaderText("Email").WithValueExpression(p => p.Email).WithSorting(true);
+                    cols.Add("UserName").WithHeaderText("Username").WithValueExpression(p => p.UserName).WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Agents/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "AgentId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<AgentInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.AgentInfos.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.AgentId.Contains(globalSearch)
+                                    || x.AgentName.Contains(globalSearch)
+                                    || x.ContactName.Contains(globalSearch)
+                                    || x.MobileNo.Contains(globalSearch)
+                                    || x.OfficeNo.Contains(globalSearch)
+                                    || x.Email.Contains(globalSearch)
+                                    || x.UserName.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "agentid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AgentId) : query.OrderBy(p => p.AgentId);
+                                    break;
+                                case "agentname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AgentName) : query.OrderBy(p => p.AgentName);
+                                    break;
+                                case "contactname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ContactName) : query.OrderBy(p => p.ContactName);
+                                    break;
+                                case "mobileno":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MobileNo) : query.OrderBy(p => p.MobileNo);
+                                    break;
+                                case "officeno":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.OfficeNo) : query.OrderBy(p => p.OfficeNo);
+                                    break;
+                                case "email":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Email) : query.OrderBy(p => p.Email);
+                                    break;
+                                case "username":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.UserName) : query.OrderBy(p => p.UserName);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
         }
     }
 }

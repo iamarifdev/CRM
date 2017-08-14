@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using App.Web.Helper;
 
 namespace App.Web.Controllers
 {
@@ -12,6 +14,12 @@ namespace App.Web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult DisplayMainInfo()
+        {
+            return PartialView("DisplayMainInfo");
         }
     }
 }

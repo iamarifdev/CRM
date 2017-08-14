@@ -9,7 +9,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DesignationsController : Controller
     {
         #region Private Zone

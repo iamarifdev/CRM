@@ -5,8 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using App.Entity.Models;
 using App.Web.Context;
+using App.Web.Helper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -149,9 +151,7 @@ namespace App.Web.Controllers
 
             ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
             ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
-            ViewBag.Active =  new SelectList(Enum.GetValues(typeof(Status))
-                                    .Cast<Status>()
-                                    .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString()}).ToList(),"Value","Text");
+            ViewBag.Active =  new SelectList(Common.StatusList,"Value","Text");
             return View();
         }
 
@@ -424,6 +424,14 @@ namespace App.Web.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public JsonResult IsUserExist(string username)
+        {
+            var user = _db.Users.SingleOrDefault(x => x.Username == username);
+            return Json(user == null, JsonRequestBehavior.AllowGet);
+        } 
 
         protected override void Dispose(bool disposing)
         {
