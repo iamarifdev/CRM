@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
@@ -184,9 +181,7 @@ namespace App.Web.Controllers
                                           .ToList(), "Name", "Name");
                 ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
                 ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
-                ViewBag.Active = new SelectList(Enum.GetValues(typeof(Status))
-                                        .Cast<Status>()
-                                        .Select(v => new SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList(), "Value", "Text");
+                ViewBag.Active = new SelectList(Common.StatusList, "Value", "Text");
                 AddErrors(result);
             }
 
@@ -427,10 +422,22 @@ namespace App.Web.Controllers
 
 
         [HttpPost]
-        public JsonResult IsUserExist(string username)
-        {
-            var user = _db.Users.SingleOrDefault(x => x.Username == username);
-            return Json(user == null, JsonRequestBehavior.AllowGet);
+        public JsonResult IsAgentAvailable(string username, int? id)
+       {
+            var flag = true;
+            //create mode
+            if (id == null)
+            {
+                flag = !_context.Users.Any(x => x.UserName == username);
+            }
+            // edit mode
+            else
+            {
+                var agent = _db.AgentInfos.Find(id);
+                if (agent == null) return Json(false, JsonRequestBehavior.AllowGet);
+                if(agent.UserName != username)  flag = !_context.Users.Any(x => x.UserName == username);
+            }
+            return Json(flag, JsonRequestBehavior.AllowGet);
         } 
 
         protected override void Dispose(bool disposing)

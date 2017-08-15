@@ -74,10 +74,13 @@ namespace App.Web.Controllers
                     if (ModelState.IsValid)
                     {
                         var user = new ApplicationUser {Email = agent.Email, UserName = agent.UserName};
-                        
                         var ack = _userManager.Create(user, agent.Password);
-                        if (ack.Succeeded) _userManager.AddToRole(user.Id, "Agent");
-                        
+                        if (!ack.Succeeded)
+                        {
+                            dbTransaction.Rollback();
+                            return View(agent);
+                        }
+                        _userManager.AddToRole(user.Id, "Agent");
 
                         _db.AgentInfos.Add(agent);
                         _db.SaveChanges();
@@ -185,7 +188,8 @@ namespace App.Web.Controllers
                             Status = agent.Status
                         });
 
-                    var appUser = _userManager.FindByName(agent.UserName);
+                    // ReSharper disable once PossibleNullReferenceException
+                    var appUser = _userManager.FindByName(_db.AgentInfos.Find(id).UserName);
                     appUser.UserName = agent.UserName;
                     appUser.Email = agent.Email;
                     appUser.PasswordHash = Common.HasPassword(agent.Password);

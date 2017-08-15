@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 namespace App.Entity.Models
 {
@@ -46,12 +45,13 @@ namespace App.Entity.Models
 
         [Required]
         [StringLength(50)]
+        [RegularExpression("^[a-zA-z]+$", ErrorMessage = "Username can only contain letters.")]
         [Display(Name = "Username")]
-        [System.Web.Mvc.Remote("IsUserExist","Account",HttpMethod = "POST",ErrorMessage = "Username already taken, try another.")]
+        [System.Web.Mvc.Remote("IsAgentAvailable","Account",AdditionalFields = "Id",HttpMethod = "POST",ErrorMessage = "Username already taken, try another.")]
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password length must be 6-50 character.")]
         public string Password { get; set; }
 
         public int? ResetStatus { get; set; }

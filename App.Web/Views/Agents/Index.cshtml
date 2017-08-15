@@ -11,7 +11,7 @@
     <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
 }
 
-@using (Html.BeginForm("Delete", "Services", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
+@using (Html.BeginForm("Delete", "Agents", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
 {
     @Html.Hidden("Id")
 }
