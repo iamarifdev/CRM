@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
@@ -7,46 +8,61 @@ namespace App.Entity.Models
     {
         public int Id { get; set; }
 
+        [Required]
         [StringLength(20)]
+        [Display(Name = "Customer Id")]
         public string CustomerId { get; set; }
 
-        [StringLength(20)]
-        public string BranchId { get; set; }
+        [Display(Name = "Branch")]
+        public int BranchId { get; set; }
 
+        //[Required]
+        //[StringLength(255)]
+        //public string Sn { get; set; }
         [Required]
-        [StringLength(255)]
-        public string Sn { get; set; }
-
         [StringLength(10)]
+        [Display(Name = "Referral Type")]
         public string ReferralType { get; set; }
 
-        [StringLength(20)]
-        public string AgentId { get; set; }
+        [Display(Name = "Agent")]
+        [ForeignKey("AgentInfo")]
+        public int? AgentId { get; set; }
+        public virtual AgentInfo AgentInfo { get; set; }
+
+        [Display(Name = "Supplier")]
+        [ForeignKey("SuppliersInfo")]
+        public int SupplierId { get; set; }
+        public virtual SuppliersInfo SuppliersInfo { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string SupplierId { get; set; }
-
         [StringLength(50)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [StringLength(25)]
+        [Display(Name = "Contact No")]
         public string ContactNo { get; set; }
 
         [StringLength(100)]
         public string Referral { get; set; }
 
         [StringLength(25)]
+        [Display(Name = "Referral Contact No")]
         public string ReferralContactNo { get; set; }
 
-        [StringLength(20)]
-        public string ServiceId { get; set; }
+        [Display(Name = "Service")]
+        [ForeignKey("ServiceInfo")]
+        public int ServiceId { get; set; }
+        public virtual ServiceInfo ServiceInfo{ get; set; }
 
-        [StringLength(20)]
-        public string AirLineId { get; set; }
+        [Display(Name = "Air Line")]
+        [ForeignKey("SectorInfo")]
+        public int AirLineId { get; set; }
+        public virtual SectorInfo SectorInfo { get; set; }
 
         public DateTime? OldFlightDate { get; set; }
 
@@ -57,6 +73,7 @@ namespace App.Entity.Models
 
         [StringLength(50)]
         public string GdsPnr { get; set; }
+
         public DateTime NewFlightDate { get; set; }
 
         [Required]
