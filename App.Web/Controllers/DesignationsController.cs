@@ -67,7 +67,7 @@ namespace App.Web.Controllers
                     designation.DesignationId = string.Format("ED-{0:000000}", _db.EmployeeDesignations.Count() + 1);
                     designation.DelStatus = false;
                     designation.EntryDate = DateTime.Now;
-                    designation.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    designation.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     TryValidateModel(designation);
 
                     if (ModelState.IsValid)

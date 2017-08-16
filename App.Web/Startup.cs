@@ -56,7 +56,7 @@ namespace App.Web
                         };
                         var crmUser = new User
                         {
-                            Username = userName,
+                            UserName = userName,
                             Email = email,
                             IpAddress = "127.0.0.1",
                             CreatedOn = DateTime.Now.Ticks,

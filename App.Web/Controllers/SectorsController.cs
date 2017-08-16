@@ -63,7 +63,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     sector.SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1);
-                    sector.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    sector.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     sector.EntryDate = DateTime.Now;
                     TryValidateModel(sector);
                     if (ModelState.IsValid)

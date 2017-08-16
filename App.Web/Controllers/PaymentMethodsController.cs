@@ -58,7 +58,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     paymentMethod.MethodId = string.Format("PI-{0:000000}", _db.PaymentMethods.Count() + 1);
-                    paymentMethod.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    paymentMethod.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     paymentMethod.EntryDate = DateTime.Now;
                     TryValidateModel(paymentMethod);
                     if (ModelState.IsValid)

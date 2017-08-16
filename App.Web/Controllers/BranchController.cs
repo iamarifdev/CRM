@@ -68,7 +68,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     branchInfo.BranchId = string.Format("BI-{0:000000}", _db.BranchInfos.Count() + 1);
-                    branchInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    branchInfo.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     branchInfo.EntryDate = DateTime.Now;
                     TryValidateModel(branchInfo);
                     if (ModelState.IsValid)

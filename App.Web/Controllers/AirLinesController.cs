@@ -67,7 +67,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     airLine.AirLineId = string.Format("BI-{0:000000}", _db.AirLineInfos.Count() + 1);
-                    airLine.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    airLine.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     airLine.EntryDate = DateTime.Now;
                     TryValidateModel(airLine);
                     if (ModelState.IsValid)

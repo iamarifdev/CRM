@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
@@ -10,6 +11,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using App.Web.Models;
+using EntityFramework.Extensions;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
@@ -25,7 +28,7 @@ namespace App.Web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -33,26 +36,14 @@ namespace App.Web.Controllers
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         //
@@ -60,7 +51,8 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            var logoName = _db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue).ToString();
+            var logoName =
+                _db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue).ToString();
             ViewBag.LogoName = logoName;
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -80,7 +72,10 @@ namespace App.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            var result =
+                await
+                    SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe,
+                        shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -88,7 +83,7 @@ namespace App.Web.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -106,7 +101,7 @@ namespace App.Web.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -125,7 +120,10 @@ namespace App.Web.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result =
+                await
+                    SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe,
+                        rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -144,11 +142,12 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
+            ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name",
+                "Name");
 
             ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
             ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
-            ViewBag.Active =  new SelectList(Common.StatusList,"Value","Text");
+            ViewBag.Active = new SelectList(Common.StatusList, "Value", "Text");
             return View();
         }
 
@@ -161,12 +160,12 @@ namespace App.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.UserName, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -178,7 +177,7 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index", "Users");
                 }
                 ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin"))
-                                          .ToList(), "Name", "Name");
+                    .ToList(), "Name", "Name");
                 ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
                 ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
                 ViewBag.Active = new SelectList(Common.StatusList, "Value", "Text");
@@ -296,7 +295,8 @@ namespace App.Web.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
@@ -310,8 +310,10 @@ namespace App.Web.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions =
+                userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose}).ToList();
+            return
+                View(new SendCodeViewModel {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -331,7 +333,8 @@ namespace App.Web.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            return RedirectToAction("VerifyCode",
+                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe});
         }
 
         //
@@ -354,13 +357,14 @@ namespace App.Web.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
         }
 
@@ -369,7 +373,8 @@ namespace App.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -384,7 +389,7 @@ namespace App.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -423,7 +428,7 @@ namespace App.Web.Controllers
 
         [HttpPost]
         public JsonResult IsAgentAvailable(string username, int? id)
-       {
+        {
             var flag = true;
             //create mode
             if (id == null)
@@ -435,10 +440,64 @@ namespace App.Web.Controllers
             {
                 var agent = _db.AgentInfos.Find(id);
                 if (agent == null) return Json(false, JsonRequestBehavior.AllowGet);
-                if(agent.UserName != username)  flag = !_context.Users.Any(x => x.UserName == username);
+                if (agent.UserName != username) flag = !_context.Users.Any(x => x.UserName == username);
             }
             return Json(flag, JsonRequestBehavior.AllowGet);
-        } 
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            var model = new ChangePassword
+            {
+                Username = User.Identity.GetUserName()
+            };
+            return View(model);
+        }
+
+        [HttpPost, ActionName("ChangePassword")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmChangePassword(ChangePassword model)
+        {
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    if (!ModelState.IsValid) return RedirectToAction("ChangePassword");
+                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                    var user = manager.FindByName(model.Username);
+
+                    if (manager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, model.OldPassword) == PasswordVerificationResult.Failed)
+                    {
+                        TempData["Toastr"] = Toastr.CustomError("Password Validation!","Your given password does not match, try again.");
+                        return RedirectToAction("ChangePassword");
+                    }
+
+                    if (!Common.ChangePassword(user, model.Password))
+                    {
+                        TempData["Toastr"] = Toastr.DbError(string.Empty);
+                        return RedirectToAction("ChangePassword");
+                    }
+
+                    if (User.IsInRole("Agent"))
+                    {
+                        _db.AgentInfos.Where(x => x.UserName == model.Username)
+                            .Update(x => new AgentInfo {Password = model.Password});
+                    }
+                    
+                    scope.Complete();
+                    TempData["Toastr"] = Toastr.Updated;
+                    return RedirectToAction("ChangePassword");
+
+                }
+                catch (Exception ex)
+                {
+                    Transaction.Current.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("ChangePassword");
+                }
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

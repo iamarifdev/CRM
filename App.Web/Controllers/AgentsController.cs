@@ -68,7 +68,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     agent.AgentId = string.Format("AI-{0:000000}", _db.AgentInfos.Count() + 1);
-                    agent.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    agent.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     agent.EntryDate = DateTime.Now;
                     TryValidateModel(agent);
                     if (ModelState.IsValid)

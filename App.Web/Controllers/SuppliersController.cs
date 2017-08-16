@@ -58,7 +58,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     supplier.SupplierId = string.Format("SI-{0:000000}", _db.SuppliersInfos.Count() + 1);
-                    supplier.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    supplier.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     supplier.EntryDate = DateTime.Now;
                     TryValidateModel(supplier);
                     if (ModelState.IsValid)

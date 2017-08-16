@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using App.Entity.Models;
 using App.Web.Context;
-using Owin;
-using Microsoft.Owin;
-using System.Security;
+using App.Web.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace App.Web.Helper
 {
@@ -22,7 +19,7 @@ namespace App.Web.Helper
         {
             using (var db = new CrmDbContext())
             {
-                return db.Users.First(u => u.Id == id).Username;
+                return db.Users.First(u => u.Id == id).UserName;
             }
         }
 
@@ -35,14 +32,12 @@ namespace App.Web.Helper
             }
         }
 
-        public static bool ChangePassword(string newPassword)
+        public static bool ChangePassword(ApplicationUser user, string newPassword)
         {
-            using (var userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>()))
+            using (var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>())
             {
-                var httpContext = HttpContext.Current;
-                var userId = httpContext.User.Identity.GetUserId();
-                var token = userManager.GeneratePasswordResetToken(userId);
-                var result = userManager.ResetPassword(userId, token, newPassword);
+                var token = userManager.GeneratePasswordResetToken(user.Id);
+                var result = userManager.ResetPassword(user.Id, token, newPassword);
 
                 return result.Succeeded;
             }

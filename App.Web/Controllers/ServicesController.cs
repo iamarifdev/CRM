@@ -62,7 +62,7 @@ namespace App.Web.Controllers
                 {
                     ModelState.Clear();
                     serviceInfo.ServiceId = string.Format("DI-{0:000000}", _db.ServiceInfos.Count() + 1);
-                    serviceInfo.EntryBy = _db.Users.First(x => x.Username == User.Identity.Name).Id;
+                    serviceInfo.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
                     serviceInfo.EntryDate = DateTime.Now;
                     TryValidateModel(serviceInfo);
                     if (ModelState.IsValid)

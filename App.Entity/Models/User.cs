@@ -14,8 +14,9 @@ namespace App.Entity.Models
         [StringLength(45)]
         public string IpAddress { get; set; }
 
-        [StringLength(100)]
-        public string Username { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100)]
