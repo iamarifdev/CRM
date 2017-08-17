@@ -11,12 +11,12 @@
     <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
 }
 
-@using (Html.BeginForm("Delete", "Agents", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
+@using (Html.BeginForm("Delete", "Clients", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
 {
     @Html.Hidden("Id")
 }
 <div class="card">
-    <h6 class="card-header bg-primary">AGENTS / LIST</h6>
+    <h6 class="card-header bg-primary">CLIENTS / LIST</h6>
     <div class="card-block">
         <div class="row">
             <div class="col-md-6">
@@ -27,11 +27,11 @@
             <div class="col-md-12">
                 @Html.Partial("_MVCGridToolbar", new MVCGridToolbarModel()
                 {
-                    MVCGridName = "agentTable",
+                    MVCGridName = "clientTable",
                     PageSize = true,
                     GlobalSearch = true
                 })
-                @Html.MVCGrid("agentTable")
+                @Html.MVCGrid("clientTable")
             </div>
         </div>
     </div>
@@ -39,6 +39,7 @@
 
 @section Scripts
 {
+    @* ReSharper disable once Html.PathError *@
     <script src="~/MVCGridHandler.axd/script.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script src="~/vendor/sweetalert2/sweetalert2.min.js"></script>
@@ -50,7 +51,7 @@
         }
 
         $(".refreshBtn").click(function () {
-            MVCGrid.reloadGrid('agentTable');
+            MVCGrid.reloadGrid('clientTable');
         });
     </script>
 }

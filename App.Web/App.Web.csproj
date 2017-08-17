@@ -210,6 +210,7 @@
     <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\AirLinesController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -290,6 +291,22 @@
     <Compile Include="Migrations\ContextB\201708170659301_ClientInfoModelChnaged.Designer.cs">
       <DependentUpon>201708170659301_ClientInfoModelChnaged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201708171152557_ClientInfoModelChangedToDropUserDoneBy.cs" />
+    <Compile Include="Migrations\ContextB\201708171152557_ClientInfoModelChangedToDropUserDoneBy.Designer.cs">
+      <DependentUpon>201708171152557_ClientInfoModelChangedToDropUserDoneBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708171250314_AddedBranchIdForeignKeyToClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708171250314_AddedBranchIdForeignKeyToClientInfoModel.Designer.cs">
+      <DependentUpon>201708171250314_AddedBranchIdForeignKeyToClientInfoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708171308049_ModifiedReferralTypeToEnumClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708171308049_ModifiedReferralTypeToEnumClientInfoModel.Designer.cs">
+      <DependentUpon>201708171308049_ModifiedReferralTypeToEnumClientInfoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708171319272_SupplierIdMadeNullableToClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708171319272_SupplierIdMadeNullableToClientInfoModel.Designer.cs">
+      <DependentUpon>201708171319272_SupplierIdMadeNullableToClientInfoModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -334,6 +351,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -4924,6 +4942,15 @@
     <Content Include="Views\Agents\Index.cshtml" />
     <Content Include="Views\Home\DisplayMainInfo.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Clients\Create.cshtml" />
+    <Content Include="Views\Clients\Delete.cshtml" />
+    <Content Include="Views\Clients\Details.cshtml" />
+    <Content Include="Views\Clients\Edit.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\Clients\_AdditionalReferralFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalAgentFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalOfficeFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalSupplierFields.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5883,6 +5910,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708170659301_ClientInfoModelChnaged.resx">
       <DependentUpon>201708170659301_ClientInfoModelChnaged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708171152557_ClientInfoModelChangedToDropUserDoneBy.resx">
+      <DependentUpon>201708171152557_ClientInfoModelChangedToDropUserDoneBy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708171250314_AddedBranchIdForeignKeyToClientInfoModel.resx">
+      <DependentUpon>201708171250314_AddedBranchIdForeignKeyToClientInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708171308049_ModifiedReferralTypeToEnumClientInfoModel.resx">
+      <DependentUpon>201708171308049_ModifiedReferralTypeToEnumClientInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708171319272_SupplierIdMadeNullableToClientInfoModel.resx">
+      <DependentUpon>201708171319272_SupplierIdMadeNullableToClientInfoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

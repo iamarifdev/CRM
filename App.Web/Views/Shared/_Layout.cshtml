@@ -70,7 +70,7 @@
                             <span class="s-text">CRM</span>
                         </a>
                         <ul>
-                            <li><a href="aa.html">Client Info</a></li>
+                            <li><a href="@Url.Action("Index","Clients")">Client Info</a></li>
                             @if (User.IsInRole("Admin"))
                             {
                                 <li>@Html.ActionLink("Agent Info", "Index", "Agents")</li>

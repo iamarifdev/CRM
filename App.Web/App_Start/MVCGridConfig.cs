@@ -1,17 +1,15 @@
-
-using Antlr.Runtime.Tree;
+using System.Data.Entity;
+using System.Linq;
+using MVCGrid.Models;
+using MVCGrid.Web;
+using App.Entity.Models;
+using App.Web.Context;
+using App.Web.Helper;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(App.Web.MVCGridConfig), "RegisterGrids")]
 
 namespace App.Web
 {
-    using System.Linq;
-    using MVCGrid.Models;
-    using MVCGrid.Web;
-    using Entity.Models;
-    using Context;
-    using Helper;
-
     public static class MVCGridConfig 
     {
         public static void RegisterGrids()
@@ -566,6 +564,114 @@ namespace App.Web
                                     break;
                                 case "status":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                        result.TotalRecords = query.Count();
+                    }
+                    return result;
+                })
+            );
+
+            //Client Table
+            MVCGridDefinitionTable.Add("clientTable", new MVCGridBuilder<ClientInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString("yyyy-MM-dd")).WithSorting(true);
+                    cols.Add("CustomerId").WithHeaderText("CID").WithValueExpression(p => p.CustomerId).WithSorting(true);
+                    cols.Add("FullName").WithHeaderText("Name").WithValueExpression(p => p.FullName).WithSorting(true);
+                    cols.Add("ContactNo").WithHeaderText("Contact Number").WithValueExpression(p => p.ContactNo).WithSorting(true);
+                    cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo.AirLineName).WithSorting(true);
+                    cols.Add("Service").WithHeaderText("Service").WithValueExpression(p => p.ServiceInfo.ServiceName).WithSorting(true);
+                    cols.Add("ServiceCharge").WithHeaderText("Service Charge").WithValueExpression(p => p.ServiceCharge.ToString()).WithSorting(true);
+                    cols.Add("UserName").WithHeaderText("Served By").WithValueExpression(p => p.UserServedBy.UserName).WithSorting(true);
+                    cols.Add("WorkingStatus").WithHeaderText("Working Status").WithValueExpression(p => p.WorkingStatus > 0 ? "Done" : "Pending").WithSorting(true);
+                    cols.Add("InfoStatus").WithHeaderText("Update Status").WithValueExpression(p => p.InfoStatus > 0 ? "Updated" : "Not Updated").WithSorting(true);
+                    cols.Add("DeliveryStatus").WithHeaderText("Delivery Status").WithValueExpression(p => p.DeliveryStatus > 0 ? "Delivery" : "Not Delivery").WithSorting(true);
+                    cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> " +
+                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "EntryDate")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<ClientInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.ClientInfos.AsQueryable()
+                            .Include(x => x.ServiceInfo)
+                            .Include(x => x.AirLineInfo)
+                            .Include(x => x.UserServedBy);
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.EntryDate.ToString().Contains(globalSearch)
+                                    || x.CustomerId.Contains(globalSearch)
+                                    || x.FirstName.Contains(globalSearch)
+                                    || x.LastName.Contains(globalSearch)
+                                    || x.ContactNo.Contains(globalSearch)
+                                    || x.AirLineInfo.AirLineName.Contains(globalSearch)
+                                    || x.ServiceInfo.ServiceName.Contains(globalSearch)
+                                    || x.UserServedBy.UserName.Contains(globalSearch)
+                                    || x.DoneBy.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "entrydate":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryDate) : query.OrderBy(p => p.EntryDate);
+                                    break;
+                                case "customerid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.CustomerId) : query.OrderBy(p => p.CustomerId);
+                                    break;
+                                case "fullname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.FirstName) : query.OrderBy(p => p.FirstName);
+                                    break;
+                                case "contactno":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ContactNo) : query.OrderBy(p => p.ContactNo);
+                                    break;
+                                case "airlinename":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AirLineInfo.AirLineName) : query.OrderBy(p => p.AirLineInfo.AirLineName);
+                                    break;
+                                case "service":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ServiceInfo.ServiceName) : query.OrderBy(p => p.ServiceInfo.ServiceName);
+                                    break;
+                                case "servicecharge":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ServiceCharge) : query.OrderBy(p => p.ServiceCharge);
+                                    break;
+                                case "username":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.UserServedBy.UserName) : query.OrderBy(p => p.UserServedBy.UserName);
+                                    break;
+                                case "workingstatus":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.WorkingStatus) : query.OrderBy(p => p.WorkingStatus);
+                                    break;
+                                case "InfoStatus":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.InfoStatus) : query.OrderBy(p => p.InfoStatus);
+                                    break;
+                                case "deliverystatus":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DeliveryStatus) : query.OrderBy(p => p.DeliveryStatus);
+                                    break;
+                                case "doneby":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
                                     break;
                             }
                         }

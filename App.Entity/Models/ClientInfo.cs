@@ -14,15 +14,14 @@ namespace App.Entity.Models
         public string CustomerId { get; set; }
 
         [Display(Name = "Branch")]
+        [ForeignKey("BranchInfo")]
         public int BranchId { get; set; }
 
         [StringLength(255)]
         public string Sn { get; set; }
 
-        [Required]
-        [StringLength(10)]
         [Display(Name = "Referral Type")]
-        public string ReferralType { get; set; }
+        public ReferralsType ReferralType { get; set; }
 
         [Display(Name = "Agent")]
         [ForeignKey("AgentInfo")]
@@ -30,19 +29,24 @@ namespace App.Entity.Models
 
         [Display(Name = "Supplier")]
         [ForeignKey("SuppliersInfo")]
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
 
         [Required]
         [StringLength(50)]
-        [Display(Name = "First Name")]
+        [Display(Name = "Pax First Name")]
         public string FirstName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Pax Last Name")]
         public string LastName { get; set; }
 
+        [NotMapped, Display(Name = "Name")]
+        public string FullName {
+            get { return string.Format("{0} {1}", FirstName, LastName); }
+        }
+
         [StringLength(25)]
-        [Display(Name = "Contact No")]
+        [Display(Name = "Pax Contact No")]
         public string ContactNo { get; set; }
 
         [StringLength(100)]
@@ -103,23 +107,23 @@ namespace App.Entity.Models
         [ForeignKey("UserServedBy")]
         public int? ServedBy { get; set; }
 
-        [Display(Name = "Done By")]
-        [ForeignKey("UserDoneBy")]
-        public int? DoneBy { get; set; }
+        [StringLength(100)]
+        [Display(Name = "Flight Time")]
+        public string DoneBy { get; set; }
 
         [Display(Name = "Working Status")]
-        public int? WorkingStatus { get; set; }
+        public WorkingStatus? WorkingStatus { get; set; }
 
         [Display(Name = "Delivery Status")]
-        public int? DeliveryStatus { get; set; }
+        public DeliveryStatus? DeliveryStatus { get; set; }
 
         [Display(Name = "Information Update")]
-        public int? InfoStatus { get; set; }
+        public InformationUpdate? InfoStatus { get; set; }
 
         [StringLength(255)]
         public string Remark { get; set; }
 
-        public int? Status { get; set; }
+        public Status? Status { get; set; }
 
         [Display(Name = "Delete Status")]
         public bool? DelStatus { get; set; }
@@ -164,9 +168,8 @@ namespace App.Entity.Models
 
         public virtual AgentInfo AgentInfo { get; set; }
         public virtual User UserServedBy { get; set; }
-        public virtual User UserDoneBy { get; set; }
         public virtual User UserEntryBy { get; set; }
-
+        public virtual BranchInfo BranchInfo { get; set; }
         public virtual SectorInfo SectorFrom { get; set; }
         public virtual SectorInfo SectorTo { get; set; }
         public virtual CountryList CountryList { get; set; }
