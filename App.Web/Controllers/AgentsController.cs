@@ -53,7 +53,7 @@ namespace App.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.UserRoleList = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
-            ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.StatusList = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -101,7 +101,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.StatusList = Common.ToSelectList<Status>();
                 }
 
             }
@@ -123,7 +123,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", agent.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(agent.Status);
 
                 return View(agent);
             }
@@ -209,7 +209,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", agent.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(agent.Status);
                 }
             }
         }

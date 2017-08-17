@@ -9,7 +9,6 @@ using App.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security.DataProtection;
 
 namespace App.Web.Helper
 {
@@ -23,6 +22,16 @@ namespace App.Web.Helper
             }
         }
 
+
+        public static SelectList ToSelectList<T>(object selectedvalue = null)
+        {
+            var t = typeof(T);
+            if (!t.IsEnum) return null;
+            var list = Enum.GetValues(t).Cast<T>().Select(v => new
+                SelectListItem { Text = v.ToString(), Value = Convert.ToInt32(v).ToString() }).ToList();
+            return selectedvalue == null ? new SelectList(list, "Value", "Text") : new SelectList(list, "Value", "Text", selectedvalue);
+        }
+
         public static List<SelectListItem> StatusList
         {
             get
@@ -31,6 +40,7 @@ namespace App.Web.Helper
                        SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList();
             }
         }
+
 
         public static bool ChangePassword(ApplicationUser user, string newPassword)
         {

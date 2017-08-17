@@ -286,6 +286,10 @@
     <Compile Include="Migrations\ContextB\201708160702079_UserModelChanged.Designer.cs">
       <DependentUpon>201708160702079_UserModelChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201708170659301_ClientInfoModelChnaged.cs" />
+    <Compile Include="Migrations\ContextB\201708170659301_ClientInfoModelChnaged.Designer.cs">
+      <DependentUpon>201708170659301_ClientInfoModelChnaged.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -5876,6 +5880,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708160702079_UserModelChanged.resx">
       <DependentUpon>201708160702079_UserModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708170659301_ClientInfoModelChnaged.resx">
+      <DependentUpon>201708170659301_ClientInfoModelChnaged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

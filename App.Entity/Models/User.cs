@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
@@ -12,6 +14,7 @@ namespace App.Entity.Models
 
         [Required]
         [StringLength(45)]
+        [Display(Name = "IP Address")]
         public string IpAddress { get; set; }
 
         [Required]
@@ -20,6 +23,7 @@ namespace App.Entity.Models
 
         [Required]
         [StringLength(100)]
+        [EmailAddress]
         public string Email { get; set; }
 
         public long CreatedOn { get; set; }
@@ -37,5 +41,6 @@ namespace App.Entity.Models
         [Required]
         [StringLength(20)]
         public string Level { get; set; }
+
     }
 }
