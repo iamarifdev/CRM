@@ -1,7 +1,7 @@
 ﻿@model App.Entity.Models.ClientInfo
 
 @{
-    ViewBag.Title = "Add New Branch";
+    ViewBag.Title = "Add New Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section AdditionalStyles
@@ -48,9 +48,7 @@
                 </div>
             </div>
 
-            <div id="ReferralAdditional">
-
-            </div>
+            <div id="ReferralAdditional"> </div>
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.SmsNo, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
@@ -68,9 +66,7 @@
                 </div>
             </div>
 
-            <div id="SupplierAdditional">
-
-            </div>
+            <div id="SupplierAdditional"> </div>
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
@@ -79,6 +75,8 @@
                     @Html.ValidationMessageFor(model => model.ServiceId, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div id="ServiceAdditional"> </div>
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceCharge, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
@@ -157,10 +155,10 @@
             }
         });
 
-        $("#RequireSupplier").on("change", function() {
+        $("#RequireSupplier").on("change", function () {
             var requireSupplier = $(this).val();
             if (requireSupplier !== "" && Number(requireSupplier) === 1) {
-                $.post("@Url.Action("GetAdditionalSupplierFields","Clients")",{requireSupplier:requireSupplier}, function(html) {
+                $.post("@Url.Action("GetAdditionalSupplierFields","Clients")", { requireSupplier: requireSupplier }, function (html) {
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#SupplierAdditional").empty().html(html.message).slideDown(1000);
@@ -170,6 +168,16 @@
                 });
             } else {
                 $("#SupplierAdditional").empty().slideUp(1000);
+            }
+        });
+
+        var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
+        $("#ServiceId").on("change", function () {
+            var serviceName = $("#ServiceId :selected").text();
+            var id = $(this).val();
+            if (id === "") return;
+            if (additionalFields.indexOf(serviceName) !== -1) {
+                console.log(serviceName);
             }
         });
     </script>

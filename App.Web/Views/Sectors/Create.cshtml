@@ -1,10 +1,4 @@
 ﻿@model App.Entity.Models.SectorInfo
-
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
 @{
     ViewBag.Title = "Add New Airport";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,48 +7,91 @@
 <div class="card">
     <h6 class="card-header bg-primary">AIRPORT / ADD NEW</h6>
     <div class="card-block">
-        <div class="row">
-            @using (Html.BeginForm("Create", "Sectors", FormMethod.Post, new { @class = "form-horizontal" }))
-            {
-                @Html.AntiForgeryToken()
 
-                <div class="form-horizontal">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#general" role="tab">Add New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#batchUpload" role="tab">Batch Upload</a>
+            </li>
+        </ul>
 
-                    <div class="form-group offset-md-2 col-md-8">
-                        @Html.LabelFor(model => model.SectorName, htmlAttributes: new { @class = "control-label col-sm-3" })
-                        <div class="col-sm-6">
-                            @Html.EditorFor(model => model.SectorName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SectorName, "", new { @class = "text-danger" })
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" role="tabpanel">
+                <div class="row">
+                    <br /><br />
+                    @using (Html.BeginForm("Create", "Sectors", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+
+                            <div class="form-group offset-md-2 col-md-8">
+                                @Html.LabelFor(model => model.SectorName, htmlAttributes: new { @class = "control-label col-sm-3" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.SectorName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SectorName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group offset-md-2 col-md-8">
+                                @Html.LabelFor(model => model.SectorCode, htmlAttributes: new { @class = "control-label col-sm-3" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.SectorCode, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SectorCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group offset-md-2 col-md-8">
+                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-sm-3" })
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.StatusList, "Select One", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group offset-md-2 col-md-8">
+                                <div class="offset-sm-6 col-sm-3">
+                                    <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group offset-md-2 col-md-8">
-                        @Html.LabelFor(model => model.SectorCode, htmlAttributes: new { @class = "control-label col-sm-3" })
-                        <div class="col-sm-6">
-                            @Html.EditorFor(model => model.SectorCode, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SectorCode, "", new { @class = "text-danger" })
-                        </div>
+                    }
+                    <div class="col-md-3">
+                        <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
                     </div>
 
-                    <div class="form-group offset-md-2 col-md-8">
-                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-sm-3" })
-                        <div class="col-sm-6">
-                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.StatusList, "Select One", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group offset-md-2 col-md-8">
-                        <div class="offset-sm-6 col-sm-3">
-                            <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
-                        </div>
-                    </div>
                 </div>
-            }
-            <div class="col-md-3">
-                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
             </div>
+            <div class="tab-pane" id="batchUpload" role="tabpanel">
+                <br /><br />
+                @using (Html.BeginForm("BatchUpload", "Sectors", FormMethod.Post, new { @class = "form-horizontal", @id = "sectorUploadForm", @enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
 
+
+                    <div class="form-group row">
+                        @Html.Label("SectorFile", "Browse File", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                        <div class="col-sm-4">
+                            @Html.TextBox("SectorFile", null, new { @class = "form-control", @type = "file" })
+                            @Html.ValidationMessage("SectorFile", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="offset-sm-4 col-sm-4">
+                            <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-upload"></span> Upload </button>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -62,4 +99,21 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/additional-methods.min.js"></script>
+    <script>
+        $("#sectorUploadForm") .validate({
+            rules: {
+                SectorFile: {
+                    required: true,
+                    extension: "xls|csv|xlsx"
+                }
+            },
+            messages: {
+                SectorFile: {
+                    required: "Please select a Worksheet file to upload.",
+                    extension: "Only .xls, .csv, .xlsx file types are allowed."
+                }
+            }
+        });
+    </script>
 }

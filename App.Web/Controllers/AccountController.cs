@@ -429,20 +429,27 @@ namespace App.Web.Controllers
         [HttpPost]
         public JsonResult IsAgentAvailable(string username, int? id)
         {
-            var flag = true;
-            //create mode
-            if (id == null)
+            try
             {
-                flag = !_context.Users.Any(x => x.UserName == username);
+                var flag = true;
+                //create mode
+                if (id == null)
+                {
+                    flag = !_context.Users.Any(x => x.UserName == username);
+                }
+                // edit mode
+                else
+                {
+                    var agent = _db.AgentInfos.Find(id);
+                    if (agent == null) return Json(false, JsonRequestBehavior.AllowGet);
+                    if (agent.UserName != username) flag = !_context.Users.Any(x => x.UserName == username);
+                }
+                return Json(flag, JsonRequestBehavior.AllowGet);
             }
-            // edit mode
-            else
+            catch (Exception ex)
             {
-                var agent = _db.AgentInfos.Find(id);
-                if (agent == null) return Json(false, JsonRequestBehavior.AllowGet);
-                if (agent.UserName != username) flag = !_context.Users.Any(x => x.UserName == username);
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            return Json(flag, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

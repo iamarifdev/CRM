@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Entity.Models
 {
@@ -15,10 +11,11 @@ namespace App.Entity.Models
         [Display(Name = "Delete Status")]
         public bool DelStatus { get; set; }
 
-        [Display(Name = "EntryDate")]
+        [Display(Name = "Entry Date")]
         public DateTime EntryDate { get; set; }
 
         [ForeignKey("User")]
+        [Display(Name = "Entry By")]
         public int EntryBy { get; set; }
         public virtual User User { get; set; }
     }

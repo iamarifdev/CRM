@@ -13,7 +13,9 @@ namespace App.Web.Controllers
     {
 
         #region Private Zone
+
         private readonly CrmDbContext _db;
+
         #endregion
 
         public ServicesController()
@@ -230,6 +232,33 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
+        }
+
+        [HttpPost]
+        public ActionResult IsServiceAvailable(string serviceName, int? id)
+        {
+            try
+            {
+                var flag = true;
+                //create mode
+                if (id == null)
+                {
+                    flag = !_db.ServiceInfos.Any(x => x.ServiceName == serviceName);
+                }
+                // edit mode
+                else
+                {
+                    var service = _db.ServiceInfos.Find(id);
+                    if (service == null) return Json(false, JsonRequestBehavior.AllowGet);
+                    if (service.ServiceName != serviceName) flag = !_db.ServiceInfos.Any(x => x.ServiceName == serviceName);
+                }
+                return Json(flag, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         protected override void Dispose(bool disposing)

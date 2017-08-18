@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
@@ -47,7 +48,7 @@ namespace App.Web.Controllers
             ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName");
             ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>();
             ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(RequireSuppiler.No);
-            ViewBag.ServiceList = new SelectList(_db.ServiceInfos, "Id", "ServiceName");
+            ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x=>x.ServiceName), "Id", "ServiceName");
             return View();
         }
 

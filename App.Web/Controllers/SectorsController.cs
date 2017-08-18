@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
+using System.Transactions;
+using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
+using ExcelDataReader;
 
 namespace App.Web.Controllers
 {
@@ -13,7 +17,10 @@ namespace App.Web.Controllers
     public class SectorsController : Controller
     {
         #region Private Zone
+
         private readonly CrmDbContext _db;
+        private readonly List<string> _allowedUploadFile = new List<string> { ".xls", ".csv", ".xlsx" };
+
         #endregion
 
         public SectorsController()
@@ -27,20 +34,20 @@ namespace App.Web.Controllers
             return View();
         }
 
-        // GET: Sectors/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SectorInfo sectorInfo = _db.SectorInfos.Find(id);
-            if (sectorInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sectorInfo);
-        }
+        //// GET: Sectors/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    SectorInfo sectorInfo = _db.SectorInfos.Find(id);
+        //    if (sectorInfo == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(sectorInfo);
+        //}
 
         // GET: Sectors/Create
         public ActionResult Create()
@@ -231,6 +238,87 @@ namespace App.Web.Controllers
                 {
                     dbTransaction.Rollback();
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
+        public ActionResult BatchUpload(HttpPostedFileBase sectorFile)
+        {
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    if (sectorFile == null || sectorFile.ContentLength <= 0)
+                    {
+                        TempData["Toastr"] = Toastr.CustomError("Invalid File!", "File is empty or corrupted.");
+                        return RedirectToAction("Index");
+                    }
+                    // 1048567 bytes = 1 MegaBytes
+                    if (sectorFile.FileName == string.Empty || sectorFile.ContentLength > 1048576)
+                    {
+                        TempData["Toastr"] = Toastr.CustomError("Large File!", "File cannot be more than 1 MegaByte.");
+                        return RedirectToAction("Index");
+                    }
+                    var extension = Path.GetExtension(sectorFile.FileName);
+                    // ReSharper disable once InvertIf
+                    if (extension == null || _allowedUploadFile.IndexOf(extension) == -1)
+                    {
+                        TempData["Toastr"] = Toastr.CustomError("Invalid File!", "Unsupported file, only .xls, .xlsx, .csv file are allowed.");
+                        return RedirectToAction("Index");
+                    }
+
+                    // File reading begin with following format
+                    // +--------------+--------------+--------+
+                    // | Airport Name | Airport Code | Status |
+                    // | xcxcxcxcxcxc | codecxcxcxcc |   0/1  |
+
+                    using (var stream = sectorFile.InputStream)
+                    {
+                        IExcelDataReader reader = null;
+                        switch (extension)
+                        {
+                            case ".xls":
+                                reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                                break;
+                            case ".xlsx":
+                                reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                                break;
+                        }
+                        var affectedRows = 0;
+                        var count = 0;
+                        while (reader != null && reader.Read())
+                        {
+                            if (count == 0)
+                            {
+                                count = 1; continue;
+                            }
+
+                            var sector = new SectorInfo
+                            {
+                                SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1),
+                                SectorName = reader.GetString(0).ToUpper().Trim(),
+                                SectorCode = reader.GetString(1).ToUpper().Trim(),
+                                Status = reader.GetString(2) == "Active" ? Status.Active : Status.Inactive,
+                                EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
+                                EntryDate = DateTime.Now
+                            };
+
+                            if (_db.ServiceInfos.Any(x => x.ServiceName == sector.SectorName)) continue;
+
+                            _db.SectorInfos.Add(sector);
+                            affectedRows += _db.SaveChanges();
+                        }
+                        scope.Complete();
+                        TempData["Toastr"] = Toastr.CustomSuccess("Sector file uploaded successfully.");
+                        return RedirectToAction("Index");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Transaction.Current.Rollback();
+                    TempData["Toastr"] = Toastr.CustomError("Exception!", ex.Message);
                     return RedirectToAction("Index");
                 }
             }

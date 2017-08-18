@@ -36,9 +36,9 @@ namespace App.Web
                     cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p=>p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Branch/Edit/{Value}'>Edit</a> " +
-                        //"<a class='btn btn-sm btn-outline-info' href='/Branch/Details/{Value}'>Details</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Branch/Edit/{Value}'>Edit</a> "
+                        //+"<a class='btn btn-sm btn-outline-info' href='/Branch/Details/{Value}'>Details</a> " 
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "BranchId")
@@ -78,9 +78,6 @@ namespace App.Web
                                 case "branchcode":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BranchCode) : query.OrderBy(p => p.BranchCode);
                                     break;
-                                //case "status":
-                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
-                                //    break;
                                 case "entrydate":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryDate) : query.OrderBy(p => p.EntryDate);
                                     break;
@@ -89,12 +86,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -108,15 +105,11 @@ namespace App.Web
                     cols.Add("DesignationId").WithHeaderText("Designation Id").WithValueExpression(p => p.DesignationId).WithSorting(true);
                     cols.Add("DesignationTitleBn").WithHeaderText("Designation Name (BN)").WithValueExpression(p => p.DesignationTitleBn);
                     cols.Add("DesignationTitleEn").WithHeaderText("Designation Name (EN)").WithValueExpression(p => p.DesignationTitleEn).WithSorting(true);
-                    //cols.Add("DesignationDepertment").WithHeaderText("Designation Depertment").WithValueExpression(p => p.DesignationDepertment).WithSorting(true);
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
-                    //cols.Add("DelStatus").WithHeaderText("Delete Status").WithValueExpression(p => p.DelStatus.ToString());
-                    //cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString()).WithSorting(true);
-                    //cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> " 
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "DesignationId")
@@ -136,9 +129,7 @@ namespace App.Web
                         {
                             query = query.Where(x =>
                                     x.DesignationId.Contains(globalSearch) 
-                                    || x.DesignationTitleEn.Contains(globalSearch) 
-                                    //|| x.DesignationDepertment.Contains(globalSearch) 
-                                    //|| x.EntryDate.ToString().Contains(globalSearch)
+                                    || x.DesignationTitleEn.Contains(globalSearch)
                             );
                         }
 
@@ -156,20 +147,14 @@ namespace App.Web
                                 case "designationdepertment":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DesignationDepertment) : query.OrderBy(p => p.DesignationDepertment);
                                     break;
-                                //case "entrydate":
-                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryDate) : query.OrderBy(p => p.EntryDate);
-                                //    break;
-                                //case "entryby":
-                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryBy) : query.OrderBy(p => p.EntryBy);
-                                //    break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count()!=0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -182,12 +167,11 @@ namespace App.Web
                 {
                     cols.Add("ServiceId").WithHeaderText("Service Id").WithValueExpression(p => p.ServiceId).WithSorting(true);
                     cols.Add("ServiceName").WithHeaderText("Service Name").WithValueExpression(p => p.ServiceName).WithSorting(true);
-                    cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description);
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> " 
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "ServiceId")
@@ -224,12 +208,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -246,8 +230,8 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SectorId")
@@ -291,12 +275,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -313,8 +297,8 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> " 
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "AirLineId")
@@ -354,12 +338,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -376,8 +360,8 @@ namespace App.Web
                     cols.Add("SupplierMobileNo").WithHeaderText("Mobile No.").WithValueExpression(p => p.SupplierMobileNo).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> " 
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SupplierId")
@@ -422,12 +406,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -442,8 +426,8 @@ namespace App.Web
                     cols.Add("MethodName").WithHeaderText("Payment Method").WithValueExpression(p => p.MethodName).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> "
+                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "MethodId")
@@ -480,12 +464,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -567,12 +551,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })
@@ -675,12 +659,12 @@ namespace App.Web
                                     break;
                             }
                         }
+                        result.TotalRecords = query.Count();
                         if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
                         result.Items = query.ToList();
-                        result.TotalRecords = query.Count();
                     }
                     return result;
                 })

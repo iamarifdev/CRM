@@ -45,5 +45,17 @@ namespace App.Web.Helper
             if (string.IsNullOrWhiteSpace(errorTitle) || string.IsNullOrWhiteSpace(errorMessage)) throw new ArgumentNullException();
             return string.Format("toastr.error('{0}', '{1}');", errorMessage, errorTitle);
         }
+
+        public static string CustomSuccess(string successMessage)
+        {
+            if (string.IsNullOrWhiteSpace(successMessage)) throw new ArgumentNullException();
+            return string.Format("toastr.success('{0}', 'Success!');", successMessage);
+        }
+
+        public static string CustomSuccess(string successTitle, string successMessage)
+        {
+            if (string.IsNullOrWhiteSpace(successTitle) || string.IsNullOrWhiteSpace(successMessage)) throw new ArgumentNullException();
+            return string.Format("toastr.success('{0}', '{1}');", successMessage, successTitle);
+        }
     }
 }

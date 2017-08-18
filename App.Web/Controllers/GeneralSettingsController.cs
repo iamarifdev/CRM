@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using App.Web.Context;
 using App.Entity.Models;
+using App.Web.Helper;
 using EntityFramework.Extensions;
 using WebGrease.Css.Extensions;
 
@@ -18,7 +19,7 @@ namespace App.Web.Controllers
         #region Private Fields
 
         private readonly CrmDbContext _db = new CrmDbContext();
-        private readonly List<string> _allowedLogoFileTypes = new List<string> { ".png", "jpg", ".jpeg", ".gif", ".bmp" };
+        private readonly List<string> _allowedLogoFileTypes = new List<string> { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
 
         #endregion
 
@@ -51,7 +52,7 @@ namespace App.Web.Controllers
                 // 1048567 bytes = 1 MegaBytes
                 if (siteLogo.FileName == string.Empty || siteLogo.ContentLength > 1048576)
                 {
-                    TempData["Toastr"] = @"toastr.error('Max file size: 1 MB!', 'Error!');";
+                    TempData["Toastr"] = Toastr.CustomError("Max file size: 1 MB!");
                     return RedirectToAction("Index");
                 }
                 var extension = Path.GetExtension(siteLogo.FileName);
@@ -60,15 +61,14 @@ namespace App.Web.Controllers
                 extension = extension.ToLower();
                 if (_allowedLogoFileTypes.IndexOf(extension) == -1)
                 {
-                    TempData["Toastr"] =
-                        @"toastr.error('Only .png, .jpg, .jpeg, .gif, .bmp file types allowed.', 'Error!');";
+                    TempData["Toastr"] = Toastr.CustomError("Only .png, .jpg, .jpeg, .gif, .bmp file types allowed.");
                     return RedirectToAction("Index");
                 }
 
                 var image = Image.FromStream(siteLogo.InputStream);
                 if (image.Width != 256 || image.Height != 256)
                 {
-                    TempData["Toastr"] = @"toastr.error('Image size should be 256 Pixel x 256 Pixel', 'Error!');";
+                    TempData["Toastr"] = Toastr.CustomError("Image size should be 256 px X 256 px.");
                     return RedirectToAction("Index");
                 }
 
@@ -108,11 +108,12 @@ namespace App.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["Toastr"] = String.Format("toastr.error('{0}', 'DB Error!');", ex.Message);
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
                     dbTransaction.Rollback();
+                    return RedirectToAction("Index");
                 }
             }
-            TempData["Toastr"] = @"toastr.success('General Setting Saved!', 'Success!');";
+            TempData["Toastr"] = Toastr.CustomSuccess("General Setting Saved!");
             return RedirectToAction("Index", "GeneralSettings");
         }
 
@@ -130,7 +131,7 @@ namespace App.Web.Controllers
                 var fileName = "CRM_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".bak";
                 var backupPath = Path.Combine(backUpDirectory, fileName);
                 if (!Directory.Exists(backUpDirectory)) Directory.CreateDirectory(backUpDirectory);
-                foreach (string file in Directory.GetFiles(backUpDirectory, "*.bak").Where(item => item.EndsWith(".bak")))
+                foreach (var file in Directory.GetFiles(backUpDirectory, "*.bak").Where(item => item.EndsWith(".bak")))
                 {
                     System.IO.File.Delete(file);
                 }
@@ -141,9 +142,9 @@ namespace App.Web.Controllers
                 var fileBytes = System.IO.File.ReadAllBytes(backupPath);
                 return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["Toastr"] = @"toastr.error('Database backup cannot be created!', 'DB Error!');";
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
                 return RedirectToAction("Index");
             }
 
