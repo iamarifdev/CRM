@@ -17,7 +17,7 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.NewFlightDate, htmlAttributes: new {@class = "control-label col-sm-4 text-md-right"})
     <div class="col-sm-4">
-        @Html.EditorFor(model => model.NewFlightDate, new {htmlAttributes = new {@class = "form-control"}})
+        @Html.EditorFor(model => model.NewFlightDate, new { htmlAttributes = new { @class = "form-control pickDate" } })
         @Html.ValidationMessageFor(model => model.NewFlightDate, "", new {@class = "text-danger"})
     </div>
 </div>
@@ -25,7 +25,7 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.OldFlightDate, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
     <div class="col-sm-4">
-        @Html.EditorFor(model => model.OldFlightDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.OldFlightDate, new { htmlAttributes = new { @class = "form-control pickDate" } })
         @Html.ValidationMessageFor(model => model.OldFlightDate, "", new { @class = "text-danger" })
     </div>
 </div>

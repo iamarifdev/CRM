@@ -52,7 +52,7 @@ namespace App.Web.Controllers
         // GET: Sectors/Create
         public ActionResult Create()
         {
-            ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.Status = Common.ToSelectList<Status>();
             return View();
         }
 

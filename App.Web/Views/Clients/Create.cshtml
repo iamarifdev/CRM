@@ -6,7 +6,7 @@
 }
 @section AdditionalStyles
 {
-    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 }
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / ADD NEW</h6>
@@ -77,7 +77,6 @@
             </div>
 
             <div id="ServiceAdditional">
-                
             </div>
 
             <div class="form-group row">
@@ -136,10 +135,9 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
-        //$("#ServiceId").select2($(this).attr("data-options"));
-
+        $(".pickDate").datepicker();
         $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
             if (referralType !== "") {
@@ -173,7 +171,8 @@
         });
 
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
-        $("#ServiceId").on("change", function() {
+        $("#ServiceId").on("change", function () {
+            $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
             var id = $(this).val();
             if (id === "") return;
@@ -181,6 +180,7 @@
                 $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { id: id, serviceName: serviceName }, function(html) {
                     if (html !== null && html.message !== undefined) {
                         $("#ServiceAdditional").empty().html(html.message).slideDown(1000);
+                        $(".pickDate").datepicker({ autoclose: true, todayHighlight: true, format: "yyyy-MM-dd" });
                     } else {
                         $("#ServiceAdditional").empty().slideUp(1000);
                     }
@@ -188,6 +188,7 @@
             } else {
                 $("#ServiceAdditional").empty().slideUp(1000);
             }
+
         });
     </script>
 }
