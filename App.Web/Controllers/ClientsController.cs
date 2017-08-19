@@ -145,6 +145,7 @@ namespace App.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public ActionResult GetAdditionalReferralFields(ReferralsType? referralType)
         {
             switch (referralType)
@@ -162,6 +163,7 @@ namespace App.Web.Controllers
             }
         }
 
+        [HttpPost]
         public ActionResult GetAdditionalSupplierFields(RequireSuppiler? requireSupplier)
         {
             switch (requireSupplier)
@@ -176,6 +178,38 @@ namespace App.Web.Controllers
                     return Json(new { }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult GetAdditionalServiceFields(int? id, string serviceName)
+        {
+            if (id == null || string.IsNullOrWhiteSpace(serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
+            if (!_db.ServiceInfos.Any(x => x.Id == id && x.ServiceName == serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
+
+            switch (serviceName.ToUpper())
+            {
+                case "VISA CHECK":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
+                case "E-MAIL":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalEmailFilelds", new ClientInfo()) });
+                case "STUDENT VISA": 
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalStudentVisaFilelds", new ClientInfo()) });
+                case "TOURIST VISA":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
+                case "TKT+MP":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalTktMp_NewTicketFields", new ClientInfo()) });
+                case "NEW TICKET":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalTktMp_NewTicketFields", new ClientInfo()) });
+                case "RE-CONFIRM":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalReConfirmFields", new ClientInfo()) });
+                case "DATE CHANGE":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalDateChangeFields", new ClientInfo()) });
+                case "CONFIRM":
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalConfirmFields", new ClientInfo()) });
+                default:
+                    return Json(new { }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

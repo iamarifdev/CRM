@@ -4977,6 +4977,13 @@
     <Content Include="Views\Clients\_AdditionalAgentFields.cshtml" />
     <Content Include="Views\Clients\_AdditionalOfficeFields.cshtml" />
     <Content Include="Views\Clients\_AdditionalSupplierFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalCountryFilelds.cshtml" />
+    <Content Include="Views\Clients\_AdditionalEmailFilelds.cshtml" />
+    <Content Include="Views\Clients\_AdditionalStudentVisaFilelds.cshtml" />
+    <Content Include="Views\Clients\_AdditionalTktMp_NewTicketFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalConfirmFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalReConfirmFields.cshtml" />
+    <Content Include="Views\Clients\_AdditionalDateChangeFields.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

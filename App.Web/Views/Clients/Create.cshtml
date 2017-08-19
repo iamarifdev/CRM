@@ -76,7 +76,9 @@
                 </div>
             </div>
 
-            <div id="ServiceAdditional"> </div>
+            <div id="ServiceAdditional">
+                
+            </div>
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceCharge, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
@@ -138,10 +140,10 @@
     <script>
         //$("#ServiceId").select2($(this).attr("data-options"));
 
-        $("#ReferralType").on("change", function () {
+        $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
             if (referralType !== "") {
-                $.post("@Url.Action("GetAdditionalReferralFields","Clients")", { referralType: referralType }, function (html) {
+                $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#ReferralAdditional").empty().html(html.message).slideDown(1000);
@@ -149,16 +151,15 @@
                         $("#ReferralAdditional").empty().slideUp(1000);
                     }
                 });
-            }
-            else {
+            } else {
                 $("#ReferralAdditional").empty().slideUp(1000);
             }
         });
 
-        $("#RequireSupplier").on("change", function () {
+        $("#RequireSupplier").on("change", function() {
             var requireSupplier = $(this).val();
             if (requireSupplier !== "" && Number(requireSupplier) === 1) {
-                $.post("@Url.Action("GetAdditionalSupplierFields","Clients")", { requireSupplier: requireSupplier }, function (html) {
+                $.post("@Url.Action("GetAdditionalSupplierFields", "Clients")", { requireSupplier: requireSupplier }, function(html) {
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#SupplierAdditional").empty().html(html.message).slideDown(1000);
@@ -172,12 +173,20 @@
         });
 
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
-        $("#ServiceId").on("change", function () {
+        $("#ServiceId").on("change", function() {
             var serviceName = $("#ServiceId :selected").text();
             var id = $(this).val();
             if (id === "") return;
             if (additionalFields.indexOf(serviceName) !== -1) {
-                console.log(serviceName);
+                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { id: id, serviceName: serviceName }, function(html) {
+                    if (html !== null && html.message !== undefined) {
+                        $("#ServiceAdditional").empty().html(html.message).slideDown(1000);
+                    } else {
+                        $("#ServiceAdditional").empty().slideUp(1000);
+                    }
+                });
+            } else {
+                $("#ServiceAdditional").empty().slideUp(1000);
             }
         });
     </script>

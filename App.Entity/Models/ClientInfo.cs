@@ -82,7 +82,7 @@ namespace App.Entity.Models
         public DateTime NewFlightDate { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "Collage Name")]
+        [Display(Name = "College Name")]
         public string CollageName { get; set; }
 
         [StringLength(150)]

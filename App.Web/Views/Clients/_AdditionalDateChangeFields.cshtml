@@ -1,0 +1,60 @@
+﻿@using App.Web.Context
+@model App.Entity.Models.ClientInfo
+@{
+    var db = new CrmDbContext();
+    ViewBag.AirLines = new SelectList(db.AirLineInfos, "Id", "AirLineName");
+    ViewBag.Venues = new SelectList(db.SectorInfos, "SectorId", "SectorName");
+
+}
+<div class="form-group row">
+    @Html.LabelFor(model => model.AirLineId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+    <div class="col-sm-4">
+        @Html.DropDownListFor(model => model.AirLineId, (SelectList)ViewBag.AirLines, "Select One", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.AirLineId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.NewFlightDate, htmlAttributes: new {@class = "control-label col-sm-4 text-md-right"})
+    <div class="col-sm-4">
+        @Html.EditorFor(model => model.NewFlightDate, new {htmlAttributes = new {@class = "form-control"}})
+        @Html.ValidationMessageFor(model => model.NewFlightDate, "", new {@class = "text-danger"})
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.OldFlightDate, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+    <div class="col-sm-4">
+        @Html.EditorFor(model => model.OldFlightDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.OldFlightDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.Label("Sector", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+    <div class="col-sm-2">
+        @Html.DropDownListFor(model => model.VenueFromId, (SelectList)ViewBag.Venues, "Select One", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.VenueFromId, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-sm-2">
+        @Html.DropDownListFor(model => model.VenueToId, (SelectList)ViewBag.Venues, "Select One", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.VenueToId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.AirLinePnr, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+    <div class="col-sm-4">
+        @Html.EditorFor(model => model.AirLinePnr, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AirLinePnr, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    @Html.LabelFor(model => model.GdsPnr, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+    <div class="col-sm-4">
+        @Html.EditorFor(model => model.GdsPnr, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GdsPnr, "", new { @class = "text-danger" })
+    </div>
+</div>
+
