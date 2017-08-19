@@ -6,10 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
+using App.Web.Hubs;
 using App.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR;
 
 namespace App.Web.Helper
 {
@@ -73,6 +75,18 @@ namespace App.Web.Helper
                 viewResult.ViewEngine.ReleaseView(controller.ControllerContext, viewResult.View);
                 return sw.GetStringBuilder().ToString();
             }
+        }
+
+        public static void SendProgress(string progressMessage, int progressCount, int totalItems)
+        {
+            //IN ORDER TO INVOKE SIGNALR FUNCTIONALITY DIRECTLY FROM SERVER SIDE WE MUST USE THIS
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
+
+            //CALCULATING PERCENTAGE BASED ON THE PARAMETERS SENT
+            var percentage = (progressCount * 100) / totalItems;
+
+            //PUSHING DATA TO ALL CLIENTS
+            hubContext.Clients.All.AddProgress(progressMessage, percentage + "%");
         }
     }
 }

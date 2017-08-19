@@ -19,6 +19,8 @@ namespace App.Web
         {
             ConfigureAuth(app);
             CreateRolesandUsers();
+
+            app.MapSignalR();
         }
 
         // In this method we will create default User roles and Admin user for login   

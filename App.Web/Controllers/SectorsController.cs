@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
@@ -254,7 +255,7 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.CustomError("Invalid File!", "File is empty or corrupted.");
                         return RedirectToAction("Index");
                     }
-                    // 1048567 bytes = 1 MegaBytes
+                    // 1048567 bytes = 1 MegaByte
                     if (sectorFile.FileName == string.Empty || sectorFile.ContentLength > 1048576)
                     {
                         TempData["Toastr"] = Toastr.CustomError("Large File!", "File cannot be more than 1 MegaByte.");
@@ -287,6 +288,7 @@ namespace App.Web.Controllers
                         }
                         var affectedRows = 0;
                         var count = 0;
+                        var totalItems = reader.AsDataSet().Tables[0].Rows.Count-1;
                         while (reader != null && reader.Read())
                         {
                             if (count == 0)
@@ -304,13 +306,19 @@ namespace App.Web.Controllers
                                 EntryDate = DateTime.Now
                             };
 
-                            if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName || x.SectorCode==sector.SectorCode)) continue;
+                            if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName && x.SectorCode == sector.SectorCode)) continue;
 
                             _db.SectorInfos.Add(sector);
                             affectedRows += _db.SaveChanges();
+
+                            //Sending Progress using SignalR
+                            Common.SendProgress("Uploading..", affectedRows, totalItems);
                         }
                         scope.Complete();
-                        TempData["Toastr"] = Toastr.CustomSuccess("Sector file uploaded successfully.");
+
+                        Thread.Sleep(1000);
+
+                        TempData["Toastr"] = Toastr.CustomSuccess(string.Format("Sector file uploaded successfully. {0} items added.",affectedRows));
                         return RedirectToAction("Index");
                     }
 

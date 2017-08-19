@@ -243,6 +243,7 @@
     <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
+    <Compile Include="Hubs\ProgressHub.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.cs" />
     <Compile Include="Migrations\ContextA\201708011643287_InitApplicationContext.Designer.cs">
       <DependentUpon>201708011643287_InitApplicationContext.cs</DependentUpon>
@@ -390,6 +391,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\progress-modal.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -5875,7 +5877,7 @@
     <Content Include="Views\Suppliers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Uploads\" />
+    <Folder Include="App_Data\" />
     <Folder Include="Backup\" />
     <Folder Include="Content\template\img\site\" />
     <Folder Include="vendor\flot\examples\gauge\" />
