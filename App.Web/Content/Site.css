@@ -25,4 +25,9 @@ textarea {
 
 label.error {
     color: red;
+    font-size: 11px;
+}
+
+.field-validation-error {
+    font-size: 11px;
 }

@@ -45,7 +45,7 @@ namespace App.Entity.Models
             get { return string.Format("{0} {1}", FirstName, LastName); }
         }
 
-        [StringLength(25)]
+        [StringLength(25, MinimumLength = 13, ErrorMessage = "Valid contact number range 13 and 25 characters.")]
         [Display(Name = "Pax Contact No")]
         public string ContactNo { get; set; }
 

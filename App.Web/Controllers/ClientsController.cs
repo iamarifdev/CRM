@@ -57,15 +57,31 @@ namespace App.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CustomerId,BranchId,Sn,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,ServedBy,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,Status,DelStatus,EntryBy,EntryDate,VenueFromId,VenueToId,SmsNo,CountryId,Finger,Manpower,TicketIssue,FlightStatus")] ClientInfo clientInfo)
+        public ActionResult Create([Bind(Include = "Id,BranchId,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,VenueFromId,VenueToId,SmsNo,CountryId")] ClientInfo client)
         {
+
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                ModelState.Clear();
+                client.CustomerId = string.Format("{0}{1:000000}{2:MMyy}",
+                    _db.BranchInfos.First(x => x.Id == client.BranchId).BranchCode.ToUpper(), 
+                    _db.ClientInfos.Count() + 1, 
+                    DateTime.Now
+                );
+                client.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                client.EntryDate = DateTime.Now;
+
+                //to do
+            }
+
+
             if (ModelState.IsValid)
             {
-                _db.ClientInfos.Add(clientInfo);
+                _db.ClientInfos.Add(client);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(clientInfo);
+            return View(client);
         }
 
         // GET: Clients/Edit/5

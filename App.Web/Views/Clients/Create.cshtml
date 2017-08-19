@@ -11,10 +11,9 @@
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / ADD NEW</h6>
     <div class="card-block">
-        @using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { @class = "form-horizontal" }))
+        @using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { @class = "form-horizontal", @id="clientForm" }))
         {
             @Html.AntiForgeryToken()
-
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
@@ -135,16 +134,18 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(".pickDate").datepicker();
-        $("#ReferralType").on("change", function() {
+        $("#ReferralType").on("change",function() {
             var referralType = $(this).val();
             if (referralType !== "") {
                 $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#ReferralAdditional").empty().html(html.message).slideDown(1000);
+                        ReValidate();
                     } else {
                         $("#ReferralAdditional").empty().slideUp(1000);
                     }
@@ -161,6 +162,7 @@
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#SupplierAdditional").empty().html(html.message).slideDown(1000);
+                        ReValidate();
                     } else {
                         $("#SupplierAdditional").empty().slideUp(1000);
                     }
@@ -171,15 +173,17 @@
         });
 
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
-        $("#ServiceId").on("change", function () {
+        $("#ServiceId").on("change", function() {
             $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
             var id = $(this).val();
             if (id === "") return;
             if (additionalFields.indexOf(serviceName) !== -1) {
                 $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { id: id, serviceName: serviceName }, function(html) {
+                    // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null && html.message !== undefined) {
                         $("#ServiceAdditional").empty().html(html.message).slideDown(1000);
+                        ReValidate();
                         $(".pickDate").datepicker({ autoclose: true, todayHighlight: true, format: "yyyy-MM-dd" });
                     } else {
                         $("#ServiceAdditional").empty().slideUp(1000);
@@ -188,7 +192,20 @@
             } else {
                 $("#ServiceAdditional").empty().slideUp(1000);
             }
-
         });
+
+        $("body").on({
+            keyup: function() { $("#SmsNo").val($("#ContactNo").val()); },
+            blur: function () { $("#SmsNo").val($("#ContactNo").val()); },
+            change: function () { $("#SmsNo").val($("#ContactNo").val()); }
+        });
+
+        function ReValidate() {
+            var form = $("#clientForm");
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse("#clientForm");
+        }
+
     </script>
 }
