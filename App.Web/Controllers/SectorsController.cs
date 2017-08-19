@@ -304,7 +304,7 @@ namespace App.Web.Controllers
                                 EntryDate = DateTime.Now
                             };
 
-                            if (_db.ServiceInfos.Any(x => x.ServiceName == sector.SectorName)) continue;
+                            if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName || x.SectorCode==sector.SectorCode)) continue;
 
                             _db.SectorInfos.Add(sector);
                             affectedRows += _db.SaveChanges();
