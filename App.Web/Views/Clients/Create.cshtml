@@ -138,7 +138,7 @@
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(".pickDate").datepicker();
-        $("#ReferralType").on("change",function() {
+        $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
             if (referralType !== "") {
                 $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
@@ -194,17 +194,38 @@
             }
         });
 
-        $("body").on({
-            keyup: function() { $("#SmsNo").val($("#ContactNo").val()); },
-            blur: function () { $("#SmsNo").val($("#ContactNo").val()); },
-            change: function () { $("#SmsNo").val($("#ContactNo").val()); }
+        $("body").on("keyup blur change focus", "#ContactNo", function() {
+            $("#SmsNo").val($("#ContactNo").val());
         });
+
+        $("body").on("keyup blur change focus", "#ServiceCharge", function () {
+            CalculateProfit();
+        });
+
+        $("body").on("keyup blur change focus", "#Cost", function () {
+            CalculateProfit();
+        });
+
+        //$("body").on({
+        //    keyup: function() { $("#SmsNo").val($("#ContactNo").val()); },
+        //    blur: function() { $("#SmsNo").val($("#ContactNo").val()); },
+        //    change: function() { $("#SmsNo").val($("#ContactNo").val()); }
+        //});
 
         function ReValidate() {
             var form = $("#clientForm");
             form.removeData('validator');
             form.removeData('unobtrusiveValidation');
             $.validator.unobtrusive.parse("#clientForm");
+        }
+
+        function CalculateProfit() {
+            var serviceChage = $("#ServiceCharge").val();
+            var cost = $("#Cost").val();
+            if (serviceChage !== "" && cost !== "") {
+                var profit = Number(serviceChage) - Number(cost);
+                $("#Profit").val(profit);
+            }
         }
 
     </script>
