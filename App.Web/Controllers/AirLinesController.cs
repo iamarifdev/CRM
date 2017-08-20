@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
-using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
@@ -50,7 +44,7 @@ namespace App.Web.Controllers
         // GET: AirLines/Create
         public ActionResult Create()
         {
-            ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.Status = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -91,7 +85,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.Status = Common.ToSelectList<Status>();
                 }
 
             }
@@ -114,7 +108,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", airLine.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(airLine.Status);
 
                 return View(airLine);
             }
@@ -185,7 +179,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", airLine.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(airLine.Status);
                 }
             }
         }

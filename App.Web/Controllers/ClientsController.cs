@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
+using EntityFramework.Extensions;
 using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
@@ -70,6 +71,12 @@ namespace App.Web.Controllers
                         DateTime.Now
                     );
                     client.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                    client.ServedBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                    client.WorkingStatus =WorkingStatus.Pending;
+                    client.Status = Status.Inactive;
+                    client.InfoStatus = InformationUpdate.NotUpdated;
+                    client.DeliveryStatus = DeliveryStatus.NotDelivery;
+                    client.SmsConfirmation = SmsConfirmation.NotSendingSms;
                     client.EntryDate = DateTime.Now;
                     TryValidateModel(client);
 
@@ -101,26 +108,36 @@ namespace App.Web.Controllers
         // GET: Clients/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var client = _db.ClientInfos.Find(id);
+                if (client == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.StatusList = Common.ToSelectList<Status>();
+                ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName", client.BranchId);
+                ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>(client.ReferralType);
+                ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(client.SupplierId == null ? RequireSuppiler.No : RequireSuppiler.Yes);
+                ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName", client.ServiceId);
+                ViewBag.WorkingStatusList = Common.ToSelectList<WorkingStatus>(client.WorkingStatus);
+                ViewBag.SmsConfirmationList = Common.ToSelectList<SmsConfirmation>(client.SmsConfirmation);
+                ViewBag.InfoStatusList = Common.ToSelectList<InformationUpdate>(client.InfoStatus);
+                ViewBag.DeliveryStatusList = Common.ToSelectList<DeliveryStatus>(client.DeliveryStatus);
+                ViewBag.StatusList = Common.ToSelectList<Status>(client.Status);
+                return View(client);
             }
-            ClientInfo clientInfo = _db.ClientInfos.Find(id);
-            if (clientInfo == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
             }
-            ViewBag.AgentId = new SelectList(_db.AgentInfos, "Id", "AgentId", clientInfo.AgentId);
-            ViewBag.AirLineId = new SelectList(_db.AirLineInfos, "Id", "AirLineId", clientInfo.AirLineId);
-            ViewBag.CountryId = new SelectList(_db.CountryLists, "CountryId", "CountryCode", clientInfo.CountryId);
-            ViewBag.VenueFromId = new SelectList(_db.SectorInfos, "Id", "SectorId", clientInfo.VenueFromId);
-            ViewBag.VenueToId = new SelectList(_db.SectorInfos, "Id", "SectorId", clientInfo.VenueToId);
-            ViewBag.ServiceId = new SelectList(_db.ServiceInfos, "Id", "ServiceId", clientInfo.ServiceId);
-            ViewBag.SupplierId = new SelectList(_db.SuppliersInfos, "Id", "SupplierId", clientInfo.SupplierId);
-            ViewBag.DoneBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.DoneBy);
-            ViewBag.EntryBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.EntryBy);
-            ViewBag.ServedBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.ServedBy);
-            return View(clientInfo);
         }
 
         // POST: Clients/Edit/5
@@ -128,25 +145,65 @@ namespace App.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CustomerId,BranchId,Sn,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,ServedBy,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,Status,DelStatus,EntryBy,EntryDate,VenueFromId,VenueToId,SmsNo,CountryId,Finger,Manpower,TicketIssue,FlightStatus")] ClientInfo clientInfo)
+        public ActionResult Edit([Bind(Include="Id,BranchId,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,Status,VenueFromId,VenueToId,SmsNo,CountryId")] ClientInfo client, int? id)
         {
-            if (ModelState.IsValid)
+            using (var dbTransaction = _db.Database.BeginTransaction())
             {
-                _db.Entry(clientInfo).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (_db.ClientInfos.Count(x => x.Id == id) < 1)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    var clientInfo = _db.ClientInfos.Single(x => x.Id == id);
+                    if (clientInfo == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+
+                    ModelState.Clear();
+                    client.CustomerId = clientInfo.CustomerId;
+                    client.EntryBy = clientInfo.EntryBy;
+                    client.EntryDate = clientInfo.EntryDate;
+                    client.DelStatus = clientInfo.DelStatus;
+
+                    TryValidateModel(client);
+
+                    if (!ModelState.IsValid) return View(client);
+
+                    _db.ClientInfos
+                        .Where(x => x.Id == id)
+                        .Update(u => new ClientInfo
+                        {
+                            BranchId = client.BranchId,
+                            ReferralType = client.ReferralType,
+                            //have to do
+                            Status = client.Status
+                        });
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Updated;
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    ViewBag.StatusList = Common.ToSelectList<Status>(client.Status);
+                }
             }
-            ViewBag.AgentId = new SelectList(_db.AgentInfos, "Id", "AgentId", clientInfo.AgentId);
-            ViewBag.AirLineId = new SelectList(_db.AirLineInfos, "Id", "AirLineId", clientInfo.AirLineId);
-            ViewBag.CountryId = new SelectList(_db.CountryLists, "CountryId", "CountryCode", clientInfo.CountryId);
-            ViewBag.VenueFromId = new SelectList(_db.SectorInfos, "Id", "SectorId", clientInfo.VenueFromId);
-            ViewBag.VenueToId = new SelectList(_db.SectorInfos, "Id", "SectorId", clientInfo.VenueToId);
-            ViewBag.ServiceId = new SelectList(_db.ServiceInfos, "Id", "ServiceId", clientInfo.ServiceId);
-            ViewBag.SupplierId = new SelectList(_db.SuppliersInfos, "Id", "SupplierId", clientInfo.SupplierId);
-            ViewBag.DoneBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.DoneBy);
-            ViewBag.EntryBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.EntryBy);
-            ViewBag.ServedBy = new SelectList(_db.Users, "Id", "Uid", clientInfo.ServedBy);
-            return View(clientInfo);
         }
 
         // GET: Clients/Delete/5
@@ -176,32 +233,36 @@ namespace App.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetAdditionalReferralFields(ReferralsType? referralType)
+        public ActionResult GetAdditionalReferralFields(ReferralsType? referralType, int? id = null)
         {
+            var model = id != null ? _db.ClientInfos.Find(id) : new ClientInfo();
+            var finalModel = model ?? new ClientInfo();
             switch (referralType)
             {
                 case null:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
                 case ReferralsType.Referrals:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalReferralFields", new ClientInfo()) });
+                    return PartialView("_AdditionalReferralFields", finalModel);
                 case ReferralsType.Office:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalOfficeFields", new ClientInfo()) });
+                    return PartialView("_AdditionalOfficeFields", finalModel);
                 case ReferralsType.Agent:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalAgentFields", new ClientInfo()) });
+                    return PartialView("_AdditionalAgentFields", finalModel);
                 default:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpPost]
-        public ActionResult GetAdditionalSupplierFields(RequireSuppiler? requireSupplier)
+        public ActionResult GetAdditionalSupplierFields(RequireSuppiler? requireSupplier, int? id = null)
         {
+            var model = id != null ? _db.ClientInfos.Find(id) : new ClientInfo();
+            var finalModel = model ?? new ClientInfo();
             switch (requireSupplier)
             {
                 case RequireSuppiler.No:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
                 case RequireSuppiler.Yes:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalSupplierFields", new ClientInfo()) });
+                    return PartialView("_AdditionalSupplierFields", finalModel);
                 case null:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
                 default:
@@ -210,31 +271,34 @@ namespace App.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetAdditionalServiceFields(int? id, string serviceName)
+        public ActionResult GetAdditionalServiceFields(string serviceName, int? serviceId, int? id=null)
         {
-            if (id == null || string.IsNullOrWhiteSpace(serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
-            if (!_db.ServiceInfos.Any(x => x.Id == id && x.ServiceName == serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
+            var model = id != null ? _db.ClientInfos.Find(id) : new ClientInfo();
+            var finalModel = model ?? new ClientInfo();
+
+            if (serviceId == null || string.IsNullOrWhiteSpace(serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
+            if (!_db.ServiceInfos.Any(x => x.Id == serviceId && x.ServiceName == serviceName)) return Json(new { }, JsonRequestBehavior.AllowGet);
 
             switch (serviceName.ToUpper())
             {
                 case "VISA CHECK":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
+                    return PartialView("_AdditionalCountryFilelds", finalModel);
                 case "E-MAIL":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalEmailFilelds", new ClientInfo()) });
+                    return PartialView("_AdditionalEmailFilelds", finalModel);
                 case "STUDENT VISA":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalStudentVisaFilelds", new ClientInfo()) });
+                    return PartialView("_AdditionalStudentVisaFilelds", finalModel);
                 case "TOURIST VISA":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
+                    return PartialView("_AdditionalCountryFilelds", finalModel);
                 case "TKT+MP":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalTktMp_NewTicketFields", new ClientInfo()) });
+                    return PartialView("_AdditionalTktMp_NewTicketFields", finalModel);
                 case "NEW TICKET":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalTktMp_NewTicketFields", new ClientInfo()) });
+                    return PartialView("_AdditionalTktMp_NewTicketFields", finalModel);
                 case "RE-CONFIRM":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalReConfirmFields", new ClientInfo()) });
+                    return PartialView("_AdditionalReConfirmFields", finalModel);
                 case "DATE CHANGE":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalDateChangeFields", new ClientInfo()) });
+                    return PartialView("_AdditionalDateChangeFields", finalModel);
                 case "CONFIRM":
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalConfirmFields", new ClientInfo()) });
+                    return PartialView("_AdditionalConfirmFields", finalModel);
                 default:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
             }

@@ -114,7 +114,7 @@ namespace App.Entity.Models
 
         [Display(Name = "Served By")]
         [ForeignKey("UserServedBy")]
-        public int? ServedBy { get; set; }
+        public int ServedBy { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Flight Time")]
@@ -174,6 +174,9 @@ namespace App.Entity.Models
         [Display(Name = "Flight Status")]
         [StringLength(10)]
         public string FlightStatus { get; set; }
+
+        [Display(Name = "SMS Send Confirm")]
+        public SmsConfirmation? SmsConfirmation { get; set; }
 
         public virtual AgentInfo AgentInfo { get; set; }
         public virtual User UserServedBy { get; set; }

@@ -143,58 +143,55 @@
             $("#SmsNo").val("");
             if (referralType !== "") {
                 $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
-                    // ReSharper disable once QualifiedExpressionMaybeNull
-                    if (html !== null && html.message !== undefined) {
-                        $("#ReferralAdditional").empty().html(html.message).slideDown(1000);
+                    if (html !== null) {
+                        $("#ReferralAdditional").empty().html(html).slideDown(500);
                         ReValidate();
-                    } else {
-                        $("#ReferralAdditional").empty().slideUp(1000);
+                        return;
                     }
+                    $("#ReferralAdditional").empty().slideUp(500);
+                    return;
                 });
-            } else {
-                $("#ReferralAdditional").empty().slideUp(1000);
             }
+            $("#ReferralAdditional").empty().slideUp(500);
         });
 
         $("#RequireSupplier").on("change", function() {
             var requireSupplier = $(this).val();
             if (requireSupplier !== "" && Number(requireSupplier) === 1) {
                 $.post("@Url.Action("GetAdditionalSupplierFields", "Clients")", { requireSupplier: requireSupplier }, function(html) {
-                    // ReSharper disable once QualifiedExpressionMaybeNull
-                    if (html !== null && html.message !== undefined) {
-                        $("#SupplierAdditional").empty().html(html.message).slideDown(1000);
+                    if (html !== null) {
+                        $("#SupplierAdditional").empty().html(html).slideDown(500);
                         ReValidate();
-                    } else {
-                        $("#SupplierAdditional").empty().slideUp(1000);
+                        return;
                     }
+                    $("#SupplierAdditional").empty().slideUp(500);
+                    return;
                 });
-            } else {
-                $("#SupplierAdditional").empty().slideUp(1000);
             }
+            $("#SupplierAdditional").empty().slideUp(500);
         });
 
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
         $("#ServiceId").on("change", function() {
             $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
-            var id = $(this).val();
-            if (id === "") return;
+            var serviceId = $(this).val();
+            if (serviceId === "") return;
             if (additionalFields.indexOf(serviceName) !== -1) {
-                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { id: id, serviceName: serviceName }, function(html) {
-                    // ReSharper disable once QualifiedExpressionMaybeNull
-                    if (html !== null && html.message !== undefined) {
-                        $("#ServiceAdditional").empty().html(html.message).slideDown(1000);
+                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { serviceId: serviceId, serviceName: serviceName }, function (html) {
+                    if (html !== null) {
+                        $("#ServiceAdditional").empty().html(html).slideDown(500);
                         ReValidate();
                         $(".pickDate").datepicker({
                             autoclose: true, format: "yyyy-mm-dd", setDate: "d"
                         });
-                    } else {
-                        $("#ServiceAdditional").empty().slideUp(1000);
+                        return;
                     }
+                    $("#ServiceAdditional").empty().slideUp(500);
+                    return;
                 });
-            } else {
-                $("#ServiceAdditional").empty().slideUp(1000);
             }
+            $("#ServiceAdditional").empty().slideUp(500);
         });
 
         $("body").on("change", "#ContactNo", function (e) {
