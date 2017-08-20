@@ -6,6 +6,10 @@ namespace App.Entity.Models
 {
     public class ClientInfo
     {
+        public ClientInfo()
+        {
+            NewFlightDate = DateTime.Now;
+        }
         public int Id { get; set; }
 
         [Required]
@@ -62,12 +66,14 @@ namespace App.Entity.Models
 
         [Display(Name = "Air Line")]
         [ForeignKey("AirLineInfo")]
-        public int AirLineId { get; set; }
+        public int? AirLineId { get; set; }
 
         [Display(Name = "Old Flight Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? OldFlightDate { get; set; }
 
         [Display(Name = "Change Flight Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? ChangeFlightDate { get; set; }
 
         [StringLength(50)]
@@ -79,6 +85,7 @@ namespace App.Entity.Models
         public string GdsPnr { get; set; }
 
         [Display(Name = "New Flight Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime NewFlightDate { get; set; }
 
         [StringLength(150)]
@@ -95,8 +102,10 @@ namespace App.Entity.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Service Charge")]
+        [Range(0.00,Double.MaxValue,ErrorMessage = "Enter a positive value.")]
         public double? ServiceCharge { get; set; }
 
+        [Range(0.00, Double.MaxValue, ErrorMessage = "Enter a positive value.")]
         public double? Cost { get; set; }
 
         public double? Profit { get; set; }
@@ -133,6 +142,7 @@ namespace App.Entity.Models
         public int EntryBy { get; set; }
 
         [Display(Name = "Entry Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime EntryDate { get; set; }
 
         [Display(Name = "Venue From")]
@@ -143,7 +153,6 @@ namespace App.Entity.Models
         [ForeignKey("SectorTo")]
         public int? VenueToId { get; set; }
 
-        [Required]
         [StringLength(25)]
         [Display(Name = "SMS Number")]
         public string SmsNo { get; set; }

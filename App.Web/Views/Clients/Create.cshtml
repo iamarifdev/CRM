@@ -81,7 +81,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceCharge, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.ServiceCharge, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.EditorFor(model => model.ServiceCharge, new { htmlAttributes = new { @class = "form-control", @type = "number"} })
                     @Html.ValidationMessageFor(model => model.ServiceCharge, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -89,7 +89,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.Cost, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", @type = "number"} })
                     @Html.ValidationMessageFor(model => model.Cost, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.Profit, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.Profit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "number", @value = "0" } })
+                    @Html.EditorFor(model => model.Profit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "number"} })
                     @Html.ValidationMessageFor(model => model.Profit, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -140,6 +140,7 @@
         $(".pickDate").datepicker();
         $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
+            $("#SmsNo").val("");
             if (referralType !== "") {
                 $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
                     // ReSharper disable once QualifiedExpressionMaybeNull
@@ -184,7 +185,9 @@
                     if (html !== null && html.message !== undefined) {
                         $("#ServiceAdditional").empty().html(html.message).slideDown(1000);
                         ReValidate();
-                        $(".pickDate").datepicker({ autoclose: true, todayHighlight: true, format: "yyyy-MM-dd" });
+                        $(".pickDate").datepicker({
+                            autoclose: true, format: "yyyy-mm-dd", setDate: "d"
+                        });
                     } else {
                         $("#ServiceAdditional").empty().slideUp(1000);
                     }
@@ -194,23 +197,18 @@
             }
         });
 
-        $("body").on("keyup blur change focus", "#ContactNo", function() {
-            $("#SmsNo").val($("#ContactNo").val());
+        $("body").on("change", "#ContactNo", function (e) {
+            var contactNo = $("#ContactNo");
+            $("#SmsNo").val(contactNo.val()).trigger("blur");
         });
 
-        $("body").on("keyup blur change focus", "#ServiceCharge", function () {
+        $("body").on("change keyup", "#ServiceCharge", function () {
             CalculateProfit();
         });
 
-        $("body").on("keyup blur change focus", "#Cost", function () {
+        $("body").on("change keyup", "#Cost", function () {
             CalculateProfit();
         });
-
-        //$("body").on({
-        //    keyup: function() { $("#SmsNo").val($("#ContactNo").val()); },
-        //    blur: function() { $("#SmsNo").val($("#ContactNo").val()); },
-        //    change: function() { $("#SmsNo").val($("#ContactNo").val()); }
-        //});
 
         function ReValidate() {
             var form = $("#clientForm");
@@ -222,10 +220,17 @@
         function CalculateProfit() {
             var serviceChage = $("#ServiceCharge").val();
             var cost = $("#Cost").val();
+            if (serviceChage < 0 || cost < 0) return;
             if (serviceChage !== "" && cost !== "") {
                 var profit = Number(serviceChage) - Number(cost);
                 $("#Profit").val(profit);
+                return;
             }
+            else if (serviceChage === "" && cost !== "") {
+                $("#Profit").val((-Number(cost)));
+                return;
+            }
+            $("#Profit").val(0.00);
         }
 
     </script>

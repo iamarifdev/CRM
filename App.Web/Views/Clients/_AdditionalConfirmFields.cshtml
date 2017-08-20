@@ -4,7 +4,7 @@
 @{
     var db = new CrmDbContext();
     ViewBag.AirLines = new SelectList(db.AirLineInfos, "Id", "AirLineName");
-    ViewBag.Venues = new SelectList(db.SectorInfos, "SectorId", "SectorName");
+    ViewBag.Venues = new SelectList(db.SectorInfos, "Id", "SectorName");
 
 }
 <div class="form-group row">

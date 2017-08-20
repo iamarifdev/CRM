@@ -571,10 +571,10 @@ namespace App.Web
                     cols.Add("CustomerId").WithHeaderText("CID").WithValueExpression(p => p.CustomerId).WithSorting(true);
                     cols.Add("FullName").WithHeaderText("Name").WithValueExpression(p => p.FullName).WithSorting(true);
                     cols.Add("ContactNo").WithHeaderText("Contact Number").WithValueExpression(p => p.ContactNo).WithSorting(true);
-                    cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo.AirLineName).WithSorting(true);
-                    cols.Add("Service").WithHeaderText("Service").WithValueExpression(p => p.ServiceInfo.ServiceName).WithSorting(true);
+                    cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo.AirLineName ?? "").WithSorting(true);
+                    cols.Add("Service").WithHeaderText("Service").WithValueExpression(p => p.ServiceInfo.ServiceName ?? "").WithSorting(true);
                     cols.Add("ServiceCharge").WithHeaderText("Service Charge").WithValueExpression(p => p.ServiceCharge.ToString()).WithSorting(true);
-                    cols.Add("UserName").WithHeaderText("Served By").WithValueExpression(p => p.UserServedBy.UserName).WithSorting(true);
+                    cols.Add("UserName").WithHeaderText("Served By").WithValueExpression(p => p.UserServedBy.UserName ?? "").WithSorting(true);
                     cols.Add("WorkingStatus").WithHeaderText("Working Status").WithValueExpression(p => p.WorkingStatus > 0 ? "Done" : "Pending").WithSorting(true);
                     cols.Add("InfoStatus").WithHeaderText("Update Status").WithValueExpression(p => p.InfoStatus > 0 ? "Updated" : "Not Updated").WithSorting(true);
                     cols.Add("DeliveryStatus").WithHeaderText("Delivery Status").WithValueExpression(p => p.DeliveryStatus > 0 ? "Delivery" : "Not Delivery").WithSorting(true);

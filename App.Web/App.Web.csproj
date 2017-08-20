@@ -329,6 +329,14 @@
     <Compile Include="Migrations\ContextB\201708180343409_ServiceBranchModelChanged.Designer.cs">
       <DependentUpon>201708180343409_ServiceBranchModelChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201708200722105_SmsNoToNullableClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708200722105_SmsNoToNullableClientInfoModel.Designer.cs">
+      <DependentUpon>201708200722105_SmsNoToNullableClientInfoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201708201007395_AirLineToNullableClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201708201007395_AirLineToNullableClientInfoModel.Designer.cs">
+      <DependentUpon>201708201007395_AirLineToNullableClientInfoModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -5960,6 +5968,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708180343409_ServiceBranchModelChanged.resx">
       <DependentUpon>201708180343409_ServiceBranchModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708200722105_SmsNoToNullableClientInfoModel.resx">
+      <DependentUpon>201708200722105_SmsNoToNullableClientInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201708201007395_AirLineToNullableClientInfoModel.resx">
+      <DependentUpon>201708201007395_AirLineToNullableClientInfoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

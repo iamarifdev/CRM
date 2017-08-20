@@ -48,7 +48,7 @@ namespace App.Web.Controllers
             ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName");
             ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>();
             ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(RequireSuppiler.No);
-            ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x=>x.ServiceName), "Id", "ServiceName");
+            ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName");
             return View();
         }
 
@@ -59,29 +59,43 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,BranchId,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,VenueFromId,VenueToId,SmsNo,CountryId")] ClientInfo client)
         {
-
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
-                ModelState.Clear();
-                client.CustomerId = string.Format("{0}{1:000000}{2:MMyy}",
-                    _db.BranchInfos.First(x => x.Id == client.BranchId).BranchCode.ToUpper(), 
-                    _db.ClientInfos.Count() + 1, 
-                    DateTime.Now
-                );
-                client.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
-                client.EntryDate = DateTime.Now;
+                try
+                {
+                    ModelState.Clear();
+                    client.CustomerId = string.Format("{0}{1:000000}{2:MMyy}",
+                        _db.BranchInfos.First(x => x.Id == client.BranchId).BranchCode.ToUpper(),
+                        _db.ClientInfos.Count() + 1,
+                        DateTime.Now
+                    );
+                    client.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                    client.EntryDate = DateTime.Now;
+                    TryValidateModel(client);
 
-                //to do
+                    if (!ModelState.IsValid) return View(client);
+                    _db.ClientInfos.Add(client);
+                    _db.SaveChanges();
+
+                    dbTransaction.Commit();
+                    TempData["Toastr"] = Toastr.Added;
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName");
+                    ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>();
+                    ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(RequireSuppiler.No);
+                    ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName");
+                }
             }
-
-
-            if (ModelState.IsValid)
-            {
-                _db.ClientInfos.Add(client);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(client);
         }
 
         // GET: Clients/Edit/5
@@ -169,11 +183,11 @@ namespace App.Web.Controllers
                 case null:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
                 case ReferralsType.Referrals:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalReferralFields",new ClientInfo())});
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalReferralFields", new ClientInfo()) });
                 case ReferralsType.Office:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalOfficeFields", new ClientInfo())});
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalOfficeFields", new ClientInfo()) });
                 case ReferralsType.Agent:
-                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalAgentFields", new ClientInfo())});
+                    return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalAgentFields", new ClientInfo()) });
                 default:
                     return Json(new { }, JsonRequestBehavior.AllowGet);
             }
@@ -207,7 +221,7 @@ namespace App.Web.Controllers
                     return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
                 case "E-MAIL":
                     return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalEmailFilelds", new ClientInfo()) });
-                case "STUDENT VISA": 
+                case "STUDENT VISA":
                     return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalStudentVisaFilelds", new ClientInfo()) });
                 case "TOURIST VISA":
                     return Json(new { error = true, message = this.RenderRazorViewToString("_AdditionalCountryFilelds", new ClientInfo()) });
