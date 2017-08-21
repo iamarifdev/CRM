@@ -51,9 +51,16 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            var logoName =
-                _db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue).ToString();
-            ViewBag.LogoName = logoName;
+            var generalSetting = _db.GeneralSettings.FirstOrDefault(x => x.SettingName == "SiteLogo");
+            if (generalSetting != null)
+            {
+                var logoName = generalSetting.SettingValue;
+                ViewBag.LogoName = logoName;
+            }
+            else
+            {
+                ViewBag.LogoName = string.Empty;
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
@@ -25,6 +27,38 @@ namespace App.Web.Helper
             }
         }
 
+        public static string GetDisplayName<T>(this T enumValue) where T : IComparable, IFormattable, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("Argument must be of type Enum");
+            try
+            {
+                return enumValue.GetType() // GetType causes exception if DisplayAttribute.Name is not set
+                                .GetMember(enumValue.ToString())
+                                .First()
+                                .GetCustomAttribute<DisplayAttribute>()
+                                .GetName();
+            }
+            catch // If there's no DisplayAttribute.Name set, just return the ToString value
+            {
+                return enumValue.ToString();
+            }
+        }
+
+        public static string GetEnumDisplayName(this Enum enumType)
+        {
+            return enumType.GetType().GetMember(enumType.ToString())
+                           .First()
+                           .GetCustomAttribute<DisplayAttribute>()
+                           .Name;
+        }
+
+        public static DisplayAttribute GetDisplayAttributesFrom(this Enum enumValue, Type enumType)
+        {
+            return enumType.GetMember(enumValue.ToString())
+                           .First()
+                           .GetCustomAttribute<DisplayAttribute>();
+        }
 
         public static SelectList ToSelectList<T>(object selectedvalue = null)
         {

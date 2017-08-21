@@ -173,7 +173,6 @@ namespace App.Web.Controllers
                     client.EntryBy = clientInfo.EntryBy;
                     client.EntryDate = clientInfo.EntryDate;
                     client.DelStatus = clientInfo.DelStatus;
-
                     TryValidateModel(client);
 
                     if (!ModelState.IsValid) return View(client);
@@ -184,7 +183,36 @@ namespace App.Web.Controllers
                         {
                             BranchId = client.BranchId,
                             ReferralType = client.ReferralType,
-                            //have to do
+                            AgentId = client.AgentId,
+                            SupplierId = client.SupplierId,
+                            FirstName = client.FirstName,
+                            LastName = client.LastName,
+                            ContactNo = client.ContactNo,
+                            Referral = client.Referral,
+                            ReferralContactNo = client.ReferralContactNo,
+                            ServiceId = client.ServiceId,
+                            AirLineId = client.AirLineId,
+                            OldFlightDate = client.OldFlightDate,
+                            ChangeFlightDate = client.ChangeFlightDate,
+                            AirLinePnr = client.AirLinePnr,
+                            GdsPnr = client.GdsPnr,
+                            NewFlightDate = client.NewFlightDate,
+                            CollageName = client.CollageName,
+                            CourseName = client.CourseName,
+                            EmailAddress = client.EmailAddress,
+                            ServiceCharge = client.ServiceCharge,
+                            Cost = client.Cost,
+                            Profit = client.Profit,
+                            Discount = client.Discount,
+                            DoneBy = client.DoneBy,
+                            WorkingStatus = client.WorkingStatus,
+                            DeliveryStatus = client.DeliveryStatus,
+                            InfoStatus = client.InfoStatus,
+                            Remark = client.Remark,
+                            VenueFromId = client.VenueFromId,
+                            VenueToId = client.VenueToId,
+                            SmsNo = client.SmsNo,
+                            CountryId = client.CountryId,
                             Status = client.Status
                         });
                     dbTransaction.Commit();

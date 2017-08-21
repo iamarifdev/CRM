@@ -1,12 +1,13 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace App.Entity.Models
 {
     public enum Status
     {
-        [Description("Inactive")]
+        [Display(Name = "Inactive"), Description("Inactive")]
         Inactive,
-        [Description("Active")]
+        [Display(Name = "Active"), Description("Active")]
         Active
     }
 
@@ -36,9 +37,9 @@ namespace App.Entity.Models
 
     public enum SmsConfirmation
     {
-        [Description("Not Sending SMS")]
+        [Display(Name = "Not Sending SMS"), Description("Not Sending SMS")]
         NotSendingSms,
-        [Description("Sending SMS")]
+        [Display(Name = "Sending SMS"), Description("Sending SMS")]
         SendingSms
     }
 
