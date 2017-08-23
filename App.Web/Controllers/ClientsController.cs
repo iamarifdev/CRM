@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
-using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
@@ -229,35 +227,70 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = Common.ToSelectList<Status>(client.Status);
+                    if (!ModelState.IsValid)
+                    {
+                        ViewBag.StatusList = Common.ToSelectList<Status>();
+                        ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName", client.BranchId);
+                        ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>(client.ReferralType);
+                        ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(client.SupplierId == null ? RequireSuppiler.No : RequireSuppiler.Yes);
+                        ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName", client.ServiceId);
+                        ViewBag.WorkingStatusList = Common.ToSelectList<WorkingStatus>(client.WorkingStatus);
+                        ViewBag.SmsConfirmationList = Common.ToSelectList<SmsConfirmation>(client.SmsConfirmation);
+                        ViewBag.InfoStatusList = Common.ToSelectList<InformationUpdate>(client.InfoStatus);
+                        ViewBag.DeliveryStatusList = Common.ToSelectList<DeliveryStatus>(client.DeliveryStatus);
+                        ViewBag.StatusList = Common.ToSelectList<Status>(client.Status);
+                    }
                 }
             }
         }
 
-        // GET: Clients/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ClientInfo clientInfo = _db.ClientInfos.Find(id);
-            if (clientInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(clientInfo);
-        }
+        //// GET: Clients/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ClientInfo clientInfo = _db.ClientInfos.Find(id);
+        //    if (clientInfo == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(clientInfo);
+        //}
 
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            ClientInfo clientInfo = _db.ClientInfos.Find(id);
-            _db.ClientInfos.Remove(clientInfo);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var clientInfo = _db.ClientInfos.Find(id);
+                    if (clientInfo == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    _db.ClientInfos.Remove(clientInfo);
+                    _db.SaveChanges();
+                    dbTransaction.Commit();
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
         }
 
         [HttpPost]
