@@ -47,7 +47,7 @@ namespace App.Web.Controllers
         // GET: Designations/Create
         public ActionResult Create()
         {
-            ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.StatusList = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -90,7 +90,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.StatusList = Common.ToSelectList<Status>();
                 }
             }
 
@@ -112,7 +112,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", designation.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(designation.Status);
                 return View(designation);
             }
             catch (Exception ex)
@@ -180,7 +180,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", designation.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(designation.Status);
                 }
             }
         }

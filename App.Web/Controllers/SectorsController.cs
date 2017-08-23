@@ -95,7 +95,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.Status = Common.ToSelectList<Status>();
                 }
 
             }
@@ -117,7 +117,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(sector.Status);
 
                 return View(sector);
             }
@@ -188,7 +188,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", sector.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(sector.Status);
                 }
             }
         }

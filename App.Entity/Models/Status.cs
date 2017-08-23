@@ -13,51 +13,44 @@ namespace App.Entity.Models
 
     public enum WorkingStatus
     {
-        [Description("Pending")]
         Pending,
-        [Description("Done")]
         Done
     }
 
     public enum DeliveryStatus
     {
-        [Description("Not Delivery")]
+        [Display(Name = "Not Delivery")]
         NotDelivery,
-        [Description("Delivery")]
+        [Display(Name = "Delivery")]
         Delivery
     }
 
     public enum InformationUpdate
     {
-        [Description("Not Updated")]
+        [Display(Name = "Not Updated")]
         NotUpdated,
-        [Description("Updated")]
+        [Display(Name = "Updated")]
         Updated
     }
 
     public enum SmsConfirmation
     {
-        [Display(Name = "Not Sending SMS"), Description("Not Sending SMS")]
+        [Display(Name = "Not Sending SMS")]
         NotSendingSms,
-        [Display(Name = "Sending SMS"), Description("Sending SMS")]
+        [Display(Name = "Sending SMS")]
         SendingSms
     }
 
     public enum RequireSuppiler
     {
-        [Description("No")]
         No,
-        [Description("Yes")]
         Yes
     }
 
     public enum ReferralsType
     {
-        [Description("Agent")]
         Agent=1,
-        [Description("Referrals")]
         Referrals=2,
-        [Description("Office")]
         Office=3
     }
 }

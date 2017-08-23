@@ -51,7 +51,7 @@ namespace App.Web.Controllers
         // GET: Branch/Create
         public ActionResult Create()
         {
-            ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.StatusList = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -92,7 +92,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.Status = Common.ToSelectList<Status>();
                 }
 
             }
@@ -114,7 +114,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(branchInfo.Status);
 
                 return View(branchInfo);
             }
@@ -170,7 +170,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", branchInfo.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(branchInfo.Status);
                 }
             }
         }

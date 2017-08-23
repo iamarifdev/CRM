@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Hubs;
 using App.Web.Models;
@@ -27,58 +26,42 @@ namespace App.Web.Helper
             }
         }
 
-        public static string GetDisplayName<T>(this T enumValue) where T : IComparable, IFormattable, IConvertible
+        public static TAttribute GetAttribute<TAttribute>(this Enum enumValue) where TAttribute : Attribute
         {
-            if (!typeof(T).IsEnum)
-                throw new ArgumentException("Argument must be of type Enum");
-            try
-            {
-                return enumValue.GetType() // GetType causes exception if DisplayAttribute.Name is not set
-                                .GetMember(enumValue.ToString())
-                                .First()
-                                .GetCustomAttribute<DisplayAttribute>()
-                                .GetName();
-            }
-            catch // If there's no DisplayAttribute.Name set, just return the ToString value
-            {
-                return enumValue.ToString();
-            }
+            return enumValue.GetType().GetMember(enumValue.ToString()).First().GetCustomAttribute<TAttribute>();
         }
 
-        public static string GetEnumDisplayName(this Enum enumType)
+        public static string GetDescription(Enum value)
         {
-            return enumType.GetType().GetMember(enumType.ToString())
-                           .First()
-                           .GetCustomAttribute<DisplayAttribute>()
-                           .Name;
+            var type = value.GetType();
+            var name = Enum.GetName(type, value);
+            if (name == null) return null;
+            var field = type.GetField(name);
+            if (field == null) return null;
+            var attr = Attribute.GetCustomAttribute(field, typeof(DisplayAttribute)) as DisplayAttribute;
+            return attr != null ? attr.Name : name;
         }
 
-        public static DisplayAttribute GetDisplayAttributesFrom(this Enum enumValue, Type enumType)
-        {
-            return enumType.GetMember(enumValue.ToString())
-                           .First()
-                           .GetCustomAttribute<DisplayAttribute>();
-        }
 
         public static SelectList ToSelectList<T>(object selectedvalue = null)
         {
             var t = typeof(T);
             if (!t.IsEnum) return null;
-            var list = Enum.GetValues(t).Cast<T>().Select(v => new
-                SelectListItem { Text = v.ToString(), Value = Convert.ToInt32(v).ToString() }).ToList();
+
+            var list = new List<SelectListItem>();
+
+            foreach (T obj in Enum.GetValues(t))
+            {
+                var enumType = Enum.Parse(typeof(T),obj.ToString()) as Enum;
+                if (enumType == null) return null;
+                var text = GetDescription(enumType);
+                var value = Convert.ToInt32(enumType).ToString();
+                list.Add(new SelectListItem { Text = text, Value = value });
+            }
+
             return selectedvalue == null ? new SelectList(list, "Value", "Text") : new SelectList(list, "Value", "Text", selectedvalue);
         }
-
-        public static List<SelectListItem> StatusList
-        {
-            get
-            {
-                return Enum.GetValues(typeof(Status)).Cast<Status>().Select(v => new
-                       SelectListItem { Text = v.ToString(), Value = ((int)v).ToString() }).ToList();
-            }
-        }
-
-
+        
         public static bool ChangePassword(ApplicationUser user, string newPassword)
         {
             using (var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>())
@@ -113,13 +96,8 @@ namespace App.Web.Helper
 
         public static void SendProgress(string progressMessage, int progressCount, int totalItems)
         {
-            //IN ORDER TO INVOKE SIGNALR FUNCTIONALITY DIRECTLY FROM SERVER SIDE WE MUST USE THIS
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<ProgressHub>();
-
-            //CALCULATING PERCENTAGE BASED ON THE PARAMETERS SENT
             var percentage = (progressCount * 100) / totalItems;
-
-            //PUSHING DATA TO ALL CLIENTS
             hubContext.Clients.All.AddProgress(progressMessage, percentage + "%");
         }
     }

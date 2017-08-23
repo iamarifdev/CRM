@@ -79,10 +79,7 @@ namespace App.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result =
-                await
-                    SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe,
-                        shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -90,7 +87,7 @@ namespace App.Web.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, model.RememberMe});
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -154,7 +151,7 @@ namespace App.Web.Controllers
 
             ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
             ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
-            ViewBag.Active = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.Active = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -187,7 +184,7 @@ namespace App.Web.Controllers
                     .ToList(), "Name", "Name");
                 ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
                 ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
-                ViewBag.Active = new SelectList(Common.StatusList, "Value", "Text");
+                ViewBag.Active = Common.ToSelectList<Status>();
                 AddErrors(result);
             }
 
@@ -453,7 +450,7 @@ namespace App.Web.Controllers
                 }
                 return Json(flag, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }

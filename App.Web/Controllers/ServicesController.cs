@@ -47,7 +47,7 @@ namespace App.Web.Controllers
         // GET: Services/Create
         public ActionResult Create()
         {
-            ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+            ViewBag.Status = Common.ToSelectList<Status>();
             return View();
         }
 
@@ -88,7 +88,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Status = new SelectList(Common.StatusList, "Value", "Text");
+                    ViewBag.Status = Common.ToSelectList<Status>();
                 }
 
             }
@@ -110,7 +110,7 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
+                ViewBag.StatusList = Common.ToSelectList<Status>(service.Status);
 
                 return View(service);
             }
@@ -179,7 +179,7 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = new SelectList(Common.StatusList, "Value", "Text", service.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(service.Status);
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace App.Web.Controllers
                 }
                 return Json(flag, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
