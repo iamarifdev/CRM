@@ -24,6 +24,5 @@ namespace App.Web.Context
         public DbSet<SuppliersInfo> SuppliersInfos { get; set; }
         public DbSet<TransactionsInfo> TransactionsInfos { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<VenueInfo> VenueInfos { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace App.Entity.Models
 
         [Required]
         [StringLength(15)]
+        [Display(Name = "IP Address")]
         public string IpAddress { get; set; }
 
         [Required]

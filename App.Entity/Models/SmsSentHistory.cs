@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace App.Entity.Models
 {
-    public class SmsSentHistory
+    public class SmsSentHistory : BaseModel
     {
-        public int Id { get; set; }
 
         [StringLength(50)]
         public string SmsSendId { get; set; }
@@ -22,14 +21,7 @@ namespace App.Entity.Models
         [StringLength(20)]
         public string SendStatus { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
-
-        public int DelStatus { get; set; }
-
-        [StringLength(20)]
-        public string EntryBy { get; set; }
-        public DateTime? EntryDate { get; set; }
+        public Status Status { get; set; }
 
         //TimeStamp
         public DateTime CurrentTime { get; set; }

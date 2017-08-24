@@ -63,6 +63,6 @@ namespace App.Entity.Models
         [Display(Name = "Agent Photo")]
         public string AgentPhoto { get; set; }
 
-        public int Status { get; set; }
+        public Status Status { get; set; }
     }
 }
