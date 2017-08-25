@@ -194,7 +194,7 @@
             $("#ServiceAdditional").empty().slideUp(500);
         });
 
-        $("body").on("change", "#ContactNo", function (e) {
+        $("body").on("change", "#ContactNo", function () {
             var contactNo = $("#ContactNo");
             $("#SmsNo").val(contactNo.val()).trigger("blur");
         });
@@ -209,8 +209,8 @@
 
         function ReValidate() {
             var form = $("#clientForm");
-            form.removeData('validator');
-            form.removeData('unobtrusiveValidation');
+            form.removeData("validator");
+            form.removeData("unobtrusiveValidation");
             $.validator.unobtrusive.parse("#clientForm");
         }
 
