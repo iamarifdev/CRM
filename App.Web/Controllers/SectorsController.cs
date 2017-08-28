@@ -277,6 +277,7 @@ namespace App.Web.Controllers
                     using (var stream = sectorFile.InputStream)
                     {
                         IExcelDataReader reader = null;
+                        var sectors  = new List<SectorInfo>();
                         switch (extension)
                         {
                             case ".xls":
@@ -285,15 +286,18 @@ namespace App.Web.Controllers
                             case ".xlsx":
                                 reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
                                 break;
+                            default:
+                                reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                                break;
                         }
                         var affectedRows = 0;
-                        var count = 0;
-                        var totalItems = reader.AsDataSet().Tables[0].Rows.Count-1;
+                        var isHeading = true;
                         while (reader != null && reader.Read())
                         {
-                            if (count == 0)
+                            //skip heading from excel file
+                            if (isHeading)
                             {
-                                count = 1; continue;
+                                isHeading = false; continue;
                             }
 
                             var sector = new SectorInfo
@@ -308,11 +312,15 @@ namespace App.Web.Controllers
 
                             if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName && x.SectorCode == sector.SectorCode)) continue;
 
+                            sectors.Add(sector);
+                        }
+
+                        foreach (var sector in sectors)
+                        {
                             _db.SectorInfos.Add(sector);
                             affectedRows += _db.SaveChanges();
-
                             //Sending Progress using SignalR
-                            Common.SendProgress("Uploading..", affectedRows, totalItems);
+                            Common.SendProgress("Uploading..", affectedRows, sectors.Count);
                         }
                         scope.Complete();
 
