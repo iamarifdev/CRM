@@ -26,7 +26,7 @@
             <br /><br /> <br />
             <div class="col-md-12">
                 @*<table class="table table-striped table-bordered m-md-b-0" id="branchTable"></table>*@
-                @Html.Partial("_MVCGridToolbar", new MVCGridToolbarModel()
+                @Html.Partial("~/Views/Shared/_MVCGridToolbar.cshtml", new MVCGridToolbarModel()
                 {
                     MVCGridName = "serviceTable",
                     PageSize = true,

@@ -1,0 +1,103 @@
+﻿@using App.Web.Models
+@model LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Log in";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Title -->
+    <title>Neptune</title>
+
+    <!-- Vendor CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/vendor/themify-icons/themify-icons.css" rel="stylesheet" />
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Neptune CSS -->
+    <link href="~/Content/template/core.css" rel="stylesheet" />
+
+    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="auth-bg">
+
+    <div class="auth">
+        <div class="auth-header">
+            @if (ViewBag.LogoName != string.Empty)
+            {
+                <img src="~/Content/template/img/site/@ViewBag.LogoName" height="75" width="75" class="img-responsive" alt="CRM">
+            }
+            else
+            {
+                <h1>CRM</h1>
+            }
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                <div class="input-group-addon">
+                                    <i class="ti-email"></i>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                <div class="input-group-addon">
+                                    <i class="ti-key"></i>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="pull-xs-left">
+                                <label class="custom-control custom-checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description font-90">Remember me</span>
+                                </label>
+                            </div>
+                            <div class="pull-xs-right">
+                                @Html.ActionLink("Forgot your password?", "ForgotPassword", null, new { @class = "text-white font-90" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger btn-block">Login</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor JS -->
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/vendor/tether/js/tether.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+</body>
+
+</html>
+

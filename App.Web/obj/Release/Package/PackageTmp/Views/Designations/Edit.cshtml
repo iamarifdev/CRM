@@ -1,0 +1,69 @@
+﻿@model App.Entity.Models.EmployeeDesignation
+
+@{
+    ViewBag.Title = "Add New Designation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">DESIGNATIONS / EDIT</h6>
+    <div class="card-block">
+        <div class="row">
+            @using (Html.BeginForm("Edit", "Designations", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model=>model.Id)
+
+                <div class="form-horizontal">
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.DesignationTitleEn, htmlAttributes: new { @class = "control-label col-sm-4" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.DesignationTitleEn, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DesignationTitleEn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.DesignationTitleBn, htmlAttributes: new { @class = "control-label col-sm-4" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.DesignationTitleBn, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DesignationTitleBn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.DesignationDepertment, htmlAttributes: new { @class = "control-label col-sm-4" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.DesignationDepertment, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DesignationDepertment, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-sm-4" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.StatusList, "Select One", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        <div class="offset-sm-6 col-sm-4">
+                            <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Save Changes </button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-3">
+                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

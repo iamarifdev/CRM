@@ -1,0 +1,67 @@
+﻿@model App.Entity.Models.PaymentMethod
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PaymentMethod</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Uid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Uid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MethodId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MethodId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MethodName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MethodName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DelStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DelStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "General Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+}
+
+<div class="card">
+    <h6 class="card-header">GENERAL SETTINGS</h6>
+    <div class="card-block">
+        <div class="row">
+
+            @using (Html.BeginForm("Index", "GeneralSettings", FormMethod.Post, new { @class = "form-horizontal", @enctype = "multipart/form-data", @id = "generalSettingForm" }))
+            {
+                <div class="form-group offset-md-2 col-md-8">
+                    <div class="offset-sm-8 col-sm-3">
+                        <a class="btn btn-success pull-right" href="@Url.Action("CreateDbBackUp","GeneralSettings")"> <span class="fa fa-database"></span> Create Database Backup</a>
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SiteName", "SITE NAME", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SiteName", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("Address", "ADDRESS", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextArea("Address", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SiteLogo", "SITE LOGO", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SiteLogo", null, new { @class = "form-control", @type = "file" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SmsUrl", "SMS URL", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SmsUrl", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SmsUser", "SMS USER", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SmsUser", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SmsPassword", "SMS PASSWORD", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SmsPassword", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    @Html.Label("SmsSender", "SMS SENDER", new { @class = "control-label col-sm-3" })
+                    <div class="col-sm-8">
+                        @Html.TextBox("SmsSender", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group offset-md-2 col-md-8">
+                    <div class="offset-sm-8 col-sm-3">
+                        <button type="submit" id="btnSaveGeneralSetting" class="btn btn-success pull-right"> <span class="fa fa-save"></span> Save</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script>
+        $("#generalSettingForm").validate({
+            rules: {
+                SiteName: "required",
+                Address: "required",
+                @if (!(bool)ViewData["IsLogoExist"])
+                {
+                    <text>
+                SiteLogo: "required",
+                </text>
+                }
+                SmsUrl: "required",
+                SmsUser: "required",
+                SmsPassword: "required",
+                SmsSender: "required"
+            }
+        });
+
+        @if (TempData["Toastr"]!=null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
+    </script>
+}
+
