@@ -25,15 +25,9 @@
             </div>
             <br /><br /> <br />
             <div class="col-md-12">
-                @*@Html.Partial("~/Views/Shared/_MVCGridToolbar.cshtml", new MVCGridToolbarModel()
+                @Html.Partial("~/Views/Shared/_MVCGridToolbar.cshtml", new MVCGridToolbarModel()
                 {
                     MVCGridName = "airLineTable",
-                    PageSize = true,
-                    GlobalSearch = true
-                })*@
-                @Html.Action("DisplayMvcGridToolbar", "GeneralSettings", new MVCGridToolbarModel
-                {
-                    MVCGridName = "agentTable",
                     PageSize = true,
                     GlobalSearch = true
                 })

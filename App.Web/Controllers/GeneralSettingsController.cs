@@ -149,13 +149,5 @@ namespace App.Web.Controllers
             }
 
         }
-
-
-        [ChildActionOnly]
-        public ActionResult DisplayMvcGridToolbar(MVCGridToolbarModel model)
-        {
-            return PartialView("~/Views/Shared/_MVCGridToolbar.cshtml", model);
-        }
-            
     }
 }
