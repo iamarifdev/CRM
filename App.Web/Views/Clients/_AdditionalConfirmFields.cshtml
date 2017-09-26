@@ -10,7 +10,7 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.AirLineId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
     <div class="col-sm-4">
-        @Html.DropDownListFor(model => model.AirLineId, (SelectList)ViewBag.AirLines, "Select One", new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.AirLineId, (SelectList)ViewBag.AirLines, "Select One", new { @class = "form-control select2" })
         @Html.ValidationMessageFor(model => model.AirLineId, "", new { @class = "text-danger" })
     </div>
 </div>
@@ -26,11 +26,11 @@
 <div class="form-group row">
     @Html.Label("Sector", htmlAttributes: new {@class = "control-label col-sm-4 text-md-right"})
     <div class="col-sm-2">
-        @Html.DropDownListFor(model => model.VenueFromId, (SelectList) ViewBag.Venues, "Select One", new {@class = "form-control"})
+        @Html.DropDownListFor(model => model.VenueFromId, (SelectList)ViewBag.Venues, "Select From", new { @class = "form-control select2" })
         @Html.ValidationMessageFor(model => model.VenueFromId, "", new {@class = "text-danger"})
     </div>
     <div class="col-sm-2">
-        @Html.DropDownListFor(model => model.VenueToId, (SelectList) ViewBag.Venues, "Select One", new {@class = "form-control"})
+        @Html.DropDownListFor(model => model.VenueToId, (SelectList)ViewBag.Venues, "Select To", new { @class = "form-control select2" })
         @Html.ValidationMessageFor(model => model.VenueToId, "", new {@class = "text-danger"})
     </div>
 </div>

@@ -7,18 +7,19 @@
 @section AdditionalStyles
 {
     <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
 }
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / ADD NEW</h6>
     <div class="card-block">
-        @using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { @class = "form-horizontal", @id="clientForm" }))
+        @using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { @class = "form-horizontal", @id = "clientForm" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-group row">
                 @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.BranchList, "Select One", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.BranchList, "Select One", new { @class = "form-control select2" })
                     @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -42,7 +43,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.ReferralType, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.ReferralType, (SelectList)ViewBag.ReferralTypes, "Select One", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.ReferralType, (SelectList)ViewBag.ReferralTypes, "Select One", new { @class = "form-control select2" })
                     @Html.ValidationMessageFor(model => model.ReferralType, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -70,7 +71,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.ServiceId, (SelectList)ViewBag.ServiceList, "Select One", new { @class = "form-control", })
+                    @Html.DropDownListFor(model => model.ServiceId, (SelectList)ViewBag.ServiceList, "Select One", new { @class = "form-control select2" })
                     @Html.ValidationMessageFor(model => model.ServiceId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -81,7 +82,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.ServiceCharge, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.ServiceCharge, new { htmlAttributes = new { @class = "form-control", @type = "number"} })
+                    @Html.EditorFor(model => model.ServiceCharge, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                     @Html.ValidationMessageFor(model => model.ServiceCharge, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -89,7 +90,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.Cost, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", @type = "number"} })
+                    @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                     @Html.ValidationMessageFor(model => model.Cost, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -97,7 +98,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.Profit, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.Profit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "number"} })
+                    @Html.EditorFor(model => model.Profit, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "number" } })
                     @Html.ValidationMessageFor(model => model.Profit, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -136,8 +137,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script>
         $(".pickDate").datepicker();
+        $(".select2").select2();
         $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
             $("#SmsNo").val("");
@@ -145,6 +148,7 @@
                 $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
                     if (html !== null) {
                         $("#ReferralAdditional").empty().html(html).slideDown(500);
+                        $(".select2").select2();
                         ReValidate();
                         return;
                     }
@@ -155,12 +159,13 @@
             $("#ReferralAdditional").empty().slideUp(500);
         });
 
-        $("#RequireSupplier").on("change", function() {
+        $("#RequireSupplier").on("change",function() {
             var requireSupplier = $(this).val();
             if (requireSupplier !== "" && Number(requireSupplier) === 1) {
                 $.post("@Url.Action("GetAdditionalSupplierFields", "Clients")", { requireSupplier: requireSupplier }, function(html) {
                     if (html !== null) {
                         $("#SupplierAdditional").empty().html(html).slideDown(500);
+                        $(".select2").select2();
                         ReValidate();
                         return;
                     }
@@ -171,19 +176,25 @@
             $("#SupplierAdditional").empty().slideUp(500);
         });
 
-        var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
-        $("#ServiceId").on("change", function() {
+        var additionalFields = [
+            "VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE",
+            "CONFIRM"
+        ];
+        $("#ServiceId") .on("change", function() {
             $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
             var serviceId = $(this).val();
             if (serviceId === "") return;
             if (additionalFields.indexOf(serviceName) !== -1) {
-                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { serviceId: serviceId, serviceName: serviceName }, function (html) {
+                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { serviceId: serviceId, serviceName: serviceName }, function(html) {
                     if (html !== null) {
                         $("#ServiceAdditional").empty().html(html).slideDown(500);
+                        $(".select2").select2();
                         ReValidate();
                         $(".pickDate").datepicker({
-                            autoclose: true, format: "yyyy-mm-dd", setDate: "d"
+                            autoclose: true,
+                            format: "yyyy-mm-dd",
+                            setDate: "d"
                         });
                         return;
                     }
@@ -194,16 +205,16 @@
             $("#ServiceAdditional").empty().slideUp(500);
         });
 
-        $("body").on("change", "#ContactNo", function () {
+        $("body").on("change", "#ContactNo", function() {
             var contactNo = $("#ContactNo");
             $("#SmsNo").val(contactNo.val()).trigger("blur");
         });
 
-        $("body").on("change keyup", "#ServiceCharge", function () {
+        $("body").on("change keyup", "#ServiceCharge", function() {
             CalculateProfit();
         });
 
-        $("body").on("change keyup", "#Cost", function () {
+        $("body").on("change keyup", "#Cost", function() {
             CalculateProfit();
         });
 
@@ -222,8 +233,7 @@
                 var profit = Number(serviceChage) - Number(cost);
                 $("#Profit").val(profit);
                 return;
-            }
-            else if (serviceChage === "" && cost !== "") {
+            } else if (serviceChage === "" && cost !== "") {
                 $("#Profit").val((-Number(cost)));
                 return;
             }

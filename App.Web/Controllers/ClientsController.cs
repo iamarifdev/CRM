@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -27,19 +28,19 @@ namespace App.Web.Controllers
         }
 
         // GET: Clients/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ClientInfo clientInfo = _db.ClientInfos.Find(id);
-        //    if (clientInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(clientInfo);
-        //}
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var clientInfo = _db.ClientInfos.Find(id);
+            if (clientInfo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(clientInfo);
+        }
 
         // GET: Clients/Create
         public ActionResult Create()

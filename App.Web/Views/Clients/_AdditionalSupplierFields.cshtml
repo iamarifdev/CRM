@@ -8,7 +8,7 @@
 <div class="form-group row">
     @Html.LabelFor(model => model.SupplierId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
     <div class="col-sm-4">
-        @Html.DropDownListFor(model => model.SupplierId, (SelectList)ViewBag.SupplierList, "Select One", new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.SupplierId, (SelectList)ViewBag.SupplierList, "Select One", new { @class = "form-control select2" })
         @Html.ValidationMessageFor(model => model.SupplierId, "", new { @class = "text-danger" })
     </div>
 </div>
