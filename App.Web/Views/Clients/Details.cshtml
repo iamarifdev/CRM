@@ -1,4 +1,5 @@
-﻿@model App.Entity.Models.ClientInfo
+﻿@using App.Entity.Models
+@model App.Entity.Models.ClientInfo
 
 @{
     ViewBag.Title = "Details";
@@ -6,26 +7,242 @@
 }
 
 <div class="card">
-    <h6 class="card-header bg-primary">CLIENTS / DETAILS</h6>
+    <h6 class="card-header bg-primary">CLIENT / DETAILS</h6>
     <div class="card-block">
         <div class="row">
             <div class="col-md-12">
-                <h5>@string.Join(" ", new string[] { Model.FirstName, Model.LastName })</h5>
+                <h5>
+                    CLIENT NAME: @string.Join(" ", new string[] { Model.FirstName, Model.LastName }).ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+
+                </h5>
+                <br />
                 <table class="table table-striped m-md-b-0">
                     <tr>
-                        <th width="200">@Html.DisplayNameFor(m=>m.CustomerId)</th>
+                        <th width="200">@Html.DisplayNameFor(m => m.CustomerId)</th>
                         <td>@Model.CustomerId</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.BranchInfo.BranchName)</th>
                         <td>@Model.BranchInfo.BranchName</td>
                     </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.ReferralType)</th>
+                        <td>@Model.ReferralType</td>
+                    </tr>
+
+                    @if (Model.ReferralType == ReferralsType.Agent)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AgentInfo.AgentName)</th>
+                            <td>@Model.AgentInfo.AgentName</td>
+                        </tr>
+                    }
+                    @if (Model.ReferralType == ReferralsType.Referrals)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Referral)</th>
+                            <td>@Model.Referral</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.ReferralContactNo)</th>
+                            <td>@Model.ReferralContactNo</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.ContactNo)</th>
+                            <td>@Model.ContactNo</td>
+                        </tr>
+                    }
+                    @if (Model.ReferralType == ReferralsType.Office)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.ContactNo)</th>
+                            <td>@Model.ContactNo</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SmsNo)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.SmsNo) ? "No SMS number available." : Model.SmsNo)</td>
+                    </tr>
+                    @if (Model.SupplierId != null)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SuppliersInfo.SupplierName)</th>
+                            <td>@Model.SuppliersInfo.SupplierName</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.ServiceInfo.ServiceName)</th>
+                        <td>@Model.ServiceInfo.ServiceName</td>
+                    </tr>
+                    @if (Model.ServiceInfo.ServiceName == "CONFIRM")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
+                            <td>@Model.AirLineInfo.AirLineName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.NewFlightDate)</th>
+                            <td>@Model.NewFlightDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
+                            <td>@Model.SectorFrom.SectorName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLinePnr)</th>
+                            <td>@Model.AirLinePnr</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "DATE CHANGE")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
+                            <td>@Model.AirLineInfo.AirLineName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.NewFlightDate)</th>
+                            <td>@Model.NewFlightDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.OldFlightDate)</th>
+                            <td>@string.Format("{0:dd/MM/yyyy}", Model.OldFlightDate)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
+                            <td>@Model.SectorFrom.SectorName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLinePnr)</th>
+                            <td>@Model.AirLinePnr</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.GdsPnr)</th>
+                            <td>@Model.GdsPnr</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "E-MAIL")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.EmailAddress)</th>
+                            <td>@Model.EmailAddress</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "NEW TICKET" || Model.ServiceInfo.ServiceName == "TKT+MP")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
+                            <td>@Model.AirLineInfo.AirLineName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.NewFlightDate)</th>
+                            <td>@Model.NewFlightDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
+                            <td>@Model.SectorFrom.SectorName</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "RE-CONFIRM")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
+                            <td>@Model.AirLineInfo.AirLineName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.NewFlightDate)</th>
+                            <td>@Model.NewFlightDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
+                            <td>@Model.SectorFrom.SectorName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLinePnr)</th>
+                            <td>@Model.AirLinePnr</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.GdsPnr)</th>
+                            <td>@Model.GdsPnr</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "STUDENT VISA")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.CountryList.CountryName)</th>
+                            <td>@Model.CountryList.CountryName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.CollageName)</th>
+                            <td>@Model.CollageName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.CourseName)</th>
+                            <td>@Model.CourseName</td>
+                        </tr>
+                    }
+                    @if (Model.ServiceInfo.ServiceName == "TOURIST VISA" || Model.ServiceInfo.ServiceName == "VISA CHECK")
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
+                            <td>@Model.AirLineInfo.AirLineName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.CountryList.CountryName)</th>
+                            <td>@Model.CountryList.CountryName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
+                            <td>@Model.SectorFrom.SectorName</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.ServiceCharge)</th>
+                        <td>@Model.ServiceCharge</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Cost)</th>
+                        <td>@Model.Cost</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Profit)</th>
+                        <td>@Model.Profit</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DoneBy)</th>
+                        <td>@Model.DoneBy</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Remark)</th>
+                        <td>@Model.Remark</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.WorkingStatus)</th>
+                        <td>@Model.WorkingStatus</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SmsConfirmation)</th>
+                        <td>@Model.SmsConfirmation</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.InfoStatus)</th>
+                        <td>@Model.InfoStatus</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DeliveryStatus)</th>
+                        <td>@Model.DeliveryStatus</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Status)</th>
+                        <td>@Model.Status</td>
+                    </tr>
                 </table>
             </div>
         </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
     </div>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
