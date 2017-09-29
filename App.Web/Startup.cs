@@ -93,28 +93,70 @@ namespace App.Web
         }
         private void AddServices()
         {
-            var serviceList = new List<ServiceInfo>
-            {
-                new ServiceInfo{ServiceId = "DI-000001",ServiceName = "CONFIRM", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000002",ServiceName = "DATE CHANGE", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000003",ServiceName = "VISA CHECK", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000004",ServiceName = "OTHERS", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000005",ServiceName = "FORM FILLUP", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000006",ServiceName = "E-MAIL", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000007",ServiceName = "STUDENT VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000008",ServiceName = "TOURIST VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000009",ServiceName = "TKT+MP", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000010",ServiceName = "NEW TICKET", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000011",ServiceName = "WP VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000012",ServiceName = "MANPOWER", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
-                new ServiceInfo{ServiceId = "DI-000013",ServiceName = "RE-CONFIRM", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1}
-            };
             var db = new CrmDbContext();
-            foreach (var service in serviceList)
+            using (var transaction = db.Database.BeginTransaction())
             {
-                if (db.ServiceInfos.Any(x => x.ServiceId == service.ServiceId)) continue;
-                db.ServiceInfos.Add(service);
-                db.SaveChanges();
+                try
+                {
+                    var serviceList = new List<ServiceInfo>
+                    {
+                        new ServiceInfo{ServiceId = "DI-000001",ServiceName = "CONFIRM", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000002",ServiceName = "DATE CHANGE", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000003",ServiceName = "VISA CHECK", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000004",ServiceName = "OTHERS", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000005",ServiceName = "FORM FILLUP", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000006",ServiceName = "E-MAIL", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000007",ServiceName = "STUDENT VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000008",ServiceName = "TOURIST VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000009",ServiceName = "TKT+MP", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000010",ServiceName = "NEW TICKET", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000011",ServiceName = "WP VISA", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000012",ServiceName = "MANPOWER", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1},
+                        new ServiceInfo{ServiceId = "DI-000013",ServiceName = "RE-CONFIRM", Status = Status.Active, EntryDate = DateTime.Now, EntryBy = 1}
+                    };
+
+                    foreach (var service in serviceList)
+                    {
+                        if (db.ServiceInfos.Any(x => x.ServiceId == service.ServiceId)) continue;
+                        db.ServiceInfos.Add(service);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return;
+                }
+            }
+        }
+        private void AddDefaultBranch()
+        {
+            var db = new CrmDbContext();
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (!db.BranchInfos.Any(x => x.BranchName == "Head" && x.BranchCode == "main"))
+                    {
+                        db.BranchInfos.Add(new BranchInfo
+                        {
+                            BranchId = "BI-000001",
+                            BranchName = "Head",
+                            BranchCode = "main",
+                            Status = Status.Active,
+                            EntryBy = 1,
+                            EntryDate = DateTime.Now
+                        });
+                        db.SaveChanges();
+                        transaction.Commit();
+                    }
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return;
+                }
+                
             }
         }
 
@@ -123,6 +165,7 @@ namespace App.Web
             ConfigureAuth(app);
             CreateRolesandUsers();
             AddServices();
+            AddDefaultBranch();
             app.MapSignalR();
         }
 

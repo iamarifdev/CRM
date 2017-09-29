@@ -64,8 +64,9 @@ namespace App.Web.Controllers
                 try
                 {
                     ModelState.Clear();
+                    var branch = client.BranchId==null ? _db.BranchInfos.First(x => x.BranchName == "Head" && x.BranchCode == "main") : _db.BranchInfos.First(x=>x.Id==client.BranchId);
                     client.CustomerId = string.Format("{0}{1:000000}{2:MMyy}",
-                        _db.BranchInfos.First(x => x.Id == client.BranchId).BranchCode.ToUpper(),
+                        branch.BranchCode.ToUpper(),
                         _db.ClientInfos.Count() + 1,
                         DateTime.Now
                     );
@@ -77,6 +78,8 @@ namespace App.Web.Controllers
                     client.DeliveryStatus = DeliveryStatus.NotDelivery;
                     client.SmsConfirmation = SmsConfirmation.NotSendingSms;
                     client.EntryDate = DateTime.Now;
+                    //use default branch as head if branch id not selected
+                    client.BranchId = branch.Id;
                     TryValidateModel(client);
 
                     if (!ModelState.IsValid) return View(client);

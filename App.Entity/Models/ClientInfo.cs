@@ -19,7 +19,7 @@ namespace App.Entity.Models
 
         [Display(Name = "Branch")]
         [ForeignKey("BranchInfo")]
-        public int BranchId { get; set; }
+        public int? BranchId { get; set; }
 
         [StringLength(255)]
         public string Sn { get; set; }

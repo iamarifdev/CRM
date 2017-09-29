@@ -349,6 +349,10 @@
     <Compile Include="Migrations\ContextB\201708240715071_SeveralModelChanged.Designer.cs">
       <DependentUpon>201708240715071_SeveralModelChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201709291806124_ClientInfoModelChangedForBranchId.cs" />
+    <Compile Include="Migrations\ContextB\201709291806124_ClientInfoModelChangedForBranchId.Designer.cs">
+      <DependentUpon>201709291806124_ClientInfoModelChangedForBranchId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -5994,6 +5998,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201708240715071_SeveralModelChanged.resx">
       <DependentUpon>201708240715071_SeveralModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201709291806124_ClientInfoModelChangedForBranchId.resx">
+      <DependentUpon>201709291806124_ClientInfoModelChangedForBranchId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
