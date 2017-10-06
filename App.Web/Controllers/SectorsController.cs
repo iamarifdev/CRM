@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Transactions;
 using System.Web;
@@ -35,20 +36,27 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: Sectors/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    SectorInfo sectorInfo = _db.SectorInfos.Find(id);
-        //    if (sectorInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(sectorInfo);
-        //}
+        // GET: Sectors/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var sectorInfo = _db.SectorInfos.Find(id);
+                if (sectorInfo != null) return View(sectorInfo);
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
 
         // GET: Sectors/Create
         public ActionResult Create()
@@ -277,7 +285,7 @@ namespace App.Web.Controllers
                     using (var stream = sectorFile.InputStream)
                     {
                         IExcelDataReader reader = null;
-                        var sectors  = new List<SectorInfo>();
+                        var sectors = new List<SectorInfo>();
                         switch (extension)
                         {
                             case ".xls":
@@ -326,7 +334,7 @@ namespace App.Web.Controllers
 
                         Thread.Sleep(1000);
 
-                        TempData["Toastr"] = Toastr.CustomSuccess(string.Format("Sector file uploaded successfully. {0} items added.",affectedRows));
+                        TempData["Toastr"] = Toastr.CustomSuccess(string.Format("Sector file uploaded successfully. {0} items added.", affectedRows));
                         return RedirectToAction("Index");
                     }
 

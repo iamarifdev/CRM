@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -12,7 +13,9 @@ namespace App.Web.Controllers
     public class SuppliersController : Controller
     {
         #region Private Zone
+
         private readonly CrmDbContext _db;
+
         #endregion
 
         public SuppliersController()
@@ -26,20 +29,29 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: Suppliers/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    SuppliersInfo suppliersInfo = _db.SuppliersInfos.Find(id);
-        //    if (suppliersInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(suppliersInfo);
-        //}
+        // GET: Suppliers/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var suppliersInfo = _db.SuppliersInfos.Find(id);
+
+                if (suppliersInfo != null) return View(suppliersInfo);
+
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
 
         // GET: Suppliers/Create
         public ActionResult Create()

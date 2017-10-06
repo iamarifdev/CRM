@@ -109,7 +109,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/Designations/Details/{Value}'>Details</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Designations/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -172,7 +172,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/Services/Details/{Value}'>Details</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Services/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -233,7 +233,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Details/{Value}'>Details</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Sectors/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -301,7 +301,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Details/{Value}'>Details</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Airlines/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -365,7 +365,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Details/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Suppliers/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -432,7 +432,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Details/{Value}'>Details</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/PaymentMethods/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })

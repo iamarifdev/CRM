@@ -11,13 +11,13 @@
         <div class="row">
             <div class="col-md-12">
                 <h5>
-                    DESIGNATION NAME: @Model.DesignationTitleEn
+                    DESIGNATION NAME: @Model.DesignationTitleEn.ToUpper()
                     <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
                 </h5>
                 <br />
                 <table class="table table-striped m-md-b-0">
                     <tr>
-                        <th>@Html.DisplayNameFor(m => m.DesignationId)</th>
+                        <th width="200">@Html.DisplayNameFor(m => m.DesignationId)</th>
                         <td>@Model.DesignationId</td>
                     </tr>
                     <tr>

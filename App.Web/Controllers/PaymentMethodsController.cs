@@ -12,7 +12,9 @@ namespace App.Web.Controllers
     public class PaymentMethodsController : Controller
     {
         #region Private Zone
+
         private readonly CrmDbContext _db;
+
         #endregion
 
         public PaymentMethodsController()
@@ -26,20 +28,29 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: PaymentMethods/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    PaymentMethod paymentMethod = _db.PaymentMethods.Find(id);
-        //    if (paymentMethod == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(paymentMethod);
-        //}
+        // GET: PaymentMethods/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var paymentMethod = _db.PaymentMethods.Find(id);
+
+                if (paymentMethod != null) return View(paymentMethod);
+
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
 
         // GET: PaymentMethods/Create
         public ActionResult Create()

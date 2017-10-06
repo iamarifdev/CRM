@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -11,8 +12,10 @@ namespace App.Web.Controllers
     [Authorize]
     public class AirLinesController : Controller
     {
-         #region Private Zone
+        #region Private Zone
+
         private readonly CrmDbContext _db;
+
         #endregion
 
         public AirLinesController()
@@ -26,20 +29,27 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: AirLines/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    AirLineInfo airLineInfo = _db.AirLineInfos.Find(id);
-        //    if (airLineInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(airLineInfo);
-        //}
+        // GET: AirLines/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var airLineInfo = _db.AirLineInfos.Find(id);
+                if (airLineInfo != null) return View(airLineInfo);
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
 
         // GET: AirLines/Create
         public ActionResult Create()

@@ -5,63 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="card">
+    <h6 class="card-header bg-primary">PAYMENT METHODS / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    PAYMENT METHOD: @Model.MethodName.ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+                    <tr>
+                        <th width="150">@Html.DisplayNameFor(m => m.MethodId)</th>
+                        <td>@Model.MethodId</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
 
-<div>
-    <h4>PaymentMethod</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Uid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Uid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MethodId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MethodId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MethodName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MethodName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CurrentValue)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CurrentValue)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DelStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DelStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EntryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EntryDate)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -5,87 +5,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="card">
+    <h6 class="card-header bg-primary">SUPPLIER / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    NAME: @Model.SupplierName.ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+                    <tr>
+                        <th width="200">@Html.DisplayNameFor(m => m.SupplierId)</th>
+                        <td>@Model.SupplierId</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SupplierEmail)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.SupplierEmail) ? "No supplier email address is added." : Model.SupplierEmail)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SupplierMobileNo)</th>
+                        <td>@Model.SupplierMobileNo</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SupplierPhone)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.SupplierPhone)?"No supplier phone number is added.":Model.SupplierPhone)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.SupplierAddress)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.SupplierAddress) ? "No supplier address is added." : Model.SupplierAddress)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
 
-<div>
-    <h4>SuppliersInfo</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Uid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Uid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierEmail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierPhone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierPhone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SupplierMobileNo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SupplierMobileNo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DelStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DelStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EntryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EntryDate)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
