@@ -32,14 +32,15 @@ namespace App.Web.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["Toastr"] = Toastr.BadRequest;
+                return RedirectToAction("Index");
             }
             var clientInfo = _db.ClientInfos.Find(id);
-            if (clientInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(clientInfo);
+
+            if (clientInfo != null) return View(clientInfo);
+
+            TempData["Toastr"] = Toastr.HttpNotFound;
+            return RedirectToAction("Index");
         }
 
         // GET: Clients/Create

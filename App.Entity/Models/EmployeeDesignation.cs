@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Entity.Models
 {
-    public class EmployeeDesignation
+    public class EmployeeDesignation : BaseModel
     {
-        public int Id { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -26,15 +25,6 @@ namespace App.Entity.Models
         [Display(Name = "Designation Depertment")]
         public string DesignationDepertment { get; set; }
 
-        public int Status { get; set; }
-
-        public bool DelStatus { get; set; }
-
-        public DateTime EntryDate { get; set; }
-
-        [ForeignKey("User")]
-        public int EntryBy { get; set; }
-
-        public virtual User User { get; set; }
+        public Status Status { get; set; }
     }
 }

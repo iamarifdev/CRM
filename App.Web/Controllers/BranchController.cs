@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -25,28 +26,29 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: Branch/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    try
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        var branchInfo = _db.BranchInfos.Find(id);
-        //        if (branchInfo != null) return View(branchInfo);
+        // GET: Branch/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var branchInfo = _db.BranchInfos.Find(id);
+                if (branchInfo != null) return View(branchInfo);
 
-        //        TempData["Toastr"] = Toastr.HttpNotFound;
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["Toastr"] = Toastr.DbError(ex.Message);
-        //        return RedirectToAction("Index");
-        //    }
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
 
-        //}
+        }
 
         // GET: Branch/Create
         public ActionResult Create()

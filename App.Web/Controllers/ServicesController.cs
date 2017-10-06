@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -29,20 +30,21 @@ namespace App.Web.Controllers
             return View();
         }
 
-        //// GET: Services/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ServiceInfo serviceInfo = _db.ServiceInfos.Find(id);
-        //    if (serviceInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(serviceInfo);
-        //}
+        // GET: Services/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                TempData["Toastr"] = Toastr.BadRequest;
+                return RedirectToAction("Index");
+            }
+            var serviceInfo = _db.ServiceInfos.Find(id);
+
+            if (serviceInfo != null) return View(serviceInfo);
+
+            TempData["Toastr"] = Toastr.HttpNotFound;
+            return RedirectToAction("Index");
+        }
 
         // GET: Services/Create
         public ActionResult Create()

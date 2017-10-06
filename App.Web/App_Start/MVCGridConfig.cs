@@ -10,7 +10,7 @@ using App.Web.Helper;
 
 namespace App.Web
 {
-    public static class MVCGridConfig 
+    public static class MVCGridConfig
     {
         public static void RegisterGrids()
         {
@@ -30,19 +30,19 @@ namespace App.Web
                     cols.Add("BranchId").WithHeaderText("Branch Id").WithValueExpression(p => p.BranchId).WithSorting(true);
                     cols.Add("BranchName").WithHeaderText("Branch Name").WithValueExpression(p => p.BranchName).WithSorting(true);
                     cols.Add("BranchCode").WithHeaderText("Branch Code").WithValueExpression(p => p.BranchCode).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0?"Active":"Inactive");
-                    cols.Add("DelStatus").WithHeaderText("Delete Status").WithValueExpression(p => p.DelStatus.ToString());
-                    cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString()).WithSorting(true);
-                    cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status == Status.Active ? "Active" : "Inactive");
+                    //cols.Add("DelStatus").WithHeaderText("Delete Status").WithValueExpression(p => p.DelStatus.ToString());
+                    //cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString()).WithSorting(true);
+                    //cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-                        .WithValueExpression(p=>p.Id.ToString()).WithValueTemplate(
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Branch/Edit/{Value}'>Edit</a> "
-                        //+"<a class='btn btn-sm btn-outline-info' href='/Branch/Details/{Value}'>Details</a> " 
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        + "<a class='btn btn-sm btn-outline-info' href='/Branch/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "BranchId")
-                .WithPaging(true,10,true,100)
+                .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
                 .WithRetrieveDataMethod((context) =>
@@ -52,15 +52,15 @@ namespace App.Web
                     using (var db = new CrmDbContext())
                     {
                         var query = db.BranchInfos.AsQueryable();
-                        
+
                         var globalSearch = options.GetAdditionalQueryOptionString("Search");
                         if (!string.IsNullOrWhiteSpace(globalSearch))
                         {
                             query = query.Where(x =>
-                                    x.BranchId.Contains(globalSearch)||
+                                    x.BranchId.Contains(globalSearch) ||
                                     x.BranchName.Contains(globalSearch) ||
-                                    x.BranchCode.Contains(globalSearch) ||
-                                    x.EntryDate.ToString().Contains(globalSearch)
+                                    x.BranchCode.Contains(globalSearch) 
+                                    //|| x.EntryDate.ToString().Contains(globalSearch)
                             );
                         }
 
@@ -78,12 +78,12 @@ namespace App.Web
                                 case "branchcode":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BranchCode) : query.OrderBy(p => p.BranchCode);
                                     break;
-                                case "entrydate":
-                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryDate) : query.OrderBy(p => p.EntryDate);
-                                    break;
-                                case "entryby":
-                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryBy) : query.OrderBy(p => p.EntryBy);
-                                    break;
+                                //case "entrydate":
+                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryDate) : query.OrderBy(p => p.EntryDate);
+                                //    break;
+                                //case "entryby":
+                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EntryBy) : query.OrderBy(p => p.EntryBy);
+                                //    break;
                             }
                         }
                         result.TotalRecords = query.Count();
@@ -105,11 +105,12 @@ namespace App.Web
                     cols.Add("DesignationId").WithHeaderText("Designation Id").WithValueExpression(p => p.DesignationId).WithSorting(true);
                     cols.Add("DesignationTitleBn").WithHeaderText("Designation Name (BN)").WithValueExpression(p => p.DesignationTitleBn);
                     cols.Add("DesignationTitleEn").WithHeaderText("Designation Name (EN)").WithValueExpression(p => p.DesignationTitleEn).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status == Status.Active ? "Active" : "Inactive");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> " 
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-primary' href='/Designations/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "DesignationId")
@@ -128,7 +129,7 @@ namespace App.Web
                         if (!string.IsNullOrWhiteSpace(globalSearch))
                         {
                             query = query.Where(x =>
-                                    x.DesignationId.Contains(globalSearch) 
+                                    x.DesignationId.Contains(globalSearch)
                                     || x.DesignationTitleEn.Contains(globalSearch)
                             );
                         }
@@ -141,7 +142,7 @@ namespace App.Web
                                 case "designationid":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DesignationId) : query.OrderBy(p => p.DesignationId);
                                     break;
-                                case "designationtitlebn":
+                                case "designationtitleen":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DesignationTitleEn) : query.OrderBy(p => p.DesignationTitleEn);
                                     break;
                                 case "designationdepertment":
@@ -150,7 +151,7 @@ namespace App.Web
                             }
                         }
                         result.TotalRecords = query.Count();
-                        if (options.GetLimitOffset().HasValue && query.Count()!=0)
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
                         {
                             query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
                         }
@@ -170,8 +171,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> " 
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-primary' href='/Services/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "ServiceId")
@@ -231,7 +233,8 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        + "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SectorId")
@@ -297,8 +300,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> " 
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "AirLineId")
@@ -360,8 +364,9 @@ namespace App.Web
                     cols.Add("SupplierMobileNo").WithHeaderText("Mobile No.").WithValueExpression(p => p.SupplierMobileNo).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> " 
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Details/{Value}'>Edit</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SupplierId")
@@ -427,7 +432,8 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> "
-                        //+"<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        + "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "MethodId")
@@ -491,6 +497,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Agents/Edit/{Value}'>Edit</a> " +
+                        "<a class='btn btn-sm btn-outline-info' href='/Agents/Details/{Value}'>Details</a> " +
                         "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -571,7 +578,7 @@ namespace App.Web
                     cols.Add("CustomerId").WithHeaderText("CID").WithValueExpression(p => p.CustomerId).WithSorting(true);
                     cols.Add("FullName").WithHeaderText("Name").WithValueExpression(p => p.FullName).WithSorting(true);
                     cols.Add("ContactNo").WithHeaderText("Contact Number").WithValueExpression(p => p.ContactNo).WithSorting(true);
-                    cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo==null ? "" : p.AirLineInfo.AirLineName).WithSorting(true);
+                    cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo == null ? "" : p.AirLineInfo.AirLineName).WithSorting(true);
                     cols.Add("Service").WithHeaderText("Service").WithValueExpression(p => p.ServiceInfo == null ? "" : p.ServiceInfo.ServiceName).WithSorting(true);
                     cols.Add("ServiceCharge").WithHeaderText("Service Charge").WithValueExpression(p => p.ServiceCharge.ToString()).WithSorting(true);
                     cols.Add("UserName").WithHeaderText("Served By").WithValueExpression(p => p.UserServedBy == null ? "" : p.UserServedBy.UserName).WithSorting(true);
@@ -582,7 +589,7 @@ namespace App.Web
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> " 
+                        + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })

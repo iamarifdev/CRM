@@ -5,79 +5,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="card">
+    <h6 class="card-header bg-primary">DESIGNATION / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    DESIGNATION NAME: @Model.DesignationTitleEn
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DesignationId)</th>
+                        <td>@Model.DesignationId</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DesignationTitleBn)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.DesignationTitleBn) ? "No Designation added in bengali." : Model.DesignationTitleBn)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DesignationDepertment)</th>
+                        <td>@(string.IsNullOrWhiteSpace(Model.DesignationDepertment) ? "No Desingnatiion department added." : Model.DesignationDepertment)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Status)</th>
+                        <td>@Model.Status</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
 
-<div>
-    <h4>EmployeeDesignation</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Uid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Uid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DesignationId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DesignationId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DesignationTitleEn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DesignationTitleEn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DesignationTitleBn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DesignationTitleBn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DesignationDepertment)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DesignationDepertment)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DelStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DelStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EntryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EntryDate)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
