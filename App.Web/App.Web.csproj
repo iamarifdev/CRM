@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\AirLinesController.cs" />
+    <Compile Include="Controllers\BillingController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
@@ -353,10 +354,19 @@
     <Compile Include="Migrations\ContextB\201709291806124_ClientInfoModelChangedForBranchId.Designer.cs">
       <DependentUpon>201709291806124_ClientInfoModelChangedForBranchId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201710071002135_CustomerPaymentModelChanged.cs" />
+    <Compile Include="Migrations\ContextB\201710071002135_CustomerPaymentModelChanged.Designer.cs">
+      <DependentUpon>201710071002135_CustomerPaymentModelChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201710071006521_CustomerPaymentModelChangedToAddForeignKey.cs" />
+    <Compile Include="Migrations\ContextB\201710071006521_CustomerPaymentModelChangedToAddForeignKey.Designer.cs">
+      <DependentUpon>201710071006521_CustomerPaymentModelChangedToAddForeignKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\ClientPaymentViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -5009,6 +5019,7 @@
     <Content Include="Views\Clients\_AdditionalConfirmFields.cshtml" />
     <Content Include="Views\Clients\_AdditionalReConfirmFields.cshtml" />
     <Content Include="Views\Clients\_AdditionalDateChangeFields.cshtml" />
+    <Content Include="Views\Billing\ClientPayment.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -6001,6 +6012,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201709291806124_ClientInfoModelChangedForBranchId.resx">
       <DependentUpon>201709291806124_ClientInfoModelChangedForBranchId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710071002135_CustomerPaymentModelChanged.resx">
+      <DependentUpon>201710071002135_CustomerPaymentModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710071006521_CustomerPaymentModelChangedToAddForeignKey.resx">
+      <DependentUpon>201710071006521_CustomerPaymentModelChangedToAddForeignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,178 @@
+﻿@model App.Web.Models.ClientPaymentViewModel
+@{
+    ViewBag.Title = "ClientPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        //Confirm = "Do you want to add a new person?",
+        //OnBegin = "OnBegin",
+        OnSuccess = "OnSuccess",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+    };
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">BILLING / CLIENT PAYMENTS</h6>
+    <div class="card-block">
+        @using (Ajax.BeginForm("ClientPayment", "Billing", null, options, new { @class = "form-horizontal" }))
+        {
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.BranchList, "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(model => model.CustomerId, (SelectList)ViewBag.ClientList, "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.ServiceAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(model => model.ServiceAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
+                                    @Html.ValidationMessageFor(model => model.ServiceAmount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.PaidAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(model => model.PaidAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
+                                    @Html.ValidationMessageFor(model => model.PaidAmount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.DueAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(model => model.DueAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
+                                    @Html.ValidationMessageFor(model => model.DueAmount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        @*<div class="form-group offset-md-1 col-md-10">
+                                <div class="offset-sm-6 col-sm-3">
+                                    <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
+                                </div>
+                            </div>*@
+                        @*<div class="col-md-3">
+                                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+                            </div>*@
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-sm btn-danger pull-right" id="addPaymentBtn"> <i class="fa fa-plus"></i> Add Payment</button>
+                </div>
+            </div>
+            <div class="row form-inline">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PaymentDate, new { @class = "form-control-label" })
+                        @Html.TextBoxFor(model => model.PaymentDate, null, new { @class = "form-control pickDate" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PaymentAmount, new { @class = "form-control-label" })
+                        @Html.TextBoxFor(model => model.PaymentAmount, null, new { @class = "form-control", @type = "number" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
+    <script>
+        $(".select2").select2();
+        $(".pickDate").datepicker();
+        function OnBegin() {
+            //alert('On Begin');
+            console.log('On Begin');
+        }
+
+        function OnComplete() {
+            //alert('On Completed');
+            console.log('On Completed');
+        }
+
+        function OnSuccess() {
+            //alert('On Success');
+            console.log('On Success');
+        }
+
+        function OnFailure() {
+            //alert('On Failure');
+            console.log('On Failure');
+        }
+
+        $("#BranchId").change(function () {
+            var value = $(this).val();
+            if (value !== "") {
+                $.get("@Url.Action("GetClientsBranchWise", "Billing")", { branchId: value }, function (resp) {
+                    if (resp.Flag) {
+                        $("#CustomerId").empty().html("<option>Select One</option>");
+                        $.each(resp.Clients, function (key, item) {
+                            $("<option>").attr("value", item.Value).html(item.Text).appendTo("#CustomerId");
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#CustomerId").change(function () {
+            var value = $(this).val();
+            if (value !== "") {
+                $.get("@Url.Action("GetServiceChargeInfo", "Billing")", { customerId: value }, function (resp) {
+                    if (resp.Flag) {
+                        $("#ServiceAmount").val(resp.TotalServiceCharge);
+                        $("#PaidAmount").val(resp.TotalPaid);
+                        $("#DueAmount").val(resp.Due);
+                    }
+                    if (resp.IsDueExist) {
+                        $.get("@Url.Action("GetPaymentFields","Billing")", function () {
+
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}
+

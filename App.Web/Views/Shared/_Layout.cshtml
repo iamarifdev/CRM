@@ -86,7 +86,7 @@
                             <span class="s-text">Billing</span>
                         </a>
                         <ul>
-                            <li><a href="aa.html">Client Payment</a></li>
+                            <li><a href="@Url.Action("ClientPayment","Billing")">Client Payment</a></li>
                             @if (User.IsInRole("Admin"))
                             {
                                 <li><a href="aa.html">Agent Payment</a></li>

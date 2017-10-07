@@ -102,10 +102,10 @@ namespace App.Entity.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Service Charge")]
-        [Range(0.00,Double.MaxValue,ErrorMessage = "Enter a positive value.")]
+        [Range(0.00,double.MaxValue,ErrorMessage = "Enter a positive value.")]
         public double? ServiceCharge { get; set; }
 
-        [Range(0.00, Double.MaxValue, ErrorMessage = "Enter a positive value.")]
+        [Range(0.00, double.MaxValue, ErrorMessage = "Enter a positive value.")]
         public double? Cost { get; set; }
 
         public double? Profit { get; set; }

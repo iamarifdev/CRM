@@ -1,16 +1,32 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
-namespace App.Entity.Models
+namespace App.Web.Models
 {
-    public class CustomerPayment : BaseModel
+    public class ClientPaymentViewModel
     {
+        [Required]
         [Display(Name = "Branch")]
         public int BranchId { get; set; }
 
+        [Required]
         [Display(Name = "Customer")]
         public int CustomerId { get; set; }
+
+        [Required]
+        [Display(Name = "Service Amt")]
+        public double ServiceAmount { get; set; }
+
+        [Required]
+        [Display(Name = "Paid Amt")]
+        public double PaidAmount { get; set; }
+
+        [Required]
+        [Display(Name = "Due Amt")]
+        public double DueAmount { get; set; }
 
         [Display(Name = "Payment Date")]
         public DateTime? PaymentDate { get; set; }
@@ -26,12 +42,5 @@ namespace App.Entity.Models
 
         [StringLength(10)]
         public string Status { get; set; }
-
-        [ForeignKey("MethodId")]
-        public virtual PaymentMethod PaymentMethod { get; set; }
-
-        [ForeignKey("CustomerId")]
-        public virtual ClientInfo ClientInfo { get; set; }
-
     }
 }
