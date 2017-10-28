@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Foolproof;
 
 namespace App.Web.Models
 {
@@ -32,6 +34,8 @@ namespace App.Web.Models
         public DateTime? PaymentDate { get; set; }
 
         [Display(Name = "Payment Amount")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Payment amount must be greater than 0")]
+        [LessThan("ServiceAmount", ErrorMessage = "Payment amount cannot be greater than service charge.")]
         public double PaymentAmount { get; set; }
 
         [Display(Name = "Payment Method")]

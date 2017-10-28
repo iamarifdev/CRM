@@ -1,0 +1,20 @@
+﻿/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+    #savePaymentBtn {
+        margin-top: 27px;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    #savePaymentBtn {
+        margin-top: 27px;
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+    #savePaymentBtn {
+        margin-top: 27px;
+    }
+}

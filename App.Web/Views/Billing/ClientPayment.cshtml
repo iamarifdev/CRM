@@ -17,11 +17,12 @@
 {
     <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
     <h6 class="card-header bg-primary">BILLING / CLIENT PAYMENTS</h6>
     <div class="card-block">
-        @using (Ajax.BeginForm("ClientPayment", "Billing", null, options, new { @class = "form-horizontal" }))
+        @using (Ajax.BeginForm("ClientPayment", "Billing", null, options, new { @class = "form-horizontal", @id="clientPaymentForm" }))
         {
             <div class="card">
                 <div class="card-block">
@@ -85,30 +86,33 @@
 
                 </div>
             </div>
-            <div class="row">
+            
+            <div id="clientPaymentAdditional">
+                
+            </div>
+            
+            @*<div class="row">
                 <div class="col-md-12">
                     <button type="button" class="btn btn-sm btn-danger pull-right" id="addPaymentBtn"> <i class="fa fa-plus"></i> Add Payment</button>
                 </div>
             </div>
-            <div class="row form-inline">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentDate, new { @class = "form-control-label" })
-                        @Html.TextBoxFor(model => model.PaymentDate, null, new { @class = "form-control pickDate" })
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentAmount, new { @class = "form-control-label" })
-                        @Html.TextBoxFor(model => model.PaymentAmount, null, new { @class = "form-control", @type = "number" })
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-success" />
-                    </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentDate, new { @class = "form-control-label" })
+                    @Html.TextBoxFor(model => model.PaymentDate, null, new { @class = "form-control pickDate" })
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentAmount, new { @class = "form-control-label" })
+                    @Html.TextBoxFor(model => model.PaymentAmount, null, new { @class = "form-control", @type = "number" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" value="Save" id="" class="btn btn-success" />
+                </div>
+            </div>*@
         }
     </div>
 </div>
@@ -116,12 +120,20 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/mvcfoolproof.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script>
         $(".select2").select2();
         $(".pickDate").datepicker();
+
+        function ReValidate() {
+            var form = $("#clientPaymentForm");
+            form.removeData("validator");
+            form.removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse("#clientPaymentForm");
+        }
         function OnBegin() {
             //alert('On Begin');
             console.log('On Begin');
@@ -147,13 +159,19 @@
             if (value !== "") {
                 $.get("@Url.Action("GetClientsBranchWise", "Billing")", { branchId: value }, function (resp) {
                     if (resp.Flag) {
-                        $("#CustomerId").empty().html("<option>Select One</option>");
-                        $.each(resp.Clients, function (key, item) {
-                            $("<option>").attr("value", item.Value).html(item.Text).appendTo("#CustomerId");
-                        });
+                        $("#CustomerId").empty().html("<option value>Select One</option>");
+                        $.each(resp.Clients,
+                            function(key, item) {
+                                $("<option>").attr("value", item.Value).html(item.Text).appendTo("#CustomerId");
+                            });
+                    } else {
+                        $("#CustomerId").empty().html("<option value>Select One</option>");
+                        $("#clientPaymentAdditional").empty();
                     }
                 });
+                return;
             }
+            $("#clientPaymentAdditional").empty();
         });
 
         $("#CustomerId").change(function () {
@@ -166,12 +184,27 @@
                         $("#DueAmount").val(resp.Due);
                     }
                     if (resp.IsDueExist) {
-                        $.get("@Url.Action("GetPaymentFields","Billing")", function () {
-
+                        $.get("@Url.Action("GetPaymentFields","Billing")", function (html) {
+                            if (html === null) return;
+                            $("#clientPaymentAdditional").html(html).slideDown(500);
+                            $("#paymentFields").hide();
+                            $(".pickDate").datepicker({
+                                autoclose: true,
+                                format: "yyyy-mm-dd",
+                                setDate: "d"
+                            });
+                            ReValidate();
                         });
+                        console.log(resp);
                     }
                 });
+                return;
             }
+            $("#clientPaymentAdditional").empty();
+        });
+
+        $("body").on("click", "#addPaymentBtn", function () {
+            $("#paymentFields").slideToggle(500);
         });
     </script>
 }

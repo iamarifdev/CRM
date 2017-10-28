@@ -53,6 +53,7 @@ namespace App.Web.Controllers
             try
             {
                 if (branchId == null) return Json(new { Flag = false, Msg = "Bad request" }, JsonRequestBehavior.AllowGet);
+                if (!_db.ClientInfos.Any(x => x.BranchId == branchId)) return Json(new { Flag = false, Msg = "No clients are available." }, JsonRequestBehavior.AllowGet);
                 var clients = new SelectList(_db.ClientInfos.Where(x => x.BranchId == branchId).ToList(), "Id", "FirstName");
                 return Json(new { Flag = true, Clients = clients }, JsonRequestBehavior.AllowGet);
             }
@@ -84,6 +85,20 @@ namespace App.Web.Controllers
             {
                 return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetPaymentFields()
+        {
+            try
+            {
+                return PartialView("_ClientPaymentAdditional", new ClientPaymentViewModel());
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            
         }
     }
 }

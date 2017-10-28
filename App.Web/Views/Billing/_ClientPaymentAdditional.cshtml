@@ -1,0 +1,27 @@
+﻿@model App.Web.Models.ClientPaymentViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-sm btn-danger pull-right" id="addPaymentBtn"> <i class="fa fa-plus"></i> Add Payment</button>
+    </div>
+</div>
+<div id="paymentFields">
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentDate, new { @class = "form-control-label" })
+            @Html.TextBoxFor(model => model.PaymentDate, null, new { @class = "form-control pickDate" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentAmount, new { @class = "form-control-label" })
+            @Html.TextBoxFor(model => model.PaymentAmount, null, new { @class = "form-control", @type = "number" })
+            @Html.ValidationMessageFor(model => model.PaymentAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="submit" value="Save" id="savePaymentBtn" class="btn btn-success" />
+        </div>
+    </div>
+</div>
