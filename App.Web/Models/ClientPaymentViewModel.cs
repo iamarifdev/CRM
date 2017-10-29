@@ -10,6 +10,11 @@ namespace App.Web.Models
 {
     public class ClientPaymentViewModel
     {
+        public ClientPaymentViewModel()
+        {
+            PaymentDate = DateTime.Now;
+        }
+
         [Required]
         [Display(Name = "Branch")]
         public int BranchId { get; set; }
@@ -31,7 +36,9 @@ namespace App.Web.Models
         public double DueAmount { get; set; }
 
         [Display(Name = "Payment Date")]
-        public DateTime? PaymentDate { get; set; }
+        [Required(ErrorMessage = "Select a date for payment.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime PaymentDate { get; set; }
 
         [Display(Name = "Payment Amount")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Payment amount must be greater than 0")]

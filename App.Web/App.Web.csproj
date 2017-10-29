@@ -371,6 +371,10 @@
     <Compile Include="Migrations\ContextB\201710290907417_CustomerPaymentMethodSetToNullable.Designer.cs">
       <DependentUpon>201710290907417_CustomerPaymentMethodSetToNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201710291958147_UserTypeAddedToCustomerPaymentModel.cs" />
+    <Compile Include="Migrations\ContextB\201710291958147_UserTypeAddedToCustomerPaymentModel.Designer.cs">
+      <DependentUpon>201710291958147_UserTypeAddedToCustomerPaymentModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -6040,6 +6044,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201710290907417_CustomerPaymentMethodSetToNullable.resx">
       <DependentUpon>201710290907417_CustomerPaymentMethodSetToNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710291958147_UserTypeAddedToCustomerPaymentModel.resx">
+      <DependentUpon>201710291958147_UserTypeAddedToCustomerPaymentModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -4,6 +4,7 @@ using MVCGrid.Models;
 using MVCGrid.Web;
 using App.Entity.Models;
 using App.Web.Context;
+using Microsoft.AspNet.Identity;
 using App.Web.Helper;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(App.Web.MVCGridConfig), "RegisterGrids")]
@@ -588,10 +589,27 @@ namespace App.Web
                     cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
-                     );
+                            "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
+                            + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
+                            + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        );
+                    //if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.User.IsInRole("Admin"))
+                    //{
+                    //    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                    //        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                    //            "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
+                    //            + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
+                    //            + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                    //        );
+                    //}
+                    //if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.User.IsInRole("Agent"))
+                    //{
+                    //    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                    //        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                    //            "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a>"
+                    //        );
+                    //}
+                    
                 })
                 .WithSorting(true, "EntryDate")
                 .WithPaging(true, 10, true, 100)

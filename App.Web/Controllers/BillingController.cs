@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Models;
@@ -10,7 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Agent")]
     public class BillingController : Controller
     {
         #region Private Zone
@@ -24,19 +25,39 @@ namespace App.Web.Controllers
             _db = new CrmDbContext();
         }
 
+        [Authorize(Roles = "Admin,Agent")]
         [HttpGet]
         public ActionResult ClientPayment()
         {
-            ViewBag.BranchList = new SelectList(_db.BranchInfos.ToList(), "Id", "BranchName");
-            ViewBag.ClientList = new SelectList(new List<ClientInfo>());
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.BranchList = new SelectList(_db.BranchInfos.ToList(), "Id", "BranchName");            
+                ViewBag.ClientList = new SelectList(new List<ClientInfo>());
+            }
+            else if (User.IsInRole("Agent"))
+            {
+                var agentId = _db.AgentInfos.First(x => x.UserName == User.Identity.Name).Id;
+                ViewBag.ClientList = new SelectList(_db.ClientInfos.Where(x => x.AgentId == agentId).ToList(), "Id", "FirstName");
+            }
             return View();
         }
 
+        [Authorize(Roles = "Admin,Agent")]
         [HttpPost]
         public ActionResult ClientPayment(ClientPaymentViewModel payment)
         {
             try
             {
+                if (User.IsInRole("Agent"))
+                {
+                    ModelState.Clear();
+                    var branchId = _db.ClientInfos.Where(x => x.Id == payment.CustomerId).Select(x=>x.BranchId).FirstOrDefault() 
+                        ?? _db.BranchInfos.Where(x => x.BranchName == "Main").Select(x => x.Id).FirstOrDefault();
+                    payment.BranchId = branchId;
+
+                    TryValidateModel(payment);
+                }
+
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid payment info." });
                 if (payment.PaymentAmount > payment.DueAmount)
                     return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Due amount."});
@@ -53,9 +74,18 @@ namespace App.Web.Controllers
                             CustomerId = payment.CustomerId,
                             PaymentDate = payment.PaymentDate,
                             PaymentAmount = payment.PaymentAmount,
-                            EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
                             EntryDate = DateTime.Now
                         };
+                        if (User.IsInRole("Admin"))
+                        {
+                            clientPayment.UserType = UserType.IsAdmin;
+                            clientPayment.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                        }
+                        if (User.IsInRole("Agent"))
+                        {
+                            clientPayment.UserType = UserType.IsAgent;
+                            clientPayment.EntryBy = _db.AgentInfos.First(x => x.UserName == User.Identity.Name).Id;
+                        }
                         _db.CustomerPayments.Add(clientPayment);
                         _db.SaveChanges();
                         dbTransaction.Commit();
@@ -106,7 +136,13 @@ namespace App.Web.Controllers
                     var query = _db.CustomerPayments.Where(x => x.CustomerId == customerId);
                     totalPaid = query.Sum(x => x.PaymentAmount);
                     due = totalServiceCharge - totalPaid;
-                    payments = query.Select(x => new PaymentViewModel { PaymnentMadeBy = x.User.UserName, PaymentDate= x.PaymentDate, PaymentAmount = x.PaymentAmount }).ToList();
+                    payments = query.Select(x => new PaymentViewModel
+                    {
+                        PaymnentMadeBy = x.UserType==UserType.IsAgent 
+                            ? _db.AgentInfos.Where(a=>a.Id==x.EntryBy).Select(s=>s.AgentName).FirstOrDefault()
+                            : _db.Users.Where(u=>u.Id == x.EntryBy).Select(s=>s.UserName).FirstOrDefault(), 
+                        PaymentDate= x.PaymentDate, PaymentAmount = x.PaymentAmount
+                    }).ToList();
                 }
                 var data = new { Flag = true, TotalPaid = totalPaid, TotalServiceCharge = totalServiceCharge, Due = due, IsDueExist = due > 0.00,
                                  Payments = payments != null 

@@ -180,7 +180,7 @@
             "VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE",
             "CONFIRM"
         ];
-        $("#ServiceId") .on("change", function() {
+        $("#ServiceId").on("change", function() {
             $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
             var serviceId = $(this).val();

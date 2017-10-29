@@ -53,4 +53,10 @@ namespace App.Entity.Models
         Referrals=2,
         Office=3
     }
+
+    public enum UserType
+    {
+        IsAgent,
+        IsAdmin
+    }
 }

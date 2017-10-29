@@ -27,6 +27,8 @@ namespace App.Entity.Models
         [StringLength(10)]
         public string Status { get; set; }
 
+        public UserType UserType { get; set; }
+
         [ForeignKey("MethodId")]
         public virtual PaymentMethod PaymentMethod { get; set; }
 

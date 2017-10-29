@@ -13,7 +13,10 @@
             <div class="col-md-12">
                 <h5>
                     CLIENT NAME: @string.Join(" ", new string[] { Model.FirstName, Model.LastName }).ToUpper()
-                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                    }
 
                 </h5>
                 <br />

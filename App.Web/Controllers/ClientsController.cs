@@ -8,7 +8,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Agent")]
     public class ClientsController : Controller
     {
 
@@ -20,13 +20,18 @@ namespace App.Web.Controllers
         {
             _db = new CrmDbContext();
         }
+
+
         // GET: Clients
+        [Authorize(Roles = "Admin,Agent")]
         public ActionResult Index()
         {
             return View();
         }
 
+        
         // GET: Clients/Details/5
+        [Authorize(Roles = "Admin,Agent")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -43,6 +48,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName");
@@ -55,6 +61,7 @@ namespace App.Web.Controllers
         // POST: Clients/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,BranchId,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,VenueFromId,VenueToId,SmsNo,CountryId")] ClientInfo client)
@@ -108,6 +115,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Clients/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             try
@@ -145,6 +153,7 @@ namespace App.Web.Controllers
         // POST: Clients/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="Id,BranchId,ReferralType,AgentId,SupplierId,FirstName,LastName,ContactNo,Referral,ReferralContactNo,ServiceId,AirLineId,OldFlightDate,ChangeFlightDate,AirLinePnr,GdsPnr,NewFlightDate,CollageName,CourseName,EmailAddress,ServiceCharge,Cost,Profit,Discount,DoneBy,WorkingStatus,DeliveryStatus,InfoStatus,Remark,Status,VenueFromId,VenueToId,SmsNo,CountryId")] ClientInfo client, int? id)
@@ -264,6 +273,7 @@ namespace App.Web.Controllers
         //}
 
         // POST: Clients/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
