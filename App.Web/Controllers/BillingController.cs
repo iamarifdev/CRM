@@ -33,19 +33,46 @@ namespace App.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult ClientPayment(ClientPaymentViewModel model)
+        public ActionResult ClientPayment(ClientPaymentViewModel payment)
         {
             try
             {
-                if (!ModelState.IsValid) return View(model);
-
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid payment info." });
+                if (payment.PaymentAmount > payment.DueAmount)
+                    return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Due amount."});
+                if (payment.PaymentAmount > payment.ServiceAmount)
+                    return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Service amount." });
+                
+                using (var dbTransaction = _db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var clientPayment = new CustomerPayment
+                        {
+                            BranchId = payment.BranchId,
+                            CustomerId = payment.CustomerId,
+                            PaymentDate = payment.PaymentDate,
+                            PaymentAmount = payment.PaymentAmount,
+                            EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
+                            EntryDate = DateTime.Now
+                        };
+                        _db.CustomerPayments.Add(clientPayment);
+                        _db.SaveChanges();
+                        dbTransaction.Commit();
+                        return Json(new { Flag = true, Msg = "Payment successfully added." });
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return Json(new { Flag = false, Msg = ex.Message });
+                    }
+                }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return Json(new { Flag = false, Msg = ex.Message });
             }
-            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetClientsBranchWise(int? branchId)
@@ -72,13 +99,20 @@ namespace App.Web.Controllers
                 var totalServiceCharge = _db.ClientInfos.Where(x => x.Id == (int)customerId).Sum(x => x.ServiceCharge) ?? 0;
                 var due = totalServiceCharge;
                 var totalPaid = 0.00;
+                List<PaymentViewModel> payments = null;
                 // ReSharper disable once InvertIf
                 if (_db.CustomerPayments.Any(x => x.CustomerId == customerId))
                 {
-                    totalPaid = _db.CustomerPayments.Where(x => x.CustomerId == customerId).Sum(x => x.PaymentAmount);
+                    var query = _db.CustomerPayments.Where(x => x.CustomerId == customerId);
+                    totalPaid = query.Sum(x => x.PaymentAmount);
                     due = totalServiceCharge - totalPaid;
+                    payments = query.Select(x => new PaymentViewModel { PaymnentMadeBy = x.User.UserName, PaymentDate= x.PaymentDate, PaymentAmount = x.PaymentAmount }).ToList();
                 }
-                var data = new { Flag = true, TotalPaid = totalPaid, TotalServiceCharge = totalServiceCharge, Due = due, IsDueExist = due > 0.00 };
+                var data = new { Flag = true, TotalPaid = totalPaid, TotalServiceCharge = totalServiceCharge, Due = due, IsDueExist = due > 0.00,
+                                 Payments = payments != null 
+                                 ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount })
+                                 : null
+                };
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

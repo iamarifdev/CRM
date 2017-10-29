@@ -35,11 +35,11 @@ namespace App.Web.Models
 
         [Display(Name = "Payment Amount")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Payment amount must be greater than 0")]
-        [LessThan("ServiceAmount", ErrorMessage = "Payment amount cannot be greater than service charge.")]
+        [LessThanOrEqualTo("DueAmount", ErrorMessage = "Payment amount cannot be greater than Due amount")]
         public double PaymentAmount { get; set; }
 
         [Display(Name = "Payment Method")]
-        public int MethodId { get; set; }
+        public int? MethodId { get; set; }
 
         [StringLength(10)]
         public string Channel { get; set; }

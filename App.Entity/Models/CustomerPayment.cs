@@ -19,7 +19,7 @@ namespace App.Entity.Models
         public double PaymentAmount { get; set; }
 
         [Display(Name = "Payment Method")]
-        public int MethodId { get; set; }
+        public int? MethodId { get; set; }
 
         [StringLength(10)]
         public string Channel { get; set; }

@@ -367,6 +367,10 @@
     <Compile Include="Migrations\ContextB\201710071006521_CustomerPaymentModelChangedToAddForeignKey.Designer.cs">
       <DependentUpon>201710071006521_CustomerPaymentModelChangedToAddForeignKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201710290907417_CustomerPaymentMethodSetToNullable.cs" />
+    <Compile Include="Migrations\ContextB\201710290907417_CustomerPaymentMethodSetToNullable.Designer.cs">
+      <DependentUpon>201710290907417_CustomerPaymentMethodSetToNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -374,6 +378,7 @@
     <Compile Include="Models\ClientPaymentViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -6032,6 +6037,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201710071006521_CustomerPaymentModelChangedToAddForeignKey.resx">
       <DependentUpon>201710071006521_CustomerPaymentModelChangedToAddForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710290907417_CustomerPaymentMethodSetToNullable.resx">
+      <DependentUpon>201710290907417_CustomerPaymentMethodSetToNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

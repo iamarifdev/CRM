@@ -1,0 +1,1 @@
+N:\Projects\Development\CRM\App.Entity\bin\Debug\EntityFramework.dll

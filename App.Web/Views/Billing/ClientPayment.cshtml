@@ -29,7 +29,7 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <div class="form-group offset-md-1 col-md-10">
+                            <div class="form-group col-md-12">
                                 @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                                 <div class="col-sm-8">
                                     @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.BranchList, "Select One", new { @class = "form-control select2" })
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group offset-md-1 col-md-10">
+                            <div class="form-group col-md-12">
                                 @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                                 <div class="col-sm-8">
                                     @Html.DropDownListFor(model => model.CustomerId, (SelectList)ViewBag.ClientList, "Select One", new { @class = "form-control select2" })
@@ -47,40 +47,29 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form-group offset-md-1 col-md-10">
-                                @Html.LabelFor(model => model.ServiceAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
-                                <div class="col-sm-8">
+                            <div class="form-group col-md-12">
+                                @Html.LabelFor(model => model.ServiceAmount, htmlAttributes: new { @class = "control-label col-sm-6 text-md-right" })
+                                <div class="col-sm-6">
                                     @Html.TextBoxFor(model => model.ServiceAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
                                     @Html.ValidationMessageFor(model => model.ServiceAmount, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                            <div class="form-group offset-md-1 col-md-10">
-                                @Html.LabelFor(model => model.PaidAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
-                                <div class="col-sm-8">
+                            <div class="form-group col-md-12">
+                                @Html.LabelFor(model => model.PaidAmount, htmlAttributes: new { @class = "control-label col-sm-6 text-md-right" })
+                                <div class="col-sm-6">
                                     @Html.TextBoxFor(model => model.PaidAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
                                     @Html.ValidationMessageFor(model => model.PaidAmount, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="form-group offset-md-1 col-md-10">
-                                @Html.LabelFor(model => model.DueAmount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
-                                <div class="col-sm-8">
+                            <div class="form-group col-md-12">
+                                @Html.LabelFor(model => model.DueAmount, htmlAttributes: new { @class = "control-label col-sm-6 text-md-right" })
+                                <div class="col-sm-6">
                                     @Html.TextBoxFor(model => model.DueAmount, null, new { @class = "form-control", @readonly = "readonly", @type = "number" })
                                     @Html.ValidationMessageFor(model => model.DueAmount, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
-
-
-
-                        @*<div class="form-group offset-md-1 col-md-10">
-                                <div class="offset-sm-6 col-sm-3">
-                                    <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
-                                </div>
-                            </div>*@
-                        @*<div class="col-md-3">
-                                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
-                            </div>*@
 
                     </div>
 
@@ -91,29 +80,22 @@
                 
             </div>
             
-            @*<div class="row">
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-sm btn-danger pull-right" id="addPaymentBtn"> <i class="fa fa-plus"></i> Add Payment</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PaymentDate, new { @class = "form-control-label" })
-                    @Html.TextBoxFor(model => model.PaymentDate, null, new { @class = "form-control pickDate" })
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PaymentAmount, new { @class = "form-control-label" })
-                    @Html.TextBoxFor(model => model.PaymentAmount, null, new { @class = "form-control", @type = "number" })
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="submit" value="Save" id="" class="btn btn-success" />
-                </div>
-            </div>*@
         }
+        <br/>
+        <table class="table table-bordered table-striped" id="clientPaymentInfoTable">
+            <thead>
+                <tr>
+                    <th>Payment Made By</th>
+                    <th>Payment Date</th>
+                    <th>Payment Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3" align="center">No matching record found.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -134,6 +116,64 @@
             form.removeData("unobtrusiveValidation");
             $.validator.unobtrusive.parse("#clientPaymentForm");
         }
+
+        function GetClientPaymentInfo(value) {
+            if (value !== "") {
+                $.get("@Url.Action("GetServiceChargeInfo", "Billing")", { customerId: value }, function (resp) {
+                    if (resp.Flag) {
+                        $("#ServiceAmount").val(resp.TotalServiceCharge);
+                        $("#PaidAmount").val(resp.TotalPaid);
+                        $("#DueAmount").val(resp.Due);
+                    }
+                    if (resp.IsDueExist) {
+                        $.get("@Url.Action("GetPaymentFields","Billing")",
+                            function(html) {
+                                if (html === null) return;
+                                $("#clientPaymentAdditional").html(html).slideDown(500);
+                                $("#paymentFields").hide();
+                                $(".pickDate").datepicker({
+                                    autoclose: true,
+                                    format: "yyyy-mm-dd",
+                                    setDate: "d"
+                                });
+                                ReValidate();
+                            });
+                    } else {
+                        $("#clientPaymentAdditional").empty().slideDown(500);
+                    }
+
+                    var tbody = $("#clientPaymentInfoTable tbody");
+                    if (resp.Payments !== null) {
+                        tbody.empty();
+                        $.each(resp.Payments, function (index, payment) {
+                            tbody.append(
+                                '<tr>' +
+                                    '<td>' + payment.PaymnentMadeBy + '</td>' +
+                                    '<td>' + payment.PaymentDate + '</td>' +
+                                    '<td>' + payment.PaymentAmount + '</td>' +
+                                '</tr>'
+                            );
+                        });
+                        tbody.append(
+                            '<tr>' +
+                                '<td colspan="2" align="right">Total:</td>' +
+                                '<td>' + resp.TotalPaid + '</td>' +
+                            '</tr>'
+                        );
+                    }
+                    else {
+                        tbody.html(
+                            '<tr>' +
+                                '<td colspan="3" align="center">No matching record found.</td>' +
+                            '</tr>'
+                        );
+                    }
+                });
+                return true;
+            }
+            return false;
+        }
+
         function OnBegin() {
             //alert('On Begin');
             console.log('On Begin');
@@ -141,12 +181,16 @@
 
         function OnComplete() {
             //alert('On Completed');
-            console.log('On Completed');
+            //console.log('On Completed');
         }
 
         function OnSuccess() {
-            //alert('On Success');
-            console.log('On Success');
+            alert('On Success');
+            var value = $("#CustomerId").val();
+            if (!GetClientPaymentInfo(value)) $("#clientPaymentAdditional").empty();
+
+
+            //console.log('On Success');
         }
 
         function OnFailure() {
@@ -176,31 +220,7 @@
 
         $("#CustomerId").change(function () {
             var value = $(this).val();
-            if (value !== "") {
-                $.get("@Url.Action("GetServiceChargeInfo", "Billing")", { customerId: value }, function (resp) {
-                    if (resp.Flag) {
-                        $("#ServiceAmount").val(resp.TotalServiceCharge);
-                        $("#PaidAmount").val(resp.TotalPaid);
-                        $("#DueAmount").val(resp.Due);
-                    }
-                    if (resp.IsDueExist) {
-                        $.get("@Url.Action("GetPaymentFields","Billing")", function (html) {
-                            if (html === null) return;
-                            $("#clientPaymentAdditional").html(html).slideDown(500);
-                            $("#paymentFields").hide();
-                            $(".pickDate").datepicker({
-                                autoclose: true,
-                                format: "yyyy-mm-dd",
-                                setDate: "d"
-                            });
-                            ReValidate();
-                        });
-                        console.log(resp);
-                    }
-                });
-                return;
-            }
-            $("#clientPaymentAdditional").empty();
+            if (!GetClientPaymentInfo(value)) $("#clientPaymentAdditional").empty();
         });
 
         $("body").on("click", "#addPaymentBtn", function () {
