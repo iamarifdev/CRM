@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Models;
-using Microsoft.AspNet.Identity;
 
 namespace App.Web.Controllers
 {
@@ -48,16 +45,18 @@ namespace App.Web.Controllers
         {
             try
             {
+                ModelState.Clear();
                 if (User.IsInRole("Agent"))
                 {
-                    ModelState.Clear();
                     var branchId = _db.ClientInfos.Where(x => x.Id == payment.CustomerId).Select(x=>x.BranchId).FirstOrDefault() 
                         ?? _db.BranchInfos.Where(x => x.BranchName == "Main").Select(x => x.Id).FirstOrDefault();
                     payment.BranchId = branchId;
-
-                    TryValidateModel(payment);
                 }
 
+                payment.Channel = Channel.IsCustomer;
+                payment.Status = Status.Active;
+
+                TryValidateModel(payment);
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid payment info." });
                 if (payment.PaymentAmount > payment.DueAmount)
                     return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Due amount."});
@@ -74,7 +73,9 @@ namespace App.Web.Controllers
                             CustomerId = payment.CustomerId,
                             PaymentDate = payment.PaymentDate,
                             PaymentAmount = payment.PaymentAmount,
-                            EntryDate = DateTime.Now
+                            EntryDate = DateTime.Now,
+                            Status = payment.Status,
+                            Channel = payment.Channel
                         };
                         if (User.IsInRole("Admin"))
                         {
@@ -103,6 +104,14 @@ namespace App.Web.Controllers
             {
                 return Json(new { Flag = false, Msg = ex.Message });
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult AgentPayment()
+        {
+            ViewBag.ClientList = new SelectList(_db.AgentInfos.ToList(), "Id", "AgentName");
+            return View();
         }
 
         public JsonResult GetClientsBranchWise(int? branchId)

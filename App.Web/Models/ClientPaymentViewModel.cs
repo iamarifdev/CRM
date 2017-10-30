@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using App.Entity.Models;
 using Foolproof;
 
 namespace App.Web.Models
@@ -48,10 +49,10 @@ namespace App.Web.Models
         [Display(Name = "Payment Method")]
         public int? MethodId { get; set; }
 
-        [StringLength(10)]
-        public string Channel { get; set; }
+        [Required]
+        public Channel Channel { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
+        [Required]
+        public Status Status { get; set; }
     }
 }

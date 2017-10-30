@@ -59,4 +59,11 @@ namespace App.Entity.Models
         IsAgent,
         IsAdmin
     }
+
+    public enum Channel
+    {
+        IsCustomer = 1,
+        IsAgent = 2,
+        IsSupplier = 3
+    }
 }

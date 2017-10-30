@@ -21,11 +21,11 @@ namespace App.Entity.Models
         [Display(Name = "Payment Method")]
         public int? MethodId { get; set; }
 
-        [StringLength(10)]
-        public string Channel { get; set; }
+        [Required]
+        public Channel Channel { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
+        [Required]
+        public Status Status { get; set; }
 
         public UserType UserType { get; set; }
 

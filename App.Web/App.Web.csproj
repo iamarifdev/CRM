@@ -375,6 +375,10 @@
     <Compile Include="Migrations\ContextB\201710291958147_UserTypeAddedToCustomerPaymentModel.Designer.cs">
       <DependentUpon>201710291958147_UserTypeAddedToCustomerPaymentModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201710300655003_CustomerPaymentModelChanged1.cs" />
+    <Compile Include="Migrations\ContextB\201710300655003_CustomerPaymentModelChanged1.Designer.cs">
+      <DependentUpon>201710300655003_CustomerPaymentModelChanged1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -5043,6 +5047,7 @@
     <Content Include="Views\Clients\_AdditionalDateChangeFields.cshtml" />
     <Content Include="Views\Billing\ClientPayment.cshtml" />
     <Content Include="Views\Billing\_ClientPaymentAdditional.cshtml" />
+    <Content Include="Views\Billing\AgentPayment.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -6047,6 +6052,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201710291958147_UserTypeAddedToCustomerPaymentModel.resx">
       <DependentUpon>201710291958147_UserTypeAddedToCustomerPaymentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710300655003_CustomerPaymentModelChanged1.resx">
+      <DependentUpon>201710300655003_CustomerPaymentModelChanged1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
