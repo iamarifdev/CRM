@@ -32,8 +32,5 @@ namespace App.Entity.Models
         [ForeignKey("MethodId")]
         public virtual PaymentMethod PaymentMethod { get; set; }
 
-        [ForeignKey("CustomerId")]
-        public virtual ClientInfo ClientInfo { get; set; }
-
     }
 }

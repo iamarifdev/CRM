@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div id="clientPaymentAdditional">
+            <div id="agentPaymentAdditional">
 
             </div>
 
@@ -128,9 +128,9 @@
             );
         }
 
-        function GetClientPaymentInfo(value) {
+        function GetAgentPaymentInfo(value) {
             if (value !== "") {
-                $.get("@Url.Action("GetServiceChargeInfo", "Billing")", { customerId: value }, function (resp) {
+                $.get("@Url.Action("GetServiceChargeInfoForAgent", "Billing")", { agentId: value }, function (resp) {
                     if (resp.Flag) {
                         $("#ServiceAmount").val(resp.TotalServiceCharge);
                         $("#PaidAmount").val(resp.TotalPaid);
@@ -140,7 +140,7 @@
                         $(".pickDate").datepicker("destroy");
                         $.get("@Url.Action("GetPaymentFields","Billing")", function (html) {
                             if (html === null) return;
-                            $("#clientPaymentAdditional").html(html).slideDown(500);
+                            $("#agentPaymentAdditional").html(html).slideDown(500);
                             $("#paymentFields").hide();
                             $(".pickDate").datepicker({
                                 autoclose: true,
@@ -150,7 +150,7 @@
                             ReValidate();
                         });
                     } else {
-                        $("#clientPaymentAdditional").empty().slideDown(500);
+                        $("#agentPaymentAdditional").empty().slideDown(500);
                     }
 
                     var tbody = $("#clientPaymentInfoTable tbody");
@@ -202,7 +202,7 @@
             }
             var value = $("#CustomerId").val();
             ClearFields();
-            if (!GetClientPaymentInfo(value)) $("#clientPaymentAdditional").empty();
+            if (!GetAgentPaymentInfo(value)) $("#agentPaymentAdditional").empty();
         }
 
         function OnFailure() {
@@ -210,38 +210,13 @@
             console.log('On Failure');
         }
 
-        $("#BranchId").change(function () {
-            var value = $(this).val();
-
-            ClearFields();
-            ClearTableData();
-            //$("#clientPaymentAdditional").empty();
-
-            if (value !== "") {
-                $.get("@Url.Action("GetClientsBranchWise", "Billing")", { branchId: value }, function (resp) {
-                    if (resp.Flag) {
-                        $("#CustomerId").empty().html("<option value>Select One</option>");
-                        $.each(resp.Clients,
-                            function (key, item) {
-                                $("<option>").attr("value", item.Value).html(item.Text).appendTo("#CustomerId");
-                            });
-                    } else {
-                        $("#CustomerId").empty().html("<option value>Select One</option>");
-                        $("#clientPaymentAdditional").empty();
-                    }
-                });
-                return;
-            }
-            $("#clientPaymentAdditional").empty();
-        });
-
         $("#CustomerId").change(function () {
             var value = $(this).val();
 
             ClearFields();
             ClearTableData();
 
-            if (!GetClientPaymentInfo(value)) $("#clientPaymentAdditional").empty();
+            if (!GetAgentPaymentInfo(value)) $("#agentPaymentAdditional").empty();
         });
 
         $("body").on("click", "#addPaymentBtn", function () {
