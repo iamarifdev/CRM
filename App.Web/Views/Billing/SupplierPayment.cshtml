@@ -1,6 +1,6 @@
 ﻿@model App.Web.Models.ClientPaymentViewModel
 @{
-    ViewBag.Title = "Agent Payment";
+    ViewBag.Title = "Supplier Payment";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var options = new AjaxOptions
@@ -21,9 +21,9 @@
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
-    <h6 class="card-header bg-primary">BILLING / AGENT PAYMENTS</h6>
+    <h6 class="card-header bg-primary">SUPPLIER / CLIENT PAYMENTS</h6>
     <div class="card-block">
-        @using (Ajax.BeginForm("AgentPayment", "Billing", null, options, new { @class = "form-horizontal", @id = "agentPaymentForm" }))
+        @using (Ajax.BeginForm("SupplierPayment", "Billing", null, options, new { @class = "form-horizontal", @id = "supplierPaymentForm" }))
         {
             <div class="card">
                 <div class="card-block">
@@ -32,9 +32,9 @@
                         <div class="col-md-6">
                             
                             <div class="form-group col-md-12">
-                                @Html.Label("CustomerId", "Agents", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                @Html.Label("CustomerId", "Suppliers", htmlAttributes: new {@class = "control-label col-sm-4 text-md-right"})
                                 <div class="col-sm-8">
-                                    @Html.DropDownListFor(model => model.CustomerId, (SelectList) ViewBag.ClientList, "Select One", new {@class = "form-control select2"})
+                                    @Html.DropDownListFor(model => model.CustomerId, (SelectList)ViewBag.ClientList, "Select One", new {@class = "form-control select2"})
                                     @Html.ValidationMessageFor(model => model.CustomerId, "", new {@class = "text-danger"})
                                 </div>
                             </div>
@@ -70,10 +70,9 @@
                 </div>
             </div>
 
-            <div id="agentPaymentAdditional">
+            <div id="supplierPaymentAdditional">
 
             </div>
-
         }
         <br />
         <table class="table table-bordered table-striped" id="clientPaymentInfoTable">
@@ -106,10 +105,10 @@
         $(".pickDate").datepicker();
 
         function ReValidate() {
-            var form = $("#agentPaymentForm");
+            var form = $("#supplierPaymentForm");
             form.removeData("validator");
             form.removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse("#agentPaymentForm");
+            $.validator.unobtrusive.parse("#supplierPaymentForm");
         }
 
         function ClearFields() {
@@ -128,9 +127,9 @@
             );
         }
 
-        function GetAgentPaymentInfo(value) {
+        function GetSupplierPaymentInfo(value) {
             if (value !== "") {
-                $.get("@Url.Action("GetServiceChargeInfoForAgent", "Billing")", { agentId: value }, function (resp) {
+                $.get("@Url.Action("GetServiceChargeInfoForSupplier", "Billing")", { supplierId: value }, function (resp) {
                     if (resp.Flag) {
                         $("#ServiceAmount").val(resp.TotalServiceCharge);
                         $("#PaidAmount").val(resp.TotalPaid);
@@ -140,7 +139,7 @@
                         $(".pickDate").datepicker("destroy");
                         $.get("@Url.Action("GetPaymentFields","Billing")", function (html) {
                             if (html === null) return;
-                            $("#agentPaymentAdditional").html(html).slideDown(500);
+                            $("#supplierPaymentAdditional").html(html).slideDown(500);
                             $("#paymentFields").hide();
                             $(".pickDate").datepicker({
                                 autoclose: true,
@@ -150,7 +149,7 @@
                             ReValidate();
                         });
                     } else {
-                        $("#agentPaymentAdditional").empty().slideDown(500);
+                        $("#supplierPaymentAdditional").empty().slideDown(500);
                     }
 
                     var tbody = $("#clientPaymentInfoTable tbody");
@@ -202,7 +201,7 @@
             }
             var value = $("#CustomerId").val();
             ClearFields();
-            if (!GetAgentPaymentInfo(value)) $("#agentPaymentAdditional").empty();
+            if (!GetSupplierPaymentInfo(value)) $("#supplierPaymentAdditional").empty();
         }
 
         function OnFailure() {
@@ -210,13 +209,38 @@
             console.log('On Failure');
         }
 
+        $("#BranchId").change(function () {
+            var value = $(this).val();
+
+            ClearFields();
+            ClearTableData();
+            //$("#supplierPaymentAdditional").empty();
+
+            if (value !== "") {
+                $.get("@Url.Action("GetClientsBranchWise", "Billing")", { branchId: value }, function (resp) {
+                    if (resp.Flag) {
+                        $("#CustomerId").empty().html("<option value>Select One</option>");
+                        $.each(resp.Clients,
+                            function (key, item) {
+                                $("<option>").attr("value", item.Value).html(item.Text).appendTo("#CustomerId");
+                            });
+                    } else {
+                        $("#CustomerId").empty().html("<option value>Select One</option>");
+                        $("#supplierPaymentAdditional").empty();
+                    }
+                });
+                return;
+            }
+            $("#supplierPaymentAdditional").empty();
+        });
+
         $("#CustomerId").change(function () {
             var value = $(this).val();
 
             ClearFields();
             ClearTableData();
 
-            if (!GetAgentPaymentInfo(value)) $("#agentPaymentAdditional").empty();
+            if (!GetSupplierPaymentInfo(value)) $("#supplierPaymentAdditional").empty();
         });
 
         $("body").on("click", "#addPaymentBtn", function () {

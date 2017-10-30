@@ -5052,6 +5052,7 @@
     <Content Include="Views\Billing\ClientPayment.cshtml" />
     <Content Include="Views\Billing\_ClientPaymentAdditional.cshtml" />
     <Content Include="Views\Billing\AgentPayment.cshtml" />
+    <Content Include="Views\Billing\SupplierPayment.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -170,6 +170,71 @@ namespace App.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult SupplierPayment()
+        {
+            ViewBag.ClientList = new SelectList(_db.SuppliersInfos.ToList(), "Id", "SupplierName");
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult SupplierPayment(ClientPaymentViewModel payment)
+        {
+            try
+            {
+                ModelState.Clear();
+                var branchId = _db.ClientInfos.Where(x => x.SupplierId == payment.CustomerId).Select(x => x.BranchId).FirstOrDefault()
+                    ?? _db.BranchInfos.Where(x => x.BranchName == "Main").Select(x => x.Id).FirstOrDefault();
+                payment.BranchId = branchId;
+
+                payment.Channel = Channel.IsSupplier;
+                payment.Status = Status.Active;
+
+                TryValidateModel(payment);
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid payment info." });
+                if (payment.PaymentAmount > payment.DueAmount)
+                    return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Due amount." });
+                if (payment.PaymentAmount > payment.ServiceAmount)
+                    return Json(new { Flag = false, Msg = "Payment amount cannot be greater than Service amount." });
+
+                using (var dbTransaction = _db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var clientPayment = new CustomerPayment
+                        {
+                            BranchId = payment.BranchId,
+                            CustomerId = payment.CustomerId,
+                            PaymentDate = payment.PaymentDate,
+                            PaymentAmount = payment.PaymentAmount,
+                            EntryDate = DateTime.Now,
+                            Status = payment.Status,
+                            Channel = payment.Channel,
+                            UserType = UserType.IsAdmin,
+                            EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id
+                        };
+                        _db.CustomerPayments.Add(clientPayment);
+                        _db.SaveChanges();
+                        dbTransaction.Commit();
+                        return Json(new { Flag = true, Msg = "Payment successfully added." });
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return Json(new { Flag = false, Msg = ex.Message });
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message });
+            }
+        }
+
+        [HttpGet]
         public JsonResult GetClientsBranchWise(int? branchId)
         {
             try
@@ -186,6 +251,7 @@ namespace App.Web.Controllers
 
         }
 
+        [HttpGet]
         public JsonResult GetServiceChargeInfo(int? customerId)
         {
             try
@@ -195,10 +261,11 @@ namespace App.Web.Controllers
                 var due = totalServiceCharge;
                 var totalPaid = 0.00;
                 List<PaymentViewModel> payments = null;
+                var query = _db.CustomerPayments.Where(x => x.CustomerId == customerId && x.Channel == Channel.IsCustomer);
                 // ReSharper disable once InvertIf
-                if (_db.CustomerPayments.Any(x => x.CustomerId == customerId && x.Channel == Channel.IsCustomer))
+                if (query.Any())
                 {
-                    var query = _db.CustomerPayments.Where(x => x.CustomerId == customerId && x.Channel == Channel.IsCustomer);
+                    //var query = _db.CustomerPayments.Where(x => x.CustomerId == customerId && x.Channel == Channel.IsCustomer);
                     totalPaid = query.Sum(x => x.PaymentAmount);
                     due = totalServiceCharge - totalPaid;
                     payments = query.Select(x => new PaymentViewModel
@@ -222,6 +289,7 @@ namespace App.Web.Controllers
             }
         }
 
+        [HttpGet]
         public JsonResult GetServiceChargeInfoForAgent(int? agentId)
         {
             try
@@ -233,6 +301,49 @@ namespace App.Web.Controllers
                 List<PaymentViewModel> payments = null;
                 // ReSharper disable once InvertIf
                 var query = _db.CustomerPayments.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent && x.UserType == UserType.IsAdmin);
+                if (query.Any())
+                {
+                    //var query = _db.CustomerPayments.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent && x.UserType == UserType.IsAdmin);
+                    totalPaid = query.Sum(x => x.PaymentAmount);
+                    due = totalServiceCharge - totalPaid;
+                    payments = query.Select(x => new PaymentViewModel
+                    {
+                        PaymnentMadeBy = _db.Users.Where(u => u.Id == x.EntryBy).Select(s => s.UserName).FirstOrDefault(),
+                        PaymentDate = x.PaymentDate,
+                        PaymentAmount = x.PaymentAmount
+                    }).ToList();
+                }
+                var data = new
+                {
+                    Flag = true,
+                    TotalPaid = totalPaid,
+                    TotalServiceCharge = totalServiceCharge,
+                    Due = due,
+                    IsDueExist = due > 0.00,
+                    Payments = payments != null
+                    ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount })
+                    : null
+                };
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetServiceChargeInfoForSupplier(int? supplierId)
+        {
+            try
+            {
+                if (supplierId == null) return Json(new { Flag = false, Msg = "Bad request" }, JsonRequestBehavior.AllowGet);
+                var totalServiceCharge = _db.ClientInfos.Where(x => x.SupplierId == (int)supplierId).Sum(x => x.ServiceCharge) ?? 0;
+                var due = totalServiceCharge;
+                var totalPaid = 0.00;
+                List<PaymentViewModel> payments = null;
+                // ReSharper disable once InvertIf
+                var query = _db.CustomerPayments.Where(x => x.CustomerId == supplierId && x.Channel == Channel.IsSupplier && x.UserType == UserType.IsAdmin);
                 if (query.Any())
                 {
                     //var query = _db.CustomerPayments.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent && x.UserType == UserType.IsAdmin);

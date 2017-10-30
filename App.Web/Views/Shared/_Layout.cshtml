@@ -90,7 +90,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li><a href="@Url.Action("AgentPayment","Billing")">Agent Payment</a></li>
-                                <li><a href="aa.html">Payment to Supplier</a></li>
+                                <li><a href="@Url.Action("SupplierPayment","Billing")">Payment to Supplier</a></li>
                             }
                         </ul>
                     </li>
