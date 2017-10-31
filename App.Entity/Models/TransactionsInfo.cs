@@ -30,8 +30,8 @@ namespace App.Entity.Models
 
         public int MethodId { get; set; }
 
-        [Column(TypeName = "text")]
         [Required]
+        [StringLength(500)]
         public string Description { get; set; }
 
         [ForeignKey("AccountFrom")]

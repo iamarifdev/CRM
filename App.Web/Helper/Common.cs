@@ -100,5 +100,10 @@ namespace App.Web.Helper
             var percentage = (progressCount * 100) / totalItems;
             hubContext.Clients.All.AddProgress(progressMessage, percentage + "%");
         }
+
+        public static string NullDateToString(this DateTime? date)
+        {
+            return date == null ? "" : string.Format("{0:dd/MM/yyyy}", date);
+        }
     }
 }
