@@ -66,4 +66,19 @@ namespace App.Entity.Models
         IsAgent = 2,
         IsSupplier = 3
     }
+
+    public enum TransactionType
+    {
+        Transfer=1,
+        Deposit=2,
+        Expense=3
+    }
+
+    public enum PayerType
+    {
+        Agent=1,
+        Client=2,
+        Officer=3,
+        Other=4
+    }
 }
