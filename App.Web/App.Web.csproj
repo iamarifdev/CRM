@@ -228,6 +228,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\CrmDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\AirLinesController.cs" />
     <Compile Include="Controllers\BillingController.cs" />
@@ -382,6 +383,10 @@
     <Compile Include="Migrations\ContextB\201710300823418_DropCustomerForeignKeyFromCustomerPayment.cs" />
     <Compile Include="Migrations\ContextB\201710300823418_DropCustomerForeignKeyFromCustomerPayment.Designer.cs">
       <DependentUpon>201710300823418_DropCustomerForeignKeyFromCustomerPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201710310536293_BankAccountModelAdded.cs" />
+    <Compile Include="Migrations\ContextB\201710310536293_BankAccountModelAdded.Designer.cs">
+      <DependentUpon>201710310536293_BankAccountModelAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -5053,6 +5058,10 @@
     <Content Include="Views\Billing\_ClientPaymentAdditional.cshtml" />
     <Content Include="Views\Billing\AgentPayment.cshtml" />
     <Content Include="Views\Billing\SupplierPayment.cshtml" />
+    <Content Include="Views\Accounts\Index.cshtml" />
+    <Content Include="Views\Accounts\Create.cshtml" />
+    <Content Include="Views\Accounts\Edit.cshtml" />
+    <Content Include="Views\Accounts\Details.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -6063,6 +6072,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201710300823418_DropCustomerForeignKeyFromCustomerPayment.resx">
       <DependentUpon>201710300823418_DropCustomerForeignKeyFromCustomerPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201710310536293_BankAccountModelAdded.resx">
+      <DependentUpon>201710310536293_BankAccountModelAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -9,8 +8,8 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
-    public class AirLinesController : Controller
+    [Authorize(Roles = "Admin")]
+    public class AccountsController : Controller
     {
         #region Private Zone
 
@@ -18,18 +17,17 @@ namespace App.Web.Controllers
 
         #endregion
 
-        public AirLinesController()
+        public AccountsController()
         {
             _db = new CrmDbContext();
         }
-
-        // GET: AirLines
+        // GET: Accounts
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: AirLines/Details/5
+        // GET: Accounts/Details/5
         public ActionResult Details(int? id)
         {
             try
@@ -39,8 +37,8 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var airLineInfo = _db.AirLineInfos.Find(id);
-                if (airLineInfo != null) return View(airLineInfo);
+                var bankAccount = _db.BankAccounts.Find(id);
+                if (bankAccount != null) return View(bankAccount);
                 TempData["Toastr"] = Toastr.HttpNotFound;
                 return RedirectToAction("Index");
             }
@@ -51,32 +49,30 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: AirLines/Create
+        // GET: Accounts/Create
         public ActionResult Create()
         {
             ViewBag.StatusList = Common.ToSelectList<Status>();
             return View();
         }
 
-        // POST: AirLines/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Accounts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AirLineName,Description,Status")] AirLineInfo airLine)
+        public ActionResult Create([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Status")] BankAccount bankAccount)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
                     ModelState.Clear();
-                    airLine.AirLineId = string.Format("BI-{0:000000}", _db.AirLineInfos.Count() + 1);
-                    airLine.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
-                    airLine.EntryDate = DateTime.Now;
-                    TryValidateModel(airLine);
+                    bankAccount.AccountId = string.Format("PI-{0:000000}", _db.BankAccounts.Count() + 1);
+                    bankAccount.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
+                    bankAccount.EntryDate = DateTime.Now;
+                    TryValidateModel(bankAccount);
                     if (ModelState.IsValid)
                     {
-                        _db.AirLineInfos.Add(airLine);
+                        _db.BankAccounts.Add(bankAccount);
                         _db.SaveChanges();
 
                         dbTransaction.Commit();
@@ -85,7 +81,7 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
                     dbTransaction.Rollback();
-                    return View(airLine);
+                    return View(bankAccount);
                 }
                 catch (Exception ex)
                 {
@@ -99,10 +95,9 @@ namespace App.Web.Controllers
                 }
 
             }
-
         }
 
-        // GET: AirLines/Edit/5
+        // GET: Accounts/Edit/5
         public ActionResult Edit(int? id)
         {
             try
@@ -112,15 +107,14 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var airLine = _db.AirLineInfos.Find(id);
-                if (airLine == null)
+                var bankAccount = _db.BankAccounts.Find(id);
+                if (bankAccount == null)
                 {
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                ViewBag.StatusList = Common.ToSelectList<Status>(airLine.Status);
-
-                return View(airLine);
+                ViewBag.StatusList = Common.ToSelectList<Status>(bankAccount.Status);
+                return View(bankAccount);
             }
             catch (Exception ex)
             {
@@ -129,12 +123,10 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: AirLines/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Accounts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AirLineName,Description,Status")] AirLineInfo airLine, int? id)
+        public ActionResult Edit([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Status")] BankAccount bankAccount, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -145,35 +137,37 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    if (_db.AirLineInfos.Count(x => x.Id == id) < 1)
+                    if (_db.BankAccounts.Count(x => x.Id == id) < 1)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    var airLineInfo = _db.AirLineInfos.Single(x => x.Id == id);
-                    if (airLineInfo == null)
+                    var bankAccountInfo = _db.BankAccounts.Single(x => x.Id == id);
+                    if (bankAccountInfo == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
 
                     ModelState.Clear();
-                    airLine.AirLineId = airLineInfo.AirLineId;
-                    airLine.EntryBy = airLineInfo.EntryBy;
-                    airLine.EntryDate = airLineInfo.EntryDate;
-                    airLine.DelStatus = airLineInfo.DelStatus;
+                    bankAccount.AccountId = bankAccountInfo.AccountId;
+                    bankAccount.EntryBy = bankAccountInfo.EntryBy;
+                    bankAccount.EntryDate = bankAccountInfo.EntryDate;
+                    bankAccount.DelStatus = bankAccountInfo.DelStatus;
 
-                    TryValidateModel(airLine);
+                    TryValidateModel(bankAccount);
 
-                    if (!ModelState.IsValid) return View(airLine);
+                    if (!ModelState.IsValid) return View(bankAccount);
 
-                    _db.AirLineInfos
+                    _db.BankAccounts
                         .Where(x => x.Id == id)
-                        .Update(u => new AirLineInfo
+                        .Update(u => new BankAccount
                         {
-                            AirLineName = airLine.AirLineName,
-                            Description = airLine.Description,
-                            Status = airLine.Status
+                            AccountName = bankAccount.AccountName,
+                            AccountNumber = bankAccount.AccountNumber,
+                            BankName = bankAccount.BankName,
+                            BranchName = bankAccount.BranchName,
+                            Status = bankAccount.Status
                         });
                     dbTransaction.Commit();
 
@@ -189,27 +183,18 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.StatusList = Common.ToSelectList<Status>(airLine.Status);
+                    ViewBag.StatusList = Common.ToSelectList<Status>(bankAccount.Status);
                 }
             }
         }
 
-        //// GET: AirLines/Delete/5
-        //public ActionResult Delete(int? id)
+        //// GET: Accounts/Delete/5
+        //public ActionResult Delete(int id)
         //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    AirLineInfo airLineInfo = _db.AirLineInfos.Find(id);
-        //    if (airLineInfo == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(airLineInfo);
+        //    return View();
         //}
 
-        // POST: AirLines/Delete/5
+        // POST: Accounts/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
@@ -222,13 +207,13 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var airLine = _db.AirLineInfos.Find(id);
-                    if (airLine == null)
+                    var bankAccount = _db.BankAccounts.Find(id);
+                    if (bankAccount == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    _db.AirLineInfos.Remove(airLine);
+                    _db.BankAccounts.Remove(bankAccount);
                     _db.SaveChanges();
                     dbTransaction.Commit();
 
@@ -242,15 +227,6 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

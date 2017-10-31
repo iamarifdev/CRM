@@ -8,6 +8,7 @@ namespace App.Web.Context
         public CrmDbContext() : base("CrmDbContext") { }
         public DbSet<AgentInfo> AgentInfos { get; set; }
         public DbSet<AirLineInfo> AirLineInfos { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BranchInfo> BranchInfos { get; set; }
         public DbSet<ClientInfo> ClientInfos { get; set; }
         public DbSet<CountryList> CountryLists { get; set; }

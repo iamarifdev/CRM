@@ -1,28 +1,36 @@
-﻿@model App.Entity.Models.AirLineInfo
+﻿@model App.Entity.Models.BankAccount
 
 @{
-    ViewBag.Title = "Airline Details";
+    ViewBag.Title = "Account Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="card">
-    <h6 class="card-header bg-primary">AIRLINES / DETAILS</h6>
+    <h6 class="card-header bg-primary">ACCOUNT / DETAILS</h6>
     <div class="card-block">
         <div class="row">
             <div class="col-md-12">
                 <h5>
-                    AIRLINE NAME: @Model.AirLineName.ToUpper()
+                    AIRLINE NAME: @Model.AccountName.ToUpper()
                     <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
                 </h5>
                 <br />
                 <table class="table table-striped m-md-b-0">
                     <tr>
-                        <th width="150">@Html.DisplayNameFor(m => m.AirLineId)</th>
-                        <td>@Model.AirLineId</td>
+                        <th width="150">@Html.DisplayNameFor(m => m.AccountId)</th>
+                        <td>@Model.AccountId</td>
                     </tr>
                     <tr>
-                        <th>@Html.DisplayNameFor(m => m.Description)</th>
-                        <td>@Model.Description</td>
+                        <th>@Html.DisplayNameFor(m => m.AccountNumber)</th>
+                        <td>@Model.AccountNumber</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.BankName)</th>
+                        <td>@Model.BankName</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.BranchName)</th>
+                        <td>@Model.BranchName</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.Status)</th>

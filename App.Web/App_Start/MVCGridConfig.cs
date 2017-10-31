@@ -593,22 +593,6 @@ namespace App.Web
                             + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
                             + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                         );
-                    //if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.User.IsInRole("Admin"))
-                    //{
-                    //    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-                    //        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                    //            "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
-                    //            + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
-                    //            + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
-                    //        );
-                    //}
-                    //if (System.Web.HttpContext.Current != null && System.Web.HttpContext.Current.User.IsInRole("Agent"))
-                    //{
-                    //    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-                    //        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                    //            "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a>"
-                    //        );
-                    //}
                     
                 })
                 .WithSorting(true, "EntryDate")
@@ -682,6 +666,84 @@ namespace App.Web
                                     break;
                                 case "doneby":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
+
+            //BankAccount Table
+            MVCGridDefinitionTable.Add("accountsTable", new MVCGridBuilder<BankAccount>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("AccountId").WithHeaderText("Account Id").WithValueExpression(p => p.AccountId).WithSorting(true);
+                    cols.Add("AccountName").WithHeaderText("Account Name").WithValueExpression(p => p.AccountName).WithSorting(true);
+                    cols.Add("AccountNumber").WithHeaderText("Account Number").WithValueExpression(p => p.AccountNumber).WithSorting(true);
+                    cols.Add("BankName").WithHeaderText("Bank Name").WithValueExpression(p => p.BankName).WithSorting(true);
+                    cols.Add("BranchName").WithHeaderText("Branch Name").WithValueExpression(p => p.BranchName).WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Accounts/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Accounts/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "AccountId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<BankAccount>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.BankAccounts.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.AccountId.Contains(globalSearch)
+                                    || x.AccountName.Contains(globalSearch)
+                                    || x.AccountNumber.Contains(globalSearch)
+                                    || x.BankName.Contains(globalSearch)
+                                    || x.BranchName.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "accountid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AccountId) : query.OrderBy(p => p.AccountId);
+                                    break;
+                                case "accountname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AccountName) : query.OrderBy(p => p.AccountName);
+                                    break;
+                                case "accountnumber":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AccountNumber) : query.OrderBy(p => p.AccountNumber);
+                                    break;
+                                case "bankname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BankName) : query.OrderBy(p => p.BankName);
+                                    break;
+                                case "branchname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BranchName) : query.OrderBy(p => p.BranchName);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
                                     break;
                             }
                         }

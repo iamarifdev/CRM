@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Models\AgentInfo.cs" />
     <Compile Include="Models\AirLineInfo.cs" />
+    <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BranchInfo.cs" />
     <Compile Include="Models\ClientInfo.cs" />
