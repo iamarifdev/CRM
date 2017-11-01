@@ -15,8 +15,10 @@ namespace App.Entity.Models
         [Required]
         public TransactionType TransactionType { get; set; }
 
+        [ForeignKey("BankAccountFrom")]
         public int? AccountFrom { get; set; }
 
+        [ForeignKey("BankAccountTo")]
         public int? AccountTo { get; set; }
 
         public DateTime? Date { get; set; }
@@ -28,16 +30,15 @@ namespace App.Entity.Models
 
         public decimal Amount { get; set; }
 
+        [ForeignKey("PaymentMethod")]
         public int MethodId { get; set; }
 
         [Required]
         [StringLength(500)]
         public string Description { get; set; }
 
-        [ForeignKey("AccountFrom")]
         public virtual BankAccount BankAccountFrom { get; set; }
-        
-        [ForeignKey("AccountTo")]
         public virtual BankAccount BankAccountTo { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
     }
 }

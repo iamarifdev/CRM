@@ -5,6 +5,7 @@ using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using App.Web.Models;
+using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
@@ -27,6 +28,23 @@ namespace App.Web.Controllers
             return View();
         }
 
+        // GET: Deposits/Details/5
+        [HttpGet]
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                TempData["Toastr"] = Toastr.BadRequest;
+                return RedirectToAction("Index");
+            }
+            var transaction = _db.TransactionsInfos.Find(id);
+
+            if (transaction != null) return View(transaction);
+
+            TempData["Toastr"] = Toastr.HttpNotFound;
+            return RedirectToAction("Index");
+        }
+
         // GET: Deposits/Create
         public ActionResult Create()
         {
@@ -45,31 +63,25 @@ namespace App.Web.Controllers
             {
                 try
                 {
+                    if (!ModelState.IsValid) return View(deposit);
                     ModelState.Clear();
-                    //todo need to uncomment
-                    //deposit.CustomerId = string.Format("{0}{1:000000}{2:MMyy}",
-                    //    branch.BranchCode.ToUpper(),
-                    //    _db.ClientInfos.Count() + 1,
-                    //    DateTime.Now
-                    //);
-                    //deposit.EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
-                    //deposit.ServedBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id;
-                    //deposit.WorkingStatus = WorkingStatus.Pending;
-                    //deposit.Status = Status.Inactive;
-                    //deposit.InfoStatus = InformationUpdate.NotUpdated;
-                    //deposit.DeliveryStatus = DeliveryStatus.NotDelivery;
-                    //deposit.SmsConfirmation = SmsConfirmation.NotSendingSms;
-                    //deposit.EntryDate = DateTime.Now;
-                    //use default branch as head if branch id not selected
-                    //deposit.BranchId = branch.Id;
-                    //TryValidateModel(deposit);
 
-                    //if (!ModelState.IsValid) return View(deposit);
-                    //_db.ClientInfos.Add(deposit);
-                    //_db.SaveChanges();
+                    var transaction = new TransactionsInfo();
+                    transaction.TransactionId = string.Format("DI-{0:000000}", _db.TransactionsInfos.Count(x=>x.TransactionType == TransactionType.Deposit) + 1);
+                    transaction.TransactionType = TransactionType.Deposit;
+                    transaction.Date = deposit.Date;
+                    transaction.AccountTo = deposit.AccountId;
+                    transaction.PayerType = deposit.PayerType;
+                    transaction.PayerId = deposit.PayerId;
+                    transaction.Amount = deposit.Amount;
+                    transaction.MethodId = deposit.MethodId;
+                    transaction.Description = deposit.Description;
 
-                    //dbTransaction.Commit();
-                    //TempData["Toastr"] = Toastr.Added;
+                    _db.TransactionsInfos.Add(transaction);
+                    _db.SaveChanges();
+
+                    dbTransaction.Commit();
+                    TempData["Toastr"] = Toastr.Added;
 
                     return RedirectToAction("Index");
                 }
@@ -81,10 +93,105 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName");
-                    ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>();
-                    ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(RequireSuppiler.No);
-                    ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName");
+                    ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName");
+                    ViewBag.PayerTypes = Common.ToSelectList<PayerType>();
+                    ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName");
+                }
+            }
+        }
+
+        // GET: Clients/Edit/5
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var transactionsInfo = _db.TransactionsInfos.Find(id);
+                if (transactionsInfo == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                var deposit = new DepositViewModel();
+                deposit.Id = transactionsInfo.Id;
+                // ReSharper disable once PossibleInvalidOperationException
+                deposit.Date = (DateTime)transactionsInfo.Date;
+                // ReSharper disable once PossibleInvalidOperationException
+                deposit.AccountId = (int)transactionsInfo.AccountTo;
+                deposit.PayerType = transactionsInfo.PayerType;
+                deposit.PayerId = transactionsInfo.PayerId;
+                deposit.Amount = transactionsInfo.Amount;
+                deposit.MethodId = transactionsInfo.MethodId;
+                deposit.Description = transactionsInfo.Description;
+
+                ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName",deposit.AccountId);
+                ViewBag.PayerTypes = Common.ToSelectList<PayerType>(deposit.PayerType);
+                ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName",deposit.MethodId);
+
+                return View(deposit);
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        // POST: Deposits/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,AccountId,Date,PayerType,Amount,MethodId,PayerId,Description")] DepositViewModel deposit, int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+
+                    if (!_db.TransactionsInfos.Any(x => x.Id == id))
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+
+                    if (!ModelState.IsValid) return View(deposit);
+                    _db.TransactionsInfos
+                        .Where(x => x.Id == id)
+                        .Update(u => new TransactionsInfo
+                        {
+                            Date = deposit.Date,
+                            AccountTo = deposit.AccountId,
+                            PayerType = deposit.PayerType,
+                            PayerId = deposit.PayerId,
+                            Amount = deposit.Amount,
+                            MethodId = deposit.MethodId,
+                            Description = deposit.Description
+                        });
+                    dbTransaction.Commit();
+                    TempData["Toastr"] = Toastr.Updated;
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", deposit.AccountId);
+                    ViewBag.PayerTypes = Common.ToSelectList<PayerType>(deposit.PayerType);
+                    ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", deposit.MethodId);
                 }
             }
         }

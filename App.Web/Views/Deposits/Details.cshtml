@@ -1,0 +1,66 @@
+﻿@using App.Entity.Models
+@using App.Web.Helper
+@using App.Web.Context
+@model App.Entity.Models.TransactionsInfo
+
+@{
+    ViewBag.Title = "Airline Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var db = new CrmDbContext();
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">DEPOSITS / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    ACCOUNT NAME: @Model.BankAccountTo.AccountName.ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+                    <tr>
+                        <th width="150">@Html.DisplayNameFor(m => m.Date)</th>
+                        <td>@Model.Date.NullDateToString()</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.PayerType)</th>
+                        <td>@Model.PayerType</td>
+                    </tr>
+                    @if ( Model.PayerType == PayerType.Client)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.PayerType)</th>
+                            <td>@db.ClientInfos.Where(x=>x.Id == (int)Model.PayerId).Select(x=>x.FirstName+" "+x.LastName).FirstOrDefault()</td>
+                        </tr>
+                    }
+                    @if (Model.PayerType == PayerType.Agent)
+                    {
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.PayerType)</th>
+                            <td>@db.AgentInfos.Where(x => x.Id == (int)Model.PayerId).Select(x => x.AgentName).FirstOrDefault()</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Amount)</th>
+                        <td>@Model.Amount</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.MethodId)</th>
+                        <td>@Model.PaymentMethod.MethodName</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Description)</th>
+                        <td>@Model.Description</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
+
+</div>

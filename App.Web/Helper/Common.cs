@@ -103,7 +103,7 @@ namespace App.Web.Helper
 
         public static string NullDateToString(this DateTime? date)
         {
-            return date == null ? "" : string.Format("{0:dd/MM/yyyy}", date);
+            return date == null ? "" : string.Format("{0:yyyy-MM-dd}", date);
         }
     }
 }
