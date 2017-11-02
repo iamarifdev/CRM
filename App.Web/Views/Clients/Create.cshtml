@@ -139,8 +139,18 @@
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script>
-        $(".pickDate").datepicker();
+        $(".pickDate").datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            setDate: "d"
+        }).on("changeDate", function () {
+            $(this).valid();
+        });
         $(".select2").select2();
+        $(".select2").on("select2:close", function () {
+            $(this).valid();
+        });
+
         $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
             $("#SmsNo").val("");

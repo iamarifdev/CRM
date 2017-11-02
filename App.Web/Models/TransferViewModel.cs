@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Foolproof;
 
 namespace App.Web.Models
 {
@@ -12,9 +13,11 @@ namespace App.Web.Models
         public int Id { get; set; }
 
         [Display(Name = "From Account")]
+        [NotEqualTo("AccountTo", ErrorMessage = "From Account cannot be same as To Account.")]
         public int AccountFrom { get; set; }
 
         [Display(Name = "To Account")]
+        [NotEqualTo("AccountFrom", ErrorMessage = "To Account cannot be same as From Account.")]
         public int AccountTo { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]

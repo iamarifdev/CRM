@@ -97,8 +97,13 @@
             autoclose: true,
             format: "yyyy-mm-dd",
             setDate: "d"
+        }).on("changeDate", function () {
+            $(this).valid();
         });
         $(".select2").select2();
+        $(".select2").on("select2:close", function () {
+            $(this).valid();
+        });
 
         function ReValidate() {
             var form = $("#depositForm");

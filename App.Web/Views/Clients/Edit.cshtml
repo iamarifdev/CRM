@@ -190,7 +190,7 @@
     <script>
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
         var id = $("#Id").val();
-        $(".select2").select2();
+        //$(".select2").select2();
         function GetAdditionalReferralType() {
             var referralType = $("#ReferralType").val();
             $("#SmsNo").val("");
@@ -280,7 +280,17 @@
             GetAdditionalSupplierFields();
             GetAdditionalServiceFields();
 
-            $(".pickDate").datepicker();
+            $(".pickDate").datepicker({
+                autoclose: true,
+                format: "yyyy-mm-dd",
+                setDate: "d"
+            }).on("changeDate", function () {
+                $(this).valid();
+            });
+            $(".select2").select2();
+            $(".select2").on("select2:close", function () {
+                $(this).valid();
+            });
 
             $("#ReferralType").on("change", function () {
                 GetAdditionalReferralType();
