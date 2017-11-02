@@ -196,6 +196,41 @@ namespace App.Web.Controllers
             }
         }
 
+        // POST: Accounts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var transaction = _db.TransactionsInfos.Find(id);
+                    if (transaction == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    _db.TransactionsInfos.Remove(transaction);
+                    _db.SaveChanges();
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
         [HttpPost]
         public ActionResult GetAdditionalPayerTypeFields(PayerType? payerType, int? id = null)
         {
