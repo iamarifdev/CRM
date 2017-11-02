@@ -11,12 +11,12 @@
     <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
 }
 
-@using (Html.BeginForm("Delete", "AirLines", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
+@using (Html.BeginForm("Delete", "Transfers", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
 {
     @Html.Hidden("Id")
 }
 <div class="card">
-    <h6 class="card-header bg-primary">AIRLINES / LIST</h6>
+    <h6 class="card-header bg-primary">TRANSFERS / LIST</h6>
     <div class="card-block">
         <div class="row">
             <div class="col-md-6">
@@ -27,11 +27,11 @@
             <div class="col-md-12">
                 @Html.Partial("~/Views/Shared/_MVCGridToolbar.cshtml", new MVCGridToolbarModel()
                 {
-                    MVCGridName = "airLineTable",
+                    MVCGridName = "transferTable",
                     PageSize = true,
                     GlobalSearch = true
                 })
-                @Html.MVCGrid("airLineTable")
+                @Html.MVCGrid("transferTable")
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
         }
 
         $(".refreshBtn").click(function() {
-            MVCGrid.reloadGrid('airLineTable');
+            MVCGrid.reloadGrid('transferTable');
         });
     </script>
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -9,8 +11,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class DepositsController : Controller
+    public class ExpensesController : Controller
     {
         #region Private Zone
 
@@ -18,17 +19,17 @@ namespace App.Web.Controllers
 
         #endregion
 
-        public DepositsController()
+        public ExpensesController()
         {
             _db = new CrmDbContext();
         }
-        // GET: Deposits
+        // GET: Expenses
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Deposits/Details/5
+        // GET: Expenses/Details/5
         [HttpGet]
         public ActionResult Details(int? id)
         {
@@ -45,37 +46,34 @@ namespace App.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Deposits/Create
+        // GET: Expenses/Create
         public ActionResult Create()
         {
             ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName");
-            ViewBag.PayerTypes = Common.ToSelectList<PayerType>();
             ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName");
             return View();
         }
 
-        // POST: Deposits/Create
+        // POST: Expenses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AccountId,Date,PayerType,Amount,MethodId,PayerId,Description")] DepositViewModel deposit)
+        public ActionResult Create([Bind(Include = "Id,AccountId,Date,Amount,MethodId,Description")] ExpenseViewModel expense)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (!ModelState.IsValid) return View(deposit);
+                    if (!ModelState.IsValid) return View(expense);
                     ModelState.Clear();
 
                     var transaction = new TransactionsInfo();
-                    transaction.TransactionId = string.Format("DI-{0:000000}", _db.TransactionsInfos.Count(x => x.TransactionType == TransactionType.Deposit || x.TransactionType == TransactionType.Transfer) + 1);
-                    transaction.TransactionType = TransactionType.Deposit;
-                    transaction.Date = deposit.Date;
-                    transaction.AccountTo = deposit.AccountId;
-                    transaction.PayerType = deposit.PayerType;
-                    transaction.PayerId = deposit.PayerId;
-                    transaction.Amount = deposit.Amount;
-                    transaction.MethodId = deposit.MethodId;
-                    transaction.Description = deposit.Description;
+                    transaction.TransactionId = string.Format("EI-{0:000000}", _db.TransactionsInfos.Count(x => x.TransactionType == TransactionType.Expense) + 1);
+                    transaction.TransactionType = TransactionType.Expense;
+                    transaction.Date = expense.Date;
+                    transaction.AccountFrom = expense.AccountId;
+                    transaction.Amount = expense.Amount;
+                    transaction.MethodId = expense.MethodId;
+                    transaction.Description = expense.Description;
 
                     _db.TransactionsInfos.Add(transaction);
                     _db.SaveChanges();
@@ -94,13 +92,12 @@ namespace App.Web.Controllers
                 finally
                 {
                     ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName");
-                    ViewBag.PayerTypes = Common.ToSelectList<PayerType>();
                     ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName");
                 }
             }
         }
 
-        // GET: Clients/Edit/5
+        // GET: Expenses/Edit/5
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -117,24 +114,20 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.HttpNotFound;
                     return RedirectToAction("Index");
                 }
-                var deposit = new DepositViewModel();
-                deposit.Id = transactionsInfo.Id;
+                var expense = new ExpenseViewModel();
+                expense.Id = transactionsInfo.Id;
                 // ReSharper disable once PossibleInvalidOperationException
-                deposit.Date = (DateTime)transactionsInfo.Date;
+                expense.Date = (DateTime)transactionsInfo.Date;
                 // ReSharper disable once PossibleInvalidOperationException
-                deposit.AccountId = (int)transactionsInfo.AccountTo;
-                // ReSharper disable once PossibleInvalidOperationException
-                deposit.PayerType = (PayerType)transactionsInfo.PayerType;
-                deposit.PayerId = transactionsInfo.PayerId;
-                deposit.Amount = transactionsInfo.Amount;
-                deposit.MethodId = transactionsInfo.MethodId;
-                deposit.Description = transactionsInfo.Description;
+                expense.AccountId = (int)transactionsInfo.AccountFrom;
+                expense.Amount = transactionsInfo.Amount;
+                expense.MethodId = transactionsInfo.MethodId;
+                expense.Description = transactionsInfo.Description;
 
-                ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName",deposit.AccountId);
-                ViewBag.PayerTypes = Common.ToSelectList<PayerType>(deposit.PayerType);
-                ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName",deposit.MethodId);
+                ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", expense.AccountId);
+                ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", expense.MethodId);
 
-                return View(deposit);
+                return View(expense);
             }
             catch (Exception ex)
             {
@@ -143,10 +136,10 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: Deposits/Edit/5
+        // POST: Expenses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AccountId,Date,PayerType,Amount,MethodId,PayerId,Description")] DepositViewModel deposit, int? id)
+        public ActionResult Edit([Bind(Include = "Id,AccountId,Date,Amount,MethodId,Description")] ExpenseViewModel expense, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -164,18 +157,16 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    if (!ModelState.IsValid) return View(deposit);
+                    if (!ModelState.IsValid) return View(expense);
                     _db.TransactionsInfos
                         .Where(x => x.Id == id)
                         .Update(u => new TransactionsInfo
                         {
-                            Date = deposit.Date,
-                            AccountTo = deposit.AccountId,
-                            PayerType = deposit.PayerType,
-                            PayerId = deposit.PayerId,
-                            Amount = deposit.Amount,
-                            MethodId = deposit.MethodId,
-                            Description = deposit.Description
+                            Date = expense.Date,
+                            AccountFrom = expense.AccountId,
+                            Amount = expense.Amount,
+                            MethodId = expense.MethodId,
+                            Description = expense.Description
                         });
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Updated;
@@ -190,9 +181,8 @@ namespace App.Web.Controllers
                 }
                 finally
                 {
-                    ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", deposit.AccountId);
-                    ViewBag.PayerTypes = Common.ToSelectList<PayerType>(deposit.PayerType);
-                    ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", deposit.MethodId);
+                    ViewBag.Accounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", expense.AccountId);
+                    ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", expense.MethodId);
                 }
             }
         }
@@ -229,41 +219,6 @@ namespace App.Web.Controllers
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
-            }
-        }
-
-        [HttpPost]
-        public ActionResult GetAdditionalPayerTypeFields(PayerType? payerType, int? id = null)
-        {
-            var model = new DepositViewModel();
-            if (id != null)
-            {
-                var transaction = _db.TransactionsInfos.Find(id);
-                if (transaction != null)
-                {
-                    model.Id = transaction.Id;
-                    // ReSharper disable once PossibleInvalidOperationException
-                    model.AccountId = (int)transaction.AccountTo;
-                    // ReSharper disable once PossibleInvalidOperationException
-                    model.Date = (DateTime)transaction.Date;
-                    // ReSharper disable once PossibleInvalidOperationException
-                    model.PayerType = (PayerType)transaction.PayerType;
-                    model.PayerId = transaction.PayerId;
-                    model.Amount = transaction.Amount;
-                    model.MethodId = transaction.MethodId;
-                    model.Description = transaction.Description;
-                }
-            }
-
-            if (payerType == null) return Json(new { }, JsonRequestBehavior.AllowGet);
-            switch (payerType)
-            {
-                case PayerType.Agent:
-                    return PartialView("_AdditionalAgentField", model);
-                case PayerType.Client:
-                    return PartialView("_AdditionalClientFileld", model);
-                default:
-                    return Json(new { }, JsonRequestBehavior.AllowGet);
             }
         }
     }

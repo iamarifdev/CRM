@@ -16,15 +16,16 @@ namespace App.Entity.Models
         public TransactionType TransactionType { get; set; }
 
         [ForeignKey("BankAccountFrom")]
+        [Display(Name = "From Account")]
         public int? AccountFrom { get; set; }
 
         [ForeignKey("BankAccountTo")]
+        [Display(Name = "To Account")]
         public int? AccountTo { get; set; }
 
         public DateTime? Date { get; set; }
 
-        [Required]
-        public PayerType PayerType { get; set; }
+        public PayerType? PayerType { get; set; }
 
         public int? PayerId { get; set; }
 
