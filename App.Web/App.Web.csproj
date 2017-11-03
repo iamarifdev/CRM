@@ -5987,6 +5987,7 @@
     <Content Include="Views\Transfers\Index.cshtml" />
     <Content Include="Views\Transfers\Details.cshtml" />
     <Content Include="Views\Transfers\Create.cshtml" />
+    <Content Include="Views\Transfers\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

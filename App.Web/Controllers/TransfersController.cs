@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml.Xsl;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using App.Web.Models;
+using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
@@ -98,6 +100,144 @@ namespace App.Web.Controllers
                     ViewBag.FromAccounts = accounts;
                     ViewBag.ToAccounts = accounts;
                     ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName");
+                }
+            }
+        }
+
+        // GET: Transfers/Edit/5
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var transactionsInfo = _db.TransactionsInfos.Find(id);
+                if (transactionsInfo == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                if (transactionsInfo.TransactionType != TransactionType.Transfer)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                var transfer = new TransferViewModel();
+                transfer.Id = transactionsInfo.Id;
+                // ReSharper disable once PossibleInvalidOperationException
+                transfer.Date = (DateTime)transactionsInfo.Date;
+                // ReSharper disable once PossibleInvalidOperationException
+                transfer.AccountFrom = (int)transactionsInfo.AccountFrom;
+                // ReSharper disable once PossibleInvalidOperationException
+                transfer.AccountTo = (int)transactionsInfo.AccountTo;
+                transfer.Amount = transactionsInfo.Amount;
+                transfer.MethodId = transactionsInfo.MethodId;
+                transfer.Description = transactionsInfo.Description;
+
+                ViewBag.FromAccounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", transfer.AccountFrom);
+                ViewBag.ToAccounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", transfer.AccountTo);
+                ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", transfer.MethodId);
+
+                return View(transfer);
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        // POST: Transfers/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,AccountFrom,AccountTo,Date,Amount,MethodId,Description")] TransferViewModel transfer, int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (!_db.TransactionsInfos.Any(x => x.Id == id && x.TransactionType == TransactionType.Transfer))
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (!ModelState.IsValid) return View(transfer);
+                    _db.TransactionsInfos
+                        .Where(x => x.Id == id)
+                        .Update(u => new TransactionsInfo
+                        {
+                            Date = transfer.Date,
+                            AccountTo = transfer.AccountTo,
+                            AccountFrom = transfer.AccountFrom,
+                            Amount = transfer.Amount,
+                            MethodId = transfer.MethodId,
+                            Description = transfer.Description
+                        });
+                    dbTransaction.Commit();
+                    TempData["Toastr"] = Toastr.Updated;
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    ViewBag.FromAccounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", transfer.AccountFrom);
+                    ViewBag.ToAccounts = new SelectList(_db.BankAccounts.ToList(), "Id", "AccountName", transfer.AccountTo);
+                    ViewBag.PaymentMethods = new SelectList(_db.PaymentMethods.ToList(), "Id", "MethodName", transfer.MethodId);
+                }
+            }
+        }
+
+        // POST: Transfers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var transaction = _db.TransactionsInfos.Find(id);
+                    if (transaction == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    if (transaction.TransactionType != TransactionType.Transfer)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    _db.TransactionsInfos.Remove(transaction);
+                    _db.SaveChanges();
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
                 }
             }
         }
