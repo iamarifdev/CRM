@@ -408,6 +408,10 @@
     <Compile Include="Migrations\ContextB\201711021821049_PayerTypeSetToNullableInTransactionInfoModel.Designer.cs">
       <DependentUpon>201711021821049_PayerTypeSetToNullableInTransactionInfoModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711031855191_AddedTransactionView.cs" />
+    <Compile Include="Migrations\ContextB\201711031855191_AddedTransactionView.Designer.cs">
+      <DependentUpon>201711031855191_AddedTransactionView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
@@ -461,6 +465,9 @@
     <Content Include="command.text" />
     <None Include="Properties\PublishProfiles\Arif.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Migrations\ContextB\V_TransactionInfo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\additional-methods.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -5988,6 +5995,7 @@
     <Content Include="Views\Transfers\Details.cshtml" />
     <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\Edit.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5995,7 +6003,6 @@
     <Folder Include="Content\template\img\site\" />
     <Folder Include="vendor\flot\examples\gauge\" />
     <Folder Include="vendor\typicons\support\font-builder\" />
-    <Folder Include="Views\Transactions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -6125,6 +6132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711021821049_PayerTypeSetToNullableInTransactionInfoModel.resx">
       <DependentUpon>201711021821049_PayerTypeSetToNullableInTransactionInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711031855191_AddedTransactionView.resx">
+      <DependentUpon>201711031855191_AddedTransactionView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

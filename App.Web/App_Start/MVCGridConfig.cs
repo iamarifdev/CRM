@@ -975,75 +975,108 @@ namespace App.Web
             );
 
             //Expenses Table
-            //MVCGridDefinitionTable.Add("transactionTable", new MVCGridBuilder<TransactionsInfo>(defaults)
-            //    .WithAuthorizationType(AuthorizationType.Authorized)
-            //    .AddColumns(cols =>
-            //    {
-            //        cols.Add("TransactionId").WithHeaderText("Transaction Id").WithValueExpression(p => p.TransactionId).WithSorting(true);
-            //        cols.Add("TransactionType").WithHeaderText("Transaction Type").WithValueExpression(p => p.TransactionType.ToString()).WithSorting(true);
-            //        cols.Add("Account").WithHeaderText("Account").WithValueExpression(p => p.BankAccountFrom.AccountName).WithSorting(true);
-            //        cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
-            //        cols.Add("Amount").WithHeaderText("Amount").WithValueExpression(p => p.Payer.ToString()).WithSorting(true);
-            //        cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
-            //        cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-            //            .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-            //            "<a class='btn btn-sm btn-outline-primary' href='/Expenses/Edit/{Value}'>Edit</a> "
-            //            + "<a class='btn btn-sm btn-outline-info' href='/Expenses/Details/{Value}'>Details</a> "
-            //            + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
-            //         );
-            //    })
-            //    .WithSorting(true, "Date")
-            //    .WithPaging(true, 10, true, 100)
-            //    .WithAdditionalQueryOptionNames("Search")
-            //    .WithAdditionalSetting("RenderLoadingDiv", false)
-            //    .WithRetrieveDataMethod((context) =>
-            //    {
-            //        var options = context.QueryOptions;
-            //        var result = new QueryResult<TransactionsInfo>();
-            //        using (var db = new CrmDbContext())
-            //        {
-            //            var query = db.TransactionsInfos.Include(x => x.BankAccountFrom).Where(x => x.TransactionType == TransactionType.Expense).AsQueryable();
+            MVCGridDefinitionTable.Add("transactionTable", new MVCGridBuilder<TransactionView>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("TransactionId").WithHeaderText("Transaction Id").WithValueExpression(p => p.TransactionId).WithSorting(true);
+                    cols.Add("TransactionType").WithHeaderText("Transaction Type").WithValueExpression(p => p.TransactionType).WithSorting(true);
+                    cols.Add("AccountFrom").WithHeaderText("From Account").WithValueExpression(p => p.AccountFrom).WithSorting(true);
+                    cols.Add("AccountTo").WithHeaderText("To Account").WithValueExpression(p => p.AccountTo).WithSorting(true);
+                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
+                    cols.Add("Payer").WithHeaderText("Payer").WithValueExpression(p => p.Payer).WithSorting(true);
+                    cols.Add("Method").WithHeaderText("Method").WithValueExpression(p => p.Method).WithSorting(true);
+                    cols.Add("DepositAmount").WithHeaderText("Deposit").WithValueExpression(p => p.DepositAmount.ToString()).WithSorting(true);
+                    cols.Add("ExpenseAmount").WithHeaderText("Expense").WithValueExpression(p => p.ExpenseAmount.ToString()).WithSorting(true);
+                    cols.Add("TransferAmount").WithHeaderText("Transfer").WithValueExpression(p => p.TransferAmount.ToString()).WithSorting(true);
+                    cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm btn-outline-primary' href='/Transactions/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm btn-outline-info' href='/Transactions/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "TransactionId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<TransactionView>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.TransactionView.AsQueryable();
 
-            //            var globalSearch = options.GetAdditionalQueryOptionString("Search");
-            //            if (!string.IsNullOrWhiteSpace(globalSearch))
-            //            {
-            //                query = query.Where(x =>
-            //                        x.Date.NullDateToString().Contains(globalSearch)
-            //                        || x.BankAccountFrom.AccountId.ToString().Contains(globalSearch)
-            //                        || x.Amount.ToString().Contains(globalSearch)
-            //                        || x.Description.Contains(globalSearch)
-            //                );
-            //            }
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.TransactionId.Contains(globalSearch)
+                                    || x.TransactionType.Contains(globalSearch)
+                                    || x.AccountFrom.Contains(globalSearch)
+                                    || x.AccountTo.Contains(globalSearch)
+                                    //|| x.Date.NullDateToString().Contains(globalSearch)
+                                    || x.Method.Contains(globalSearch)
+                                    || x.Payer.Contains(globalSearch)
+                                    || x.DepositAmount.ToString().Contains(globalSearch)
+                                    || x.ExpenseAmount.ToString().Contains(globalSearch)
+                                    || x.TransferAmount.ToString().Contains(globalSearch)
+                                    || x.Description.Contains(globalSearch)
+                            );
+                        }
 
-            //            if (!string.IsNullOrWhiteSpace(options.SortColumnName))
-            //            {
-            //                var direction = options.SortDirection;
-            //                switch (options.SortColumnName.ToLower())
-            //                {
-            //                    case "date":
-            //                        query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Date) : query.OrderBy(p => p.Date);
-            //                        break;
-            //                    case "accountfrom":
-            //                        query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BankAccountFrom.AccountId) : query.OrderBy(p => p.BankAccountFrom.AccountId);
-            //                        break;
-            //                    case "amount":
-            //                        query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Amount) : query.OrderBy(p => p.Amount);
-            //                        break;
-            //                    case "description":
-            //                        query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Description) : query.OrderBy(p => p.Description);
-            //                        break;
-            //                }
-            //            }
-            //            result.TotalRecords = query.Count();
-            //            if (options.GetLimitOffset().HasValue && query.Count() != 0)
-            //            {
-            //                query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
-            //            }
-            //            result.Items = query.ToList();
-            //        }
-            //        return result;
-            //    })
-            //);
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "transactionid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.TransactionId) : query.OrderBy(p => p.TransactionId);
+                                    break;
+                                case "transactiontype":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.TransactionType) : query.OrderBy(p => p.TransactionType);
+                                    break;
+                                case "accountfrom":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AccountFrom) : query.OrderBy(p => p.AccountFrom);
+                                    break;
+                                case "accountto":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AccountTo) : query.OrderBy(p => p.AccountTo);
+                                    break;
+                                case "date":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Date) : query.OrderBy(p => p.Date);
+                                    break;
+                                case "method":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Method) : query.OrderBy(p => p.Method);
+                                    break;
+                                case "payer":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Payer) : query.OrderBy(p => p.Payer);
+                                    break;
+                                case "depositamount":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DepositAmount) : query.OrderBy(p => p.DepositAmount);
+                                    break;
+                                case "expenseamount":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ExpenseAmount) : query.OrderBy(p => p.ExpenseAmount);
+                                    break;
+                                case "transferamount":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.TransferAmount) : query.OrderBy(p => p.TransferAmount);
+                                    break;
+                                case "description":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Description) : query.OrderBy(p => p.Description);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
         }
     }
 }

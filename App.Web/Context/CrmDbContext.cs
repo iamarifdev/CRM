@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Reflection;
 using App.Entity.Models;
 
 namespace App.Web.Context
@@ -25,5 +26,13 @@ namespace App.Web.Context
         public DbSet<SuppliersInfo> SuppliersInfos { get; set; }
         public DbSet<TransactionsInfo> TransactionsInfos { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<TransactionView> TransactionView { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

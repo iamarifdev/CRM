@@ -100,7 +100,7 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Clients/Edit/5
+        // GET: Deposits/Edit/5
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -197,7 +197,7 @@ namespace App.Web.Controllers
             }
         }
 
-        // POST: Accounts/Delete/5
+        // POST: Deposits/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {

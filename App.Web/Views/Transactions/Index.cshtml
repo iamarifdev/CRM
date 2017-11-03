@@ -1,0 +1,58 @@
+﻿@using App.Entity.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/MvcGridPagination.css" rel="stylesheet" />
+    <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+
+@using (Html.BeginForm("Delete", "Transactions", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
+{
+    @Html.Hidden("Id")
+}
+<div class="card">
+    <h6 class="card-header bg-primary">DIPOSITS / LIST</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="@Url.Action("Create")" class="btn btn-info"> <span class="fa fa-plus"></span> Create New</a>
+                <button class="btn btn-outline-info refreshBtn"><span class="fa fa-refresh"></span> Refresh</button>
+            </div>
+            <br /><br /> <br />
+            <div class="col-md-12">
+                @Html.Partial("~/Views/Shared/_MVCGridToolbar.cshtml", new MVCGridToolbarModel()
+                {
+                    MVCGridName = "transactionTable",
+                    PageSize = true,
+                    GlobalSearch = true
+                })
+                @Html.MVCGrid("transactionTable")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script src="~/vendor/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/Scripts/index.js"></script>
+    <script>
+        @if (TempData["Toastr"] != null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
+
+        $(".refreshBtn").click(function() {
+            MVCGrid.reloadGrid('transactionTable');
+        });
+    </script>
+}
+
+
