@@ -81,7 +81,11 @@ namespace App.Web.Controllers
                     transaction.Description = transfer.Description;
 
                     _db.TransactionsInfos.Add(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0)
+                    {
+                        _db.UpdateBalance(_db.BankAccounts.Find(transfer.AccountFrom), (double)transfer.Amount, BalanceMode.Decrement);
+                        _db.UpdateBalance(_db.BankAccounts.Find(transfer.AccountTo), (double) transfer.Amount);
+                    }
 
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Added;
@@ -171,7 +175,7 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
                     if (!ModelState.IsValid) return View(transfer);
-                    _db.TransactionsInfos
+                    var count = _db.TransactionsInfos
                         .Where(x => x.Id == id)
                         .Update(u => new TransactionsInfo
                         {
@@ -182,6 +186,11 @@ namespace App.Web.Controllers
                             MethodId = transfer.MethodId,
                             Description = transfer.Description
                         });
+                    if (count > 0)
+                    {
+                        _db.UpdateBalance(_db.BankAccounts.Find(transfer.AccountFrom), (double)transfer.Amount, BalanceMode.Decrement);
+                        _db.UpdateBalance(_db.BankAccounts.Find(transfer.AccountTo), (double)transfer.Amount);
+                    }
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Updated;
 
@@ -215,19 +224,21 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var transaction = _db.TransactionsInfos.Find(id);
+                    var transaction = _db.TransactionsInfos.FirstOrDefault(x => x.Id == id && x.TransactionType == TransactionType.Transfer);
                     if (transaction == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    if (transaction.TransactionType != TransactionType.Transfer)
-                    {
-                        TempData["Toastr"] = Toastr.HttpNotFound;
-                        return RedirectToAction("Index");
-                    }
+                    var amount = transaction.Amount;
+                    var accountFrom = _db.BankAccounts.Find(transaction.AccountFrom);
+                    var accountTo = _db.BankAccounts.Find(transaction.AccountTo);
                     _db.TransactionsInfos.Remove(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0)
+                    {
+                        _db.UpdateBalance(accountFrom, (double)amount);
+                        _db.UpdateBalance(accountTo, (double)amount, BalanceMode.Decrement);
+                    }
                     dbTransaction.Commit();
 
                     TempData["Toastr"] = Toastr.Deleted;

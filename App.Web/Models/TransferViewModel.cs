@@ -23,6 +23,8 @@ namespace App.Web.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date { get; set; }
 
+        [System.Web.Mvc.Remote("IsTransferBalanceAvailable", "Accounts", AdditionalFields = "AccountFrom", HttpMethod = "POST", ErrorMessage = "Insufficient Balance, check account balance.")]
+        [Range(0.01,double.MaxValue, ErrorMessage = "Amount should be greater than 0.")]
         public decimal Amount { get; set; }
 
         [Display(Name = "Payment Method")]

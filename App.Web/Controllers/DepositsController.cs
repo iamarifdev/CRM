@@ -78,7 +78,7 @@ namespace App.Web.Controllers
                     transaction.Description = deposit.Description;
 
                     _db.TransactionsInfos.Add(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0) _db.UpdateBalance(_db.BankAccounts.Find(deposit.AccountId), (double) deposit.Amount);
 
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Added;
@@ -165,7 +165,7 @@ namespace App.Web.Controllers
                     }
 
                     if (!ModelState.IsValid) return View(deposit);
-                    _db.TransactionsInfos
+                    var count = _db.TransactionsInfos
                         .Where(x => x.Id == id)
                         .Update(u => new TransactionsInfo
                         {
@@ -177,6 +177,7 @@ namespace App.Web.Controllers
                             MethodId = deposit.MethodId,
                             Description = deposit.Description
                         });
+                    if (count > 0) _db.UpdateBalance(_db.BankAccounts.Find(deposit.AccountId), (double)deposit.Amount);
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Updated;
 
@@ -210,14 +211,16 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var transaction = _db.TransactionsInfos.Find(id);
+                    var transaction = _db.TransactionsInfos.FirstOrDefault(x => x.Id==id && x.TransactionType == TransactionType.Deposit);
                     if (transaction == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
+                    var amount = transaction.Amount;
+                    var account = _db.BankAccounts.Find(transaction.AccountTo);
                     _db.TransactionsInfos.Remove(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0) _db.UpdateBalance(account, (double) amount, BalanceMode.Decrement);
                     dbTransaction.Commit();
 
                     TempData["Toastr"] = Toastr.Deleted;

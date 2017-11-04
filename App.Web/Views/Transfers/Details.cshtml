@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h5>
-                    ACCOUNT NAME: @Model.TransactionId.ToUpper()
+                    TRANSACTION ID: @Model.TransactionId.ToUpper()
                     <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
                 </h5>
                 <br />
@@ -23,7 +23,7 @@
                         <td>@Model.Date.NullDateToString()</td>
                     </tr>
                     <tr>
-                        <th>@Html.DisplayNameFor(m => m.AccountFrom)/th>
+                        <th>@Html.DisplayNameFor(m => m.AccountFrom)</th>
                         <td>@Model.BankAccountFrom.AccountName</td>
                     </tr>
                     <tr>

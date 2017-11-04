@@ -9,6 +9,11 @@
     <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/MvcGridPagination.css" rel="stylesheet" />
     <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .customColumn {
+            width: 175px;
+        }
+    </style>
 }
 
 @using (Html.BeginForm("Delete", "Transactions", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
@@ -16,11 +21,10 @@
     @Html.Hidden("Id")
 }
 <div class="card">
-    <h6 class="card-header bg-primary">DIPOSITS / LIST</h6>
+    <h6 class="card-header bg-primary">TRANSACTIONS / LIST</h6>
     <div class="card-block">
         <div class="row">
             <div class="col-md-6">
-                <a href="@Url.Action("Create")" class="btn btn-info"> <span class="fa fa-plus"></span> Create New</a>
                 <button class="btn btn-outline-info refreshBtn"><span class="fa fa-refresh"></span> Refresh</button>
             </div>
             <br /><br /> <br />

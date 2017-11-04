@@ -37,9 +37,9 @@ namespace App.Web
                     //cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Branch/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Branch/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Branch/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Branch/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "BranchId")
@@ -109,9 +109,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status == Status.Active ? "Active" : "Inactive");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Designations/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Designations/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "DesignationId")
@@ -172,9 +172,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Services/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Services/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "ServiceId")
@@ -233,9 +233,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Sectors/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Sectors/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SectorId")
@@ -301,9 +301,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Airlines/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Airlines/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "AirLineId")
@@ -365,9 +365,9 @@ namespace App.Web
                     cols.Add("SupplierMobileNo").WithHeaderText("Mobile No.").WithValueExpression(p => p.SupplierMobileNo).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Suppliers/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Suppliers/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Suppliers/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "SupplierId")
@@ -432,9 +432,9 @@ namespace App.Web
                     cols.Add("MethodName").WithHeaderText("Payment Method").WithValueExpression(p => p.MethodName).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/PaymentMethods/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/PaymentMethods/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/PaymentMethods/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "MethodId")
@@ -497,9 +497,9 @@ namespace App.Web
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Agents/Edit/{Value}'>Edit</a> " +
-                        "<a class='btn btn-sm btn-outline-info' href='/Agents/Details/{Value}'>Details</a> " +
-                        "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Agents/Edit/{Value}'>Edit</a> " +
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Agents/Details/{Value}'>Details</a> " +
+                        "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "AgentId")
@@ -589,9 +589,9 @@ namespace App.Web
                     cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                            "<a class='btn btn-sm btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
-                            + "<a class='btn btn-sm btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
-                            + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                            "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
+                            + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
+                            + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                         );
                     
                 })
@@ -690,12 +690,13 @@ namespace App.Web
                     cols.Add("AccountNumber").WithHeaderText("Account Number").WithValueExpression(p => p.AccountNumber).WithSorting(true);
                     cols.Add("BankName").WithHeaderText("Bank Name").WithValueExpression(p => p.BankName).WithSorting(true);
                     cols.Add("BranchName").WithHeaderText("Branch Name").WithValueExpression(p => p.BranchName).WithSorting(true);
+                    cols.Add("Balance").WithHeaderText("Balance").WithValueExpression(p => p.Balance.ToString()).WithSorting(true);
                     cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Accounts/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Accounts/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Accounts/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Accounts/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "AccountId")
@@ -719,6 +720,7 @@ namespace App.Web
                                     || x.AccountNumber.Contains(globalSearch)
                                     || x.BankName.Contains(globalSearch)
                                     || x.BranchName.Contains(globalSearch)
+                                    || x.Balance.ToString().Contains(globalSearch)
                             );
                         }
 
@@ -741,6 +743,9 @@ namespace App.Web
                                     break;
                                 case "branchname":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BranchName) : query.OrderBy(p => p.BranchName);
+                                    break;
+                                case "balance":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Balance) : query.OrderBy(p => p.Balance);
                                     break;
                                 case "status":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
@@ -769,9 +774,9 @@ namespace App.Web
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Deposits/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Deposits/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Deposits/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Deposits/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "Date")
@@ -838,9 +843,9 @@ namespace App.Web
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Expenses/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Expenses/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Expenses/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Expenses/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "Date")
@@ -909,9 +914,9 @@ namespace App.Web
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Transfers/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Transfers/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Transfers/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Transfers/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "TransactionId")
@@ -991,10 +996,11 @@ namespace App.Web
                     cols.Add("TransferAmount").WithHeaderText("Transfer").WithValueExpression(p => p.TransferAmount.ToString()).WithSorting(true);
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithCellCssClassExpression(p => "customColumn")
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm btn-outline-primary' href='/Transactions/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm btn-outline-info' href='/Transactions/Details/{Value}'>Details</a> "
-                        + "<button class='btn btn-sm btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Transactions/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Transactions/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
                 .WithSorting(true, "TransactionId")

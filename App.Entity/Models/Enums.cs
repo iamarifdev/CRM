@@ -81,4 +81,10 @@ namespace App.Entity.Models
         Officer=3,
         Other=4
     }
+
+    public enum BalanceMode
+    {
+        Increment,
+        Decrement
+    }
 }

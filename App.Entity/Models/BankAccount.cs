@@ -4,6 +4,10 @@ namespace App.Entity.Models
 {
     public class BankAccount : BaseModel
     {
+        public BankAccount()
+        {
+            Balance = 0;
+        }
         [Required]
         [Display(Name = "Account Id")]
         public string AccountId { get; set; }
@@ -24,6 +28,9 @@ namespace App.Entity.Models
         [StringLength(50)]
         [Display(Name = "Branch Name")]
         public string BranchName { get; set; }
+
+        [Range(0,double.MaxValue)]
+        public double Balance { get; set; }
 
         public Status Status { get; set; }
     }

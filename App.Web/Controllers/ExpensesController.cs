@@ -76,7 +76,7 @@ namespace App.Web.Controllers
                     transaction.Description = expense.Description;
 
                     _db.TransactionsInfos.Add(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0) _db.UpdateBalance(_db.BankAccounts.Find(expense.AccountId), (double)expense.Amount, BalanceMode.Decrement);
 
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Added;
@@ -150,15 +150,14 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-
                     if (!_db.TransactionsInfos.Any(x => x.Id == id))
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-
                     if (!ModelState.IsValid) return View(expense);
-                    _db.TransactionsInfos
+
+                    var count = _db.TransactionsInfos
                         .Where(x => x.Id == id)
                         .Update(u => new TransactionsInfo
                         {
@@ -168,6 +167,8 @@ namespace App.Web.Controllers
                             MethodId = expense.MethodId,
                             Description = expense.Description
                         });
+                    if (count > 0) _db.UpdateBalance(_db.BankAccounts.Find(expense.AccountId), (double)expense.Amount, BalanceMode.Decrement);
+
                     dbTransaction.Commit();
                     TempData["Toastr"] = Toastr.Updated;
 
@@ -200,14 +201,18 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    var transaction = _db.TransactionsInfos.Find(id);
+                    var transaction = _db.TransactionsInfos.FirstOrDefault(x => x.Id == id && x.TransactionType == TransactionType.Expense);
                     if (transaction == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
+                    var amount = transaction.Amount;
+                    var account = _db.BankAccounts.Find(transaction.AccountFrom);
+
                     _db.TransactionsInfos.Remove(transaction);
-                    _db.SaveChanges();
+                    if (_db.SaveChanges() > 0) _db.UpdateBalance(account, (double)amount);
+
                     dbTransaction.Commit();
 
                     TempData["Toastr"] = Toastr.Deleted;

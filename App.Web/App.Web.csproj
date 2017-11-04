@@ -252,6 +252,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Common.cs" />
+    <Compile Include="Helper\CrmDb.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
     <Compile Include="Hubs\ProgressHub.cs" />
@@ -411,6 +412,10 @@
     <Compile Include="Migrations\ContextB\201711031855191_AddedTransactionView.cs" />
     <Compile Include="Migrations\ContextB\201711031855191_AddedTransactionView.Designer.cs">
       <DependentUpon>201711031855191_AddedTransactionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711041032053_AddedBalanceToBankAccountModel.cs" />
+    <Compile Include="Migrations\ContextB\201711041032053_AddedBalanceToBankAccountModel.Designer.cs">
+      <DependentUpon>201711041032053_AddedBalanceToBankAccountModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -6135,6 +6140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711031855191_AddedTransactionView.resx">
       <DependentUpon>201711031855191_AddedTransactionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711041032053_AddedBalanceToBankAccountModel.resx">
+      <DependentUpon>201711041032053_AddedBalanceToBankAccountModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

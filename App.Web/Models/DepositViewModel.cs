@@ -25,6 +25,8 @@ namespace App.Web.Models
 
         [Display(Name = "Payer")]
         public int? PayerId { get; set; }
+
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount should be greater than 0.")]
         public decimal Amount { get; set; }
 
         [Display(Name = "Payment Method")]

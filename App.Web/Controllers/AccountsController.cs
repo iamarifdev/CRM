@@ -59,7 +59,7 @@ namespace App.Web.Controllers
         // POST: Accounts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Status")] BankAccount bankAccount)
+        public ActionResult Create([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Balance,Status")] BankAccount bankAccount)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -126,7 +126,7 @@ namespace App.Web.Controllers
         // POST: Accounts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Status")] BankAccount bankAccount, int? id)
+        public ActionResult Edit([Bind(Include = "Id,AccountName,AccountNumber,BankName,BranchName,Balance,Status")] BankAccount bankAccount, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
@@ -167,6 +167,7 @@ namespace App.Web.Controllers
                             AccountNumber = bankAccount.AccountNumber,
                             BankName = bankAccount.BankName,
                             BranchName = bankAccount.BranchName,
+                            Balance = bankAccount.Balance,
                             Status = bankAccount.Status
                         });
                     dbTransaction.Commit();
@@ -228,5 +229,37 @@ namespace App.Web.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public JsonResult IsExpenseBalanceAvailable(double amount, int? accountId)
+        {
+            try
+            {
+                if (accountId == null) return Json(false, JsonRequestBehavior.AllowGet);
+                var flag = _db.BankAccounts.Any(x => x.Id == accountId && x.Balance >= amount);
+                return Json(flag, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult IsTransferBalanceAvailable(double amount, int? accountFrom)
+        {
+            try
+            {
+                if (accountFrom == null) return Json(false, JsonRequestBehavior.AllowGet);
+                var flag = _db.BankAccounts.Any(x => x.Id == accountFrom && x.Balance >= amount);
+                return Json(flag, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }
