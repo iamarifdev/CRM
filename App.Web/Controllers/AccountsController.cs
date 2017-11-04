@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
+using App.Web.Models;
 using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
@@ -228,6 +229,24 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
+        }
+
+        [HttpGet]
+        public ActionResult BalanceSheet()
+        {
+            try
+            {
+                var data = _db.BankAccounts.AsNoTracking().AsQueryable();
+                ViewBag.Accounts = data.Select(x => new AccountViewModel { Account = x.AccountName, Balance = x.Balance }).ToList();
+                ViewBag.TotalBalance = data.Sum(x => x.Balance);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.CustomError(ex.Message);
+                return RedirectToAction("Index");
+            }
+            
         }
 
         [HttpPost]

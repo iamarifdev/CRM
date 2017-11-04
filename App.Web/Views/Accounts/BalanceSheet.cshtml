@@ -1,0 +1,47 @@
+﻿@using App.Web.Models
+@{
+    ViewBag.Title = "Balance Sheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">BALANCE SHEET</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in (List<AccountViewModel>)ViewBag.Accounts)
+                        {
+                            <tr>
+                                <td>@item.Account</td>
+                                <td>@item.Balance</td>
+                            </tr>
+                        }
+                    <tr>
+                        <td colspan="2" align="right">TOTAL: <strong>@ViewBag.TotalBalance</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        @if (TempData["Toastr"] != null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
+    </script>
+}
+
+
