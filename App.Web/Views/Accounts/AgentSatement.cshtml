@@ -1,0 +1,119 @@
+﻿@model App.Web.Models.AgentStatementViewModel
+@{
+    ViewBag.Title = "Agent Statement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "OnSuccess",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+    };
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">ACCOUNTS / AGENT STATEMENT</h6>
+    <div class="card-block">
+        @using (Ajax.BeginForm("AgentSatement", "Accounts", null, options, new { @class = "form-horizontal", @id = "agentStatementForm" }))
+        {
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.AgentId, (SelectList)ViewBag.Agents, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.AgentId, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control pickDate", @placeholder="From Date" } })
+                                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control pickDate", @placeholder = "To Date" } })
+                                @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-eye"></i> Show Data</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+        <br />
+        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
+        <div class="row text-center">
+            <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80"/><br/><br/>
+            <h3 class="text-underline">Code For Host Inc | Travel</h3>
+            <strong><i>Agent Statment Report</i></strong>
+        </div>
+        <table class="table table-bordered table-striped" id="agentStatementTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Narration</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center text-danger">NO DATA FOUND</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script>
+        $(".pickDate").datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            setDate: "d"
+        }).on("changeDate", function () {
+            $(this).valid();
+        });
+
+        function OnBegin() {
+            //alert('On Begin');
+            console.log('On Begin');
+        }
+
+        function OnComplete() {
+            //alert('On Completed');
+            //console.log('On Completed');
+        }
+
+        function OnSuccess(resp) {
+            
+        }
+
+        function OnFailure() {
+            //alert('On Failure');
+            console.log('On Failure');
+        }
+                
+    </script>
+}
+

@@ -421,6 +421,7 @@
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
+    <Compile Include="Models\AgentStatementViewModel.cs" />
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\ClientPaymentViewModel.cs" />
     <Compile Include="Models\DepositViewModel.cs" />
@@ -445,6 +446,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\MvcGridPagination.css" />
+    <Content Include="Content\select2-bootstrap.min.css" />
     <Content Include="Content\template\core.css" />
     <Content Include="Content\template\img\avatars\1.jpg" />
     <Content Include="Content\template\img\avatars\10.jpg" />
@@ -5109,6 +5111,7 @@
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />
     <Content Include="Views\Accounts\BalanceSheet.cshtml" />
+    <Content Include="Views\Accounts\AgentSatement.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

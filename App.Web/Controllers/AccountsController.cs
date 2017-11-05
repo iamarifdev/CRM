@@ -249,6 +249,20 @@ namespace App.Web.Controllers
             
         }
 
+        public ActionResult AgentSatement()
+        {
+            try
+            {
+                ViewBag.Agents = new SelectList(_db.AgentInfos.ToList(), "Id", "AgentName");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.CustomError(ex.Message);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
         [HttpPost]
         public JsonResult IsExpenseBalanceAvailable(double amount, int? accountId)
         {

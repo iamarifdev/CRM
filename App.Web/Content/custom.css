@@ -18,3 +18,11 @@
         margin-top: 27px;
     }
 }
+
+.new-line {
+    display: block;
+}
+
+.text-center {
+    text-align: center !important;
+}
