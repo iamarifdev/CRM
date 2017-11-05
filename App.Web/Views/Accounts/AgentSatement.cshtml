@@ -55,31 +55,36 @@
             </div>
         }
         <br />
+        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
         <div id="agentStatementInfo">
-            <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
             <br />
-            <br/>
+            <br />
             <div class="row text-center">
-                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80"/><br/><br/>
+                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
                 <h3 class="text-underline">Code For Host Inc | Travel</h3>
                 <strong><i>Agent Statment Report</i></strong>
             </div>
             <table class="table table-bordered table-striped" id="agentStatementTable">
                 <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Date</th>
-                    <th>Narration</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                </tr>
+                    <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Narration</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td colspan="5" class="text-center text-danger">NO DATA FOUND</td>
-                </tr>
+                    <tr>
+                        <td colspan="5" class="text-center text-danger">NO DATA FOUND</td>
+                    </tr>
                 </tbody>
             </table>
+            <br /><br /><br />
+            <div class="row text-right">
+                <p class="no-margin-bottom">.............................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="no-margin-bottom">Administrator Siganature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
         </div>
     </div>
 </div>
@@ -90,16 +95,21 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/print.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $("#agentStatementInfo").hide();
+            $("#print").hide();
+            $("#print").click(function () {
+                printDiv("agentStatementInfo");
+            });
         });
         $(".pickDate").datepicker({
             autoclose: true,
             format: "yyyy-mm-dd",
             setDate: "d"
         }).on("changeDate",
-            function() {
+            function () {
                 $(this).valid();
             });
 
@@ -118,7 +128,7 @@
             var tbody = $("#agentStatementTable tbody");
             if (resp.Flag) {
                 tbody.empty();
-                $.each(resp.Statements, function(index, value) {
+                $.each(resp.Statements, function (index, value) {
                     tbody.append(
                         '<tr>' +
                             '<td>' + value.No + '</td>' +
@@ -137,11 +147,13 @@
                     );
                 }
                 agentStatementInfo.show();
+                $("#print").show();
             }
             else {
                 toastr.error(resp.Msg, 'Error!');
                 tbody.empty();
                 agentStatementInfo.hide();
+                $("#print").hide();
             }
         }
 

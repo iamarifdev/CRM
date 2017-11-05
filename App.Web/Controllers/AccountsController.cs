@@ -273,7 +273,8 @@ namespace App.Web.Controllers
                 var query = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
                 if (agentStatement.FromDate != null && agentStatement.ToDate != null) query = query.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
                 if (agentStatement.FromDate != null && agentStatement.ToDate == null) query = query.Where(x => x.Date >= agentStatement.FromDate);
-                var statements = query.Select(s => new { No = s.TransactionId, s.Date, Narration = s.Description, Debit = s.Amount, Credit = 0 }).ToList();
+                var data = query.ToList();
+                var statements = data.Select(s => new { No = s.TransactionId, Date = string.Format("{0:yyyy-MM-dd}", s.Date), Narration = s.Description, Debit = s.Amount, Credit = 0 }).ToList();
                 return Json(new { Flag = true, Statements = statements }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
