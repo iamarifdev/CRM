@@ -55,14 +55,17 @@
             </div>
         }
         <br />
-        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
-        <div class="row text-center">
-            <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80"/><br/><br/>
-            <h3 class="text-underline">Code For Host Inc | Travel</h3>
-            <strong><i>Agent Statment Report</i></strong>
-        </div>
-        <table class="table table-bordered table-striped" id="agentStatementTable">
-            <thead>
+        <div id="agentStatementInfo">
+            <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
+            <br />
+            <br/>
+            <div class="row text-center">
+                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80"/><br/><br/>
+                <h3 class="text-underline">Code For Host Inc | Travel</h3>
+                <strong><i>Agent Statment Report</i></strong>
+            </div>
+            <table class="table table-bordered table-striped" id="agentStatementTable">
+                <thead>
                 <tr>
                     <th>No</th>
                     <th>Date</th>
@@ -70,13 +73,14 @@
                     <th>Debit</th>
                     <th>Credit</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td colspan="5" class="text-center text-danger">NO DATA FOUND</td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -87,13 +91,17 @@
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
+        $(function() {
+            $("#agentStatementInfo").hide();
+        });
         $(".pickDate").datepicker({
             autoclose: true,
             format: "yyyy-mm-dd",
             setDate: "d"
-        }).on("changeDate", function () {
-            $(this).valid();
-        });
+        }).on("changeDate",
+            function() {
+                $(this).valid();
+            });
 
         function OnBegin() {
             //alert('On Begin');
@@ -106,14 +114,42 @@
         }
 
         function OnSuccess(resp) {
-            
+            var agentStatementInfo = $("#agentStatementInfo");
+            var tbody = $("#agentStatementTable tbody");
+            if (resp.Flag) {
+                tbody.empty();
+                $.each(resp.Statements, function(index, value) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td>' + value.No + '</td>' +
+                            '<td>' + value.Date + '</td>' +
+                            '<td>' + value.Narration + '</td>' +
+                            '<td>' + value.Debit + '</td>' +
+                            '<td>' + value.Credit + '</td>' +
+                        '</tr>'
+                    );
+                });
+                if (resp.Statements.length === 0) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td colspan="5" class="text-center text-danger">NO DATA FOUND</td>' +
+                        '</tr>'
+                    );
+                }
+                agentStatementInfo.show();
+            }
+            else {
+                toastr.error(resp.Msg, 'Error!');
+                tbody.empty();
+                agentStatementInfo.hide();
+            }
         }
 
         function OnFailure() {
             //alert('On Failure');
             console.log('On Failure');
         }
-                
+
     </script>
 }
 

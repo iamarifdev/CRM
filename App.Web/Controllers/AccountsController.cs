@@ -246,9 +246,10 @@ namespace App.Web.Controllers
                 TempData["Toastr"] = Toastr.CustomError(ex.Message);
                 return RedirectToAction("Index");
             }
-            
+
         }
 
+        [HttpGet]
         public ActionResult AgentSatement()
         {
             try
@@ -261,6 +262,24 @@ namespace App.Web.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AgentSatement(AgentStatementViewModel agentStatement)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid data." }, JsonRequestBehavior.AllowGet);
+                var query = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
+                if (agentStatement.FromDate != null && agentStatement.ToDate != null) query = query.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
+                if (agentStatement.FromDate != null && agentStatement.ToDate == null) query = query.Where(x => x.Date >= agentStatement.FromDate);
+                var statements = query.Select(s => new { No = s.TransactionId, s.Date, Narration = s.Description, Debit = s.Amount, Credit = 0 }).ToList();
+                return Json(new { Flag = true, Statements = statements }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = true, Msg=ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]

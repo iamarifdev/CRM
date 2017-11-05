@@ -278,7 +278,7 @@ namespace App.Web.Controllers
                 }
                 var data = new { Flag = true, TotalPaid = totalPaid, TotalServiceCharge = totalServiceCharge, Due = due, IsDueExist = due > 0.00,
                                  Payments = payments != null 
-                                 ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount })
+                                 ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount }).OrderByDescending(x=>x.PaymentDate)
                                  : null
                 };
                 return Json(data, JsonRequestBehavior.AllowGet);
@@ -303,7 +303,6 @@ namespace App.Web.Controllers
                 var query = _db.CustomerPayments.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent && x.UserType == UserType.IsAdmin);
                 if (query.Any())
                 {
-                    //var query = _db.CustomerPayments.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent && x.UserType == UserType.IsAdmin);
                     totalPaid = query.Sum(x => x.PaymentAmount);
                     due = totalServiceCharge - totalPaid;
                     payments = query.Select(x => new PaymentViewModel
@@ -321,7 +320,7 @@ namespace App.Web.Controllers
                     Due = due,
                     IsDueExist = due > 0.00,
                     Payments = payments != null
-                    ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount })
+                    ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount }).OrderByDescending(x=>x.PaymentDate)
                     : null
                 };
                 return Json(data, JsonRequestBehavior.AllowGet);
@@ -364,7 +363,7 @@ namespace App.Web.Controllers
                     Due = due,
                     IsDueExist = due > 0.00,
                     Payments = payments != null
-                    ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount })
+                    ? payments.Select(x => new { x.PaymnentMadeBy, PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount }).OrderByDescending(x=>x.PaymentDate)
                     : null
                 };
                 return Json(data, JsonRequestBehavior.AllowGet);
