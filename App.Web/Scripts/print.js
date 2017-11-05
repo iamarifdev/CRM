@@ -4,6 +4,5 @@
     document.body.innerHTML = printContents;
     window.print();
     document.body.innerHTML = originalContents;
-    //todo need to change that
-    window.location = "/Accounts/AgentSatement";
+    document.location.reload(true);
 }
