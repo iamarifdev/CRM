@@ -101,7 +101,7 @@
             $("#agentStatementInfo").hide();
             $("#print").hide();
             $("#print").click(function () {
-                printDiv("agentStatementInfo");
+                PrintDocumentDivById("agentStatementInfo");
             });
         });
         $(".pickDate").datepicker({
@@ -146,13 +146,13 @@
                         '</tr>'
                     );
                 }
-                agentStatementInfo.show();
+                agentStatementInfo.show().slideDown(500);;
                 $("#print").show();
             }
             else {
                 toastr.error(resp.Msg, 'Error!');
                 tbody.empty();
-                agentStatementInfo.hide();
+                agentStatementInfo.hide().slideDown(500);;
                 $("#print").hide();
             }
         }
