@@ -241,6 +241,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaymentMethodsController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SectorsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Models\AgentStatementViewModel.cs" />
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\ClientInfoViewModel.cs" />
     <Compile Include="Models\ClientPaymentViewModel.cs" />
     <Compile Include="Models\DepositViewModel.cs" />
     <Compile Include="Models\ExpenseViewModel.cs" />
@@ -5113,6 +5115,7 @@
     <Content Include="Views\Expenses\Index.cshtml" />
     <Content Include="Views\Accounts\BalanceSheet.cshtml" />
     <Content Include="Views\Accounts\AgentSatement.cshtml" />
+    <Content Include="Views\Reports\ClientInfoReport.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -1,6 +1,6 @@
-﻿@model App.Web.Models.AgentStatementViewModel
+﻿@model App.Web.Models.ClientInfoViewModel
 @{
-    ViewBag.Title = "Agent Statement";
+    ViewBag.Title = "Client Info Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var options = new AjaxOptions
@@ -18,45 +18,51 @@
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
-    <h6 class="card-header bg-primary">ACCOUNTS / AGENT STATEMENT</h6>
+    <h6 class="card-header bg-primary">REPORTS / CLIENT INFO</h6>
     <div class="card-block">
-        @using (Ajax.BeginForm("AgentSatement", "Accounts", null, options, new { @class = "form-horizontal", @id = "agentStatementForm" }))
+        @using (Ajax.BeginForm("ClientInfoReport", "Reports", null, options, new { @class = "form-horizontal", @id = "clientInfoReportForm" }))
         {
             <div class="card">
                 <div class="card-block">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                @Html.DropDownListFor(model => model.AgentId, (SelectList)ViewBag.Agents, "Select One", new { @class = "form-control select2" })
-                                @Html.ValidationMessageFor(model => model.AgentId, "", new { @class = "text-danger new-line" })
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.Id, "Clients", htmlAttributes: new { @class = "control-label col-sm-4 colp text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.Id, (SelectList)ViewBag.Clients, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger new-line" })
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control pickDate", @placeholder = "From Date" } })
-                                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger new-line" })
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.Branches, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger new-line" })
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control pickDate", @placeholder = "To Date" } })
-                                @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger new-line" })
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.ServedBy, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.ServedBy, (SelectList)ViewBag.Users, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.ServedBy, "", new { @class = "text-danger new-line" })
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-eye"></i> Show Data</button>
-                            </div>
-                        </div>
-
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.ServiceId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.ServiceId, (SelectList)ViewBag.Services, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.ServiceId, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         }
         <br />
+        @* Need to modify after that portion *@
         <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
-        <div id="agentStatementInfo">
+        <div id="clientReportInfo">
             <br />
             <br />
             <div class="row text-center">
@@ -68,10 +74,20 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
-                        <th>Narration</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
+                        <th>Entry Date</th>
+                        <th>CID</th>
+                        <th>PAX Name</th>
+                        <th>Referal</th>
+                        <th>Service</th>
+                        <th>Air Lines</th>
+                        <th>Air Line PNR</th>
+                        <th>Service Charge</th>
+                        <th>Cost</th>
+                        <th>Profit</th>
+                        <th>Served By</th>
+                        <th>Working Status</th>
+                        <th>Information Update</th>
+                        <th>Delivery Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,20 +115,19 @@
     <script src="~/Scripts/print.js"></script>
     <script>
         $(function () {
-            $("#agentStatementInfo").hide();
+            $("#clientReportInfo").hide();
             $("#print").hide();
             $("#print").click(function () {
-                PrintDocumentDivById("agentStatementInfo");
+                PrintDocumentDivById("clientReportInfo");
             });
         });
         $(".pickDate").datepicker({
             autoclose: true,
             format: "yyyy-mm-dd",
             setDate: "d"
-        }).on("changeDate",
-            function () {
-                $(this).valid();
-            });
+        }).on("changeDate", function () {
+            $(this).valid();
+        });
 
         function OnBegin() {
             //alert('On Begin');
@@ -125,7 +140,7 @@
         }
 
         function OnSuccess(resp) {
-            var agentStatementInfo = $("#agentStatementInfo");
+            var clientReportInfo = $("#clientReportInfo");
             var tbody = $("#agentStatementTable tbody");
             if (resp.Flag) {
                 tbody.empty();
@@ -147,13 +162,13 @@
                         '</tr>'
                     );
                 }
-                agentStatementInfo.show().slideDown(500);;
+                clientReportInfo.show().slideDown(500);;
                 $("#print").show();
             }
             else {
                 toastr.error(resp.Msg, 'Error!');
                 tbody.empty();
-                agentStatementInfo.hide().slideDown(500);;
+                clientReportInfo.hide().slideDown(500);;
                 $("#print").hide();
             }
         }

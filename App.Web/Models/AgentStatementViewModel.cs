@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Foolproof;
 
 namespace App.Web.Models
 {
@@ -17,6 +18,7 @@ namespace App.Web.Models
 
         [Display(Name = "To Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        //[LessThan("FromDate",ErrorMessage = "To Date cannot be less than from date.")]
         public DateTime? ToDate { get; set; }
     }
 }
