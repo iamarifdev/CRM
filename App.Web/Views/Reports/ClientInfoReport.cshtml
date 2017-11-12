@@ -55,6 +55,64 @@
                                 @Html.ValidationMessageFor(model => model.ServiceId, "", new { @class = "text-danger new-line" })
                             </div>
                         </div>
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.AirLineId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.AirLineId, (SelectList)ViewBag.Airlines, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.AirLineId, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.AgentId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.AgentId, (SelectList)ViewBag.Agents, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.AgentId, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.WorkingStatus, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.WorkingStatus, (SelectList)ViewBag.WorkingStatusList, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.WorkingStatus, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.InfoStatus, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.InfoStatus, (SelectList)ViewBag.InfoStatusList, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.InfoStatus, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.DeliveryStatus, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.DeliveryStatus, (SelectList)ViewBag.DeliveryStatusList, "Select One", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.DeliveryStatus, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control pickDate" } })
+                                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            @Html.LabelFor(model => model.ToDate, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control pickDate" } })
+                                @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger new-line" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <div class="offset-sm-4 col-sm-8">
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-eye"></i> Show Data</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,9 +126,9 @@
             <div class="row text-center">
                 <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
                 <h3 class="text-underline">Code For Host Inc | Travel</h3>
-                <strong><i>Agent Statment Report</i></strong>
+                <strong><i>Client Info Report</i></strong>
             </div>
-            <table class="table table-bordered table-striped" id="agentStatementTable">
+            <table class="table table-bordered table-striped" id="clientInfoReportTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -92,7 +150,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="5" class="text-center text-danger">NO DATA FOUND</td>
+                        <td colspan="15" class="text-center text-danger">NO DATA FOUND</td>
                     </tr>
                 </tbody>
             </table>
@@ -118,7 +176,7 @@
             $("#clientReportInfo").hide();
             $("#print").hide();
             $("#print").click(function () {
-                PrintDocumentDivById("clientReportInfo");
+                PrintDocumentDivById("clientReportInfo", true);
             });
         });
         $(".pickDate").datepicker({
@@ -129,39 +187,53 @@
             $(this).valid();
         });
 
-        function OnBegin() {
-            //alert('On Begin');
-            console.log('On Begin');
-        }
+        function OnBegin() {}
 
-        function OnComplete() {
-            //alert('On Completed');
-            //console.log('On Completed');
-        }
+        function OnComplete() {}
 
         function OnSuccess(resp) {
             var clientReportInfo = $("#clientReportInfo");
-            var tbody = $("#agentStatementTable tbody");
+            var tbody = $("#clientInfoReportTable tbody");
             if (resp.Flag) {
                 tbody.empty();
-                $.each(resp.Statements, function (index, value) {
+                $.each(resp.ClientReports, function (index, value) {
                     tbody.append(
                         '<tr>' +
-                            '<td>' + value.No + '</td>' +
-                            '<td>' + value.Date + '</td>' +
-                            '<td>' + value.Narration + '</td>' +
-                            '<td>' + value.Debit + '</td>' +
-                            '<td>' + value.Credit + '</td>' +
+                            '<td>' + (index+1) + '</td>' +
+                            '<td>' + value.EntryDate + '</td>' +
+                            '<td>' + value.CID + '</td>' +
+                            '<td>' + value.PaxName + '</td>' +
+                            '<td>' + value.Referral + '</td>' +
+                            '<td>' + value.Service + '</td>' +
+                            '<td>' + value.Airline + '</td>' +
+                            '<td>' + value.AirLinePnr + '</td>' +
+                            '<td>' + value.ServiceCharge + '</td>' +
+                            '<td>' + value.Cost + '</td>' +
+                            '<td>' + value.Profit + '</td>' +
+                            '<td>' + value.ServedBy + '</td>' +
+                            '<td>' + value.WorkingStatus + '</td>' +
+                            '<td>' + value.InfoStatus + '</td>' +
+                            '<td>' + value.DeliveryStatus + '</td>' +
                         '</tr>'
                     );
                 });
-                if (resp.Statements.length === 0) {
+
+                if (resp.ClientReports.length === 0) {
                     tbody.append(
                         '<tr>' +
-                            '<td colspan="5" class="text-center text-danger">NO DATA FOUND</td>' +
+                            '<td colspan="15" class="text-center text-danger">NO DATA FOUND</td>' +
                         '</tr>'
                     );
                 }
+                tbody.append(
+                    '<tr>' +
+                        '<td colspan="8" class="text-right">Total:</td>' +
+                        '<td>' + resp.ServiceCharge + '</td>' +
+                        '<td>' + resp.Cost + '</td>' +
+                        '<td>' + resp.Profit + '</td>' +
+                        '<td colspan="4"></td>' +
+                    '</tr>'
+                );
                 clientReportInfo.show().slideDown(500);;
                 $("#print").show();
             }

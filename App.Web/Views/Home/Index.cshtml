@@ -1,7 +1,10 @@
 ﻿@{
     ViewBag.Title = "Dashboard";
 }
-
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+}
 <div class="card">
     <h6 class="card-header">DASHBOARD MENU</h6>
     <div class="card-block">
@@ -11,3 +14,15 @@
         }
     </div>
 </div>
+@section Scripts
+{
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script>
+        @if (TempData["Toastr"] != null)
+        {
+            @Html.Raw(TempData["Toastr"])
+        }
+    </script>
+}
+
+
