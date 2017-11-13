@@ -98,5 +98,57 @@ namespace App.Web.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        public ActionResult ClientPaymentReport()
+        {
+            try
+            {
+                ViewBag.Branches = new SelectList(_db.BranchInfos.ToList(), "Id", "BranchName");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ClientPaymentReport(ClientPaymentReportViewModel clientPayment)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return Json(new {Flag = false, Msg="Invalid Data."}, JsonRequestBehavior.AllowGet);
+                var data = _db.CustomerPayments
+                    .Where(x => x.BranchId == clientPayment.BranchId && x.CustomerId == clientPayment.CustomerId)
+                    .Select(x => new {x.PaymentDate, x.PaymentAmount}).ToList();
+                return Json(new
+                {
+                    Flag = true,
+                    ClientPayments = data.OrderByDescending(x => x.PaymentDate)
+                    .Select(x => new { PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount }).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetClientsByBranchId(int? branchId)
+        {
+            try
+            {
+                if (branchId == null) return Json(null, JsonRequestBehavior.AllowGet);
+                var clients = new SelectList(_db.ClientInfos.Where(x => x.BranchId == branchId).ToList(), "Id", "FirstName");
+                return Json(new {Clients=clients}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

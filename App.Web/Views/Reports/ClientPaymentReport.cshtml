@@ -1,0 +1,160 @@
+﻿@model App.Web.Models.ClientPaymentReportViewModel
+@{
+    ViewBag.Title = "Client Payment Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "OnSuccess",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+    };
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">REPORTS / CLIENT PAYMENT</h6>
+    <div class="card-block">
+        @using (Ajax.BeginForm("ClientPaymentReport", "Reports", null, options, new { @class = "form-horizontal", @id = "clientPaymentReportForm" }))
+        {
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-12 form-group">
+                                @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.Branches, "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger new-line" })
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(model => model.CustomerId, Enumerable.Empty<SelectListItem>(), "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger new-line" })
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="offset-sm-4 col-sm-8">
+                                    <button class="btn btn-danger" type="submit"><i class="fa fa-eye"></i> Show Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        @* Need to modify after that portion *@
+        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
+        <div id="clientPaymentInfo">
+            <br />
+            <br />
+            <div class="row text-center">
+                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
+                <h3 class="text-underline">Code For Host Inc | Travel</h3>
+                <strong><i>Client Payment Report</i></strong>
+            </div>
+            <table class="table table-bordered table-striped" id="clientInfoReportTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Payment Date</th>
+                        <th>Payment Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">NO DATA FOUND</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br /><br /><br />
+            <div class="row text-right">
+                <p class="no-margin-bottom">.............................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="no-margin-bottom">Administrator Siganature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script src="~/Scripts/mvcfoolproof.unobtrusive.min.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/print.js"></script>
+    <script>
+        $(function () {
+            $("#clientPaymentInfo").hide();
+            $("#print").hide();
+            $("#print").click(function () {
+                PrintDocumentDivById("clientPaymentInfo");
+            });
+
+            $("#BranchId").change(function() {
+                var branchId = $(this).val();
+                if (branchId !== "") {
+                    $.get("@Url.Action("GetClientsByBranchId","Reports")", { branchId: branchId }, function(resp) {
+                        if (resp !== null && resp !== undefined) {
+                            $("#CustomerId").empty().append("<option value>Select One</option>");
+                            $.each(resp.Clients, function(index, value) {
+                                $("<option>").attr("value", value.Value).html(value.Text).appendTo($("#CustomerId"));
+                            });
+                        }
+                    });
+                    return;
+                }
+                $("#CustomerId").empty().append("<option value>Select One</option>");
+            });
+
+        });
+
+        function OnBegin() {}
+
+        function OnComplete() {}
+
+        function OnSuccess(resp) {
+            var clientPaymentInfo = $("#clientPaymentInfo");
+            var tbody = $("#clientInfoReportTable tbody");
+            if (resp.Flag) {
+                tbody.empty();
+                $.each(resp.ClientPayments, function (index, value) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td>' + (index+1) + '</td>' +
+                            '<td>' + value.PaymentDate + '</td>' +
+                            '<td>' + value.PaymentAmount + '</td>' +
+                        '</tr>'
+                    );
+                });
+
+                if (resp.ClientPayments.length === 0) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td colspan="3" class="text-center text-danger">NO DATA FOUND</td>' +
+                        '</tr>'
+                    );
+                }
+                clientPaymentInfo.show().slideDown(500);;
+                $("#print").show();
+            }
+            else {
+                toastr.error(resp.Msg, 'Error!');
+                tbody.empty();
+                clientPaymentInfo.hide().slideDown(500);;
+                $("#print").hide();
+            }
+        }
+
+        function OnFailure() {}
+
+    </script>
+}
+
