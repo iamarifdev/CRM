@@ -44,10 +44,9 @@ namespace App.Entity.Models
         [Display(Name = "Pax Last Name")]
         public string LastName { get; set; }
 
-        [NotMapped, Display(Name = "Name")]
-        public string FullName {
-            get { return string.Format("{0} {1}", FirstName, LastName); }
-        }
+        [Required]
+        [Display(Name = "Name")]
+        public string FullName { get; set; }
 
         [StringLength(25, MinimumLength = 13, ErrorMessage = "Valid contact number range 13 and 25 characters.")]
         [Display(Name = "Pax Contact No")]

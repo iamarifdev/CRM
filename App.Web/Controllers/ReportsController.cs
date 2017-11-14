@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using App.Web.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace App.Web.Controllers
 {
@@ -89,7 +91,7 @@ namespace App.Web.Controllers
                     InfoStatus = Common.GetDescription(x.InfoStatus),
                     DeliveryStatus = Common.GetDescription(x.DeliveryStatus)
                 }).ToList();
-                return Json(new { Flag = true, ClientReports = clientReports, ServiceCharge = totalServiceCharge, Cost = totalCost, Profit = totalProfit});
+                return Json(new { Flag = true, ClientReports = clientReports, ServiceCharge = totalServiceCharge, Cost = totalCost, Profit = totalProfit });
 
             }
             catch (Exception ex)
@@ -99,7 +101,7 @@ namespace App.Web.Controllers
 
         }
 
-
+        // GET: ClientPaymentReport
         [HttpGet]
         public ActionResult ClientPaymentReport()
         {
@@ -115,20 +117,88 @@ namespace App.Web.Controllers
             }
         }
 
+        // POST: ClientPaymentReport
         [HttpPost]
         public ActionResult ClientPaymentReport(ClientPaymentReportViewModel clientPayment)
         {
             try
             {
-                if (!ModelState.IsValid) return Json(new {Flag = false, Msg="Invalid Data."}, JsonRequestBehavior.AllowGet);
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
                 var data = _db.CustomerPayments
                     .Where(x => x.BranchId == clientPayment.BranchId && x.CustomerId == clientPayment.CustomerId)
-                    .Select(x => new {x.PaymentDate, x.PaymentAmount}).ToList();
+                    .Select(x => new { x.PaymentDate, x.PaymentAmount }).ToList();
                 return Json(new
                 {
                     Flag = true,
                     ClientPayments = data.OrderByDescending(x => x.PaymentDate)
                     .Select(x => new { PaymentDate = string.Format("{0:dd/MM/yyyy}", x.PaymentDate), x.PaymentAmount }).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: ClientDueReport
+        [HttpGet]
+        public ActionResult ClientDueReport()
+        {
+            return View();
+        }
+
+        // POST: ClientPaymentReport
+        [HttpPost]
+        public ActionResult ClientDueReport(ClientDueReportViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
+                var data = _db.ClientInfos.Include(x => x.ServiceInfo)
+                    .Join(_db.CustomerPayments, x => x.Id, y => y.CustomerId, (x, y) => new { x, y })
+                    //.Where(w=>w.x.EntryDate.Date >= model.FromDate.Date && w.x.EntryDate.Date <= model.ToDate.Date)
+                    .Where(w => DbFunctions.TruncateTime(w.x.EntryDate) >= model.FromDate.Date && DbFunctions.TruncateTime(w.x.EntryDate) <= model.ToDate.Date)
+                    .GroupBy(g => new
+                    {
+                        g.x.EntryDate,
+                        g.x.CustomerId,
+                        g.x.FullName,
+                        g.x.ContactNo,
+                        g.x.Referral,
+                        g.x.ServiceInfo.ServiceName,
+                        g.x.ServiceCharge
+                    })
+                    .Select(s => new
+                    {
+                        s.Key.EntryDate,
+                        s.Key.CustomerId,
+                        s.Key.FullName,
+                        s.Key.ContactNo,
+                        s.Key.Referral,
+                        s.Key.ServiceName,
+                        s.Key.ServiceCharge,
+                        Paid = s.Sum(x => x.y.PaymentAmount),
+                        Due = s.Key.ServiceCharge - s.Sum(x => x.y.PaymentAmount)
+                    }).ToList();
+                var clientDues = data.OrderByDescending(x => x.EntryDate).Select(x => new
+                {
+                    Date = string.Format("{0:yyyy-MM-dd}", x.EntryDate),
+                    CID = x.CustomerId,
+                    Name = x.FullName,
+                    Referral = x.Referral ?? "",
+                    ContactNo = x.ContactNo ?? "",
+                    Service = x.ServiceName,
+                    x.ServiceCharge,
+                    x.Paid,
+                    x.Due
+                }).ToList();
+                return Json(new
+                {
+                    Flag = true,
+                    ClientDues = clientDues,
+                    ServiceCharge = data.Sum(x => x.ServiceCharge),
+                    Paid = data.Sum(x => x.Paid),
+                    Due = data.Sum(x => x.Due)
                 });
             }
             catch (Exception ex)
@@ -143,7 +213,7 @@ namespace App.Web.Controllers
             {
                 if (branchId == null) return Json(null, JsonRequestBehavior.AllowGet);
                 var clients = new SelectList(_db.ClientInfos.Where(x => x.BranchId == branchId).ToList(), "Id", "FirstName");
-                return Json(new {Clients=clients}, JsonRequestBehavior.AllowGet);
+                return Json(new { Clients = clients }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -87,6 +87,7 @@ namespace App.Web.Controllers
                     client.EntryDate = DateTime.Now;
                     //use default branch as head if branch id not selected
                     client.BranchId = branch.Id;
+                    client.FullName = client.LastName != null ? string.Format("{0} {1}", client.FirstName, client.LastName) : client.FirstName;
                     TryValidateModel(client);
 
                     if (!ModelState.IsValid) return View(client);
@@ -181,6 +182,8 @@ namespace App.Web.Controllers
 
                     ModelState.Clear();
                     client.CustomerId = clientInfo.CustomerId;
+                    clientInfo.ContactNo = client.ContactNo ?? "";
+                    clientInfo.Referral = client.Referral ?? "";
                     client.EntryBy = clientInfo.EntryBy;
                     client.EntryDate = clientInfo.EntryDate;
                     client.DelStatus = clientInfo.DelStatus;
@@ -198,8 +201,9 @@ namespace App.Web.Controllers
                             SupplierId = client.SupplierId,
                             FirstName = client.FirstName,
                             LastName = client.LastName,
-                            ContactNo = client.ContactNo,
-                            Referral = client.Referral,
+                            FullName = client.LastName != null ? string.Format("{0} {1}", client.FirstName, client.LastName) : client.FirstName,
+                            ContactNo = client.ContactNo??"",
+                            Referral = client.Referral??"",
                             ReferralContactNo = client.ReferralContactNo,
                             ServiceId = client.ServiceId,
                             AirLineId = client.AirLineId,
