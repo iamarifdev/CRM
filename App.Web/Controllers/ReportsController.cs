@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
@@ -205,6 +206,51 @@ namespace App.Web.Controllers
             {
                 return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        // GET: AgentInfoReport
+        [HttpGet]
+        public ActionResult AgentInfoReport()
+        {
+            try
+            {
+                ViewBag.Agents = new SelectList(_db.AgentInfos.ToList(), "Id", "AgentName");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+            
+        }
+
+        // POST: AgentInfoReport
+        [HttpPost]
+        public ActionResult AgentInfoReport(int? agentId)
+        {
+            try
+            {
+                var query = _db.AgentInfos.Select(x=> new
+                {
+                    x.Id,
+                    x.AgentId,
+                    x.OfficeName,
+                    x.AgentName,
+                    ContactName = x.ContactName??"",
+                    MobileNo = x.MobileNo ?? "",
+                    x.Email,
+                    x.UserName,
+                    Channel = x.Channel ?? "System"
+                }).OrderBy(x=>x.AgentId);
+                var agentsReport = agentId != null ? query.Where(x => x.Id == agentId).ToList() : query.ToList();
+                return Json(new {Flag = true, AgentsReports = agentsReport});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         public JsonResult GetClientsByBranchId(int? branchId)

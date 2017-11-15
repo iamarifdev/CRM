@@ -1,0 +1,150 @@
+﻿@model App.Web.Models.ClientInfoViewModel
+@{
+    ViewBag.Title = "Agent Info Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "OnSuccess",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+    };
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">REPORTS / AGENTS INFO</h6>
+    <div class="card-block">
+        @using (Ajax.BeginForm("AgentInfoReport", "Reports", null, options, new { @class = "form-horizontal", @id = "agentInfoReportForm" }))
+        {
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-12 form-group">
+                                @Html.Label("AgentId", "Agents", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownList("AgentId", (SelectList)ViewBag.Agents, "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessage("AgentId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="offset-sm-4 col-sm-8">
+                                    <button type="submit" class="btn btn-danger"><i class="fa fa-eye"></i> Show Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        @* Need to modify after that portion *@
+        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
+        <div id="agentReportInfo">
+            <br />
+            <br />
+            <div class="row text-center">
+                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
+                <h3 class="text-underline">Code For Host Inc | Travel</h3>
+                <strong><i>Agent Info Report</i></strong>
+            </div>
+            <table class="table table-bordered table-striped" id="clientInfoReportTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Agent ID</th>
+                        <th>Office Name</th>
+                        <th>Agent Name</th>
+                        <th>Contact Name</th>
+                        <th>Mobile Number</th>
+                        <th>Email</th>
+                        <th>User Name</th>
+                        <th>Channel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="9" class="text-center text-danger">NO DATA FOUND</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br /><br /><br />
+            <div class="row text-right">
+                <p class="no-margin-bottom">.............................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="no-margin-bottom">Administrator Siganature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/print.js"></script>
+    <script>
+        $(function () {
+            $("#agentReportInfo").hide();
+            $("#print").hide();
+            $("#print").click(function () {
+                PrintDocumentDivById("agentReportInfo",true);
+            });
+        });
+
+        function OnBegin() {}
+
+        function OnComplete() {}
+
+        function OnSuccess(resp) {
+            var agentReportInfo = $("#agentReportInfo");
+            var tbody = $("#clientInfoReportTable tbody");
+            if (resp.Flag) {
+                tbody.empty();
+                $.each(resp.AgentsReports, function (index, value) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td>' + (index+1) + '</td>' +
+                            '<td>' + value.AgentId + '</td>' +
+                            '<td>' + value.OfficeName + '</td>' +
+                            '<td>' + value.AgentName + '</td>' +
+                            '<td>' + value.ContactName + '</td>' +
+                            '<td>' + value.MobileNo + '</td>' +
+                            '<td>' + value.Email + '</td>' +
+                            '<td>' + value.UserName + '</td>' +
+                            '<td>' + value.Channel + '</td>' +
+                        '</tr>'
+                    );
+                });
+
+                if (resp.AgentsReports.length === 0) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td colspan="9" class="text-center text-danger">NO DATA FOUND</td>' +
+                        '</tr>'
+                    );
+                }
+                agentReportInfo.show().slideDown(500);;
+                $("#print").show();
+            }
+            else {
+                toastr.error(resp.Msg, 'Error!');
+                tbody.empty();
+                agentReportInfo.hide().slideDown(500);;
+                $("#print").hide();
+            }
+        }
+
+        function OnFailure() {
+            //alert('On Failure');
+            console.log('On Failure');
+        }
+
+    </script>
+}
+
