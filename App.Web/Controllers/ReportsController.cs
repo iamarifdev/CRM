@@ -157,7 +157,6 @@ namespace App.Web.Controllers
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
                 var data = _db.ClientInfos.Include(x => x.ServiceInfo)
                     .Join(_db.CustomerPayments, x => x.Id, y => y.CustomerId, (x, y) => new { x, y })
-                    //.Where(w=>w.x.EntryDate.Date >= model.FromDate.Date && w.x.EntryDate.Date <= model.ToDate.Date)
                     .Where(w => DbFunctions.TruncateTime(w.x.EntryDate) >= model.FromDate.Date && DbFunctions.TruncateTime(w.x.EntryDate) <= model.ToDate.Date)
                     .GroupBy(g => new
                     {
@@ -245,6 +244,56 @@ namespace App.Web.Controllers
                 }).OrderBy(x=>x.AgentId);
                 var agentsReport = agentId != null ? query.Where(x => x.Id == agentId).ToList() : query.ToList();
                 return Json(new {Flag = true, AgentsReports = agentsReport});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        // GET: AgentPaymentReport
+        [HttpGet]
+        public ActionResult AgentPaymentReport()
+        {
+            try
+            {
+                ViewBag.Agents = new SelectList(_db.AgentInfos.ToList(), "Id", "AgentName");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+
+        // POST: AgentPaymentReport
+        [HttpPost]
+        public ActionResult AgentPaymentReport(int? agentId)
+        {
+            try
+            {
+                var query = _db.CustomerPayments.Select(x => new
+                {
+                    x.PaymentDate,
+                    x.PaymentAmount,
+                    x.CustomerId,
+                    x.Channel
+                }).OrderByDescending(x => x.PaymentDate);
+                var data = agentId != null 
+                    ? query.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent).ToList()
+                    : query.Where(x=> x.Channel == Channel.IsAgent).ToList();
+                var serviceAmount = agentId != null 
+                    ? _db.ClientInfos.Where(x=>x.AgentId == agentId).Sum(x=>x.ServiceCharge)
+                    : _db.ClientInfos.Where(x => x.AgentId != null).Sum(x => x.ServiceCharge);
+                return Json(new { Flag = true,
+                    AgentsPayments = agentId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate),x.PaymentAmount }).ToList() : null,
+                    TotalPaidAmount = data.Sum(x=>x.PaymentAmount),
+                    TotalDueAmount = serviceAmount - data.Sum(x=>x.PaymentAmount),
+                    TotalServiceAmount = serviceAmount
+                });
             }
             catch (Exception ex)
             {

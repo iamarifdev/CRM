@@ -7,7 +7,6 @@
 @section AdditionalStyles
 {
     <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
 }
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / EDIT</h6>
@@ -147,7 +146,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.InfoStatus, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.DropDownListFor(model => model.InfoStatus, (SelectList)ViewBag.InfoStatusList, "Select One", new { @class = "form-control", })
+                    @Html.DropDownListFor(model => model.InfoStatus, (SelectList)ViewBag.InfoStatusList, "Select One", new { @class = "form-control select2" })
                     @Html.ValidationMessageFor(model => model.InfoStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -186,11 +185,11 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script>
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
         var id = $("#Id").val();
-        //$(".select2").select2();
+        ReSelect2();
+
         function GetAdditionalReferralType() {
             var referralType = $("#ReferralType").val();
             $("#SmsNo").val("");
@@ -200,7 +199,7 @@
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null) {
                         $("#ReferralAdditional").empty().html(html).slideDown(500);
-                        $(".select2").select2();
+                        ReSelect2();
                         ReValidate();
                         return;
                     }
@@ -218,7 +217,7 @@
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null) {
                         $("#SupplierAdditional").empty().html(html).slideDown(500);
-                        $(".select2").select2();
+                        ReSelect2();
                         ReValidate();
                         return;
                     }
@@ -239,7 +238,7 @@
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null) {
                         $("#ServiceAdditional").empty().html(html).slideDown(500);
-                        $(".select2").select2();
+                        ReSelect2();
                         ReValidate();
                         $(".pickDate").datepicker({
                             autoclose: true, format: "yyyy-mm-dd", setDate: "d"
@@ -274,6 +273,13 @@
             $("#Profit").val(0.00);
         }
 
+        function ReSelect2() {
+            $(".select2").select2({ width: '100%' });
+            $(".select2").on("select2:close", function () {
+                $(this).valid();
+            });
+        }
+
         $(function () {
 
             GetAdditionalReferralType();
@@ -287,11 +293,7 @@
             }).on("changeDate", function () {
                 $(this).valid();
             });
-            $(".select2").select2();
-            $(".select2").on("select2:close", function () {
-                $(this).valid();
-            });
-
+            ReSelect2();
             $("#ReferralType").on("change", function () {
                 GetAdditionalReferralType();
             });

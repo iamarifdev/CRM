@@ -182,6 +182,7 @@ namespace App.Web.Controllers
 
                     ModelState.Clear();
                     client.CustomerId = clientInfo.CustomerId;
+                    client.FullName = client.LastName != null ? string.Format("{0} {1}", client.FirstName, client.LastName) : client.FirstName;
                     clientInfo.ContactNo = client.ContactNo ?? "";
                     clientInfo.Referral = client.Referral ?? "";
                     client.EntryBy = clientInfo.EntryBy;
@@ -201,7 +202,7 @@ namespace App.Web.Controllers
                             SupplierId = client.SupplierId,
                             FirstName = client.FirstName,
                             LastName = client.LastName,
-                            FullName = client.LastName != null ? string.Format("{0} {1}", client.FirstName, client.LastName) : client.FirstName,
+                            FullName = client.FullName,
                             ContactNo = client.ContactNo??"",
                             Referral = client.Referral??"",
                             ReferralContactNo = client.ReferralContactNo,
