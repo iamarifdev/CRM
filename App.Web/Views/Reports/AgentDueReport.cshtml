@@ -1,6 +1,6 @@
 ﻿@model App.Web.Models.DateRangeViewModel
 @{
-    ViewBag.Title = "Client Due Report";
+    ViewBag.Title = "Agents Due Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var options = new AjaxOptions
@@ -18,9 +18,9 @@
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
-    <h6 class="card-header bg-primary">REPORTS / CLIENTS DUE</h6>
+    <h6 class="card-header bg-primary">REPORTS / AGENTS DUE</h6>
     <div class="card-block">
-        @using (Ajax.BeginForm("ClientDueReport", "Reports", null, options, new { @class = "form-horizontal", @id = "clientDueReportForm" }))
+        @using (Ajax.BeginForm("AgentDueReport", "Reports", null, options, new { @class = "form-horizontal", @id = "agentDueReportForm" }))
         {
             <div class="card">
                 <div class="card-block">
@@ -51,32 +51,30 @@
         <br />
         @* Need to modify after that portion *@
         <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
-        <div id="clientDueInfo">
+        <div id="agentDueInfo">
             <br />
             <br />
             <div class="row text-center">
                 <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
                 <h3 class="text-underline">Code For Host Inc | Travel</h3>
-                <strong><i>Client Due Report</i></strong>
+                <strong><i>Agent Due Report</i></strong>
             </div>
-            <table class="table table-bordered table-striped" id="clientDueReportTable">
+            <table class="table table-bordered table-striped" id="agentDueReportTable">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
-                        <th>CID</th>
-                        <th>Name</th>
-                        <th>Referrals</th>
-                        <th>Contact No</th>
+                        <th>Agent Name</th>
+                        <th>Agent Contact</th>
+                        <th>Email</th>
+                        <th>Payment Date</th>
+                        <th>Payment Amount</th>
                         <th>Service</th>
-                        <th>Service Charge</th>
-                        <th>Paid</th>
-                        <th>Due</th>
+                        <th>Due Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="10" class="text-center text-danger">NO DATA FOUND</td>
+                        <td colspan="8" class="text-center text-danger">NO DATA FOUND</td>
                     </tr>
                 </tbody>
             </table>
@@ -99,10 +97,10 @@
     <script src="~/Scripts/print.js"></script>
     <script>
         $(function () {
-            $("#clientDueInfo").hide();
+            $("#agentDueInfo").hide();
             $("#print").hide();
             $("#print").click(function () {
-                PrintDocumentDivById("clientDueInfo", true);
+                PrintDocumentDivById("agentDueInfo", true);
             });
         });
         $(".pickDate").datepicker({
@@ -118,50 +116,48 @@
         function OnComplete() {}
 
         function OnSuccess(resp) {
-            var clientDueInfo = $("#clientDueInfo");
-            var tbody = $("#clientDueReportTable tbody");
+            var agentDueInfo = $("#agentDueInfo");
+            var tbody = $("#agentDueReportTable tbody");
             if (resp.Flag) {
                 tbody.empty();
-                $.each(resp.ClientDues, function (index, value) {
+                $.each(resp.AgentDues, function (index, value) {
                     tbody.append(
                         '<tr>' +
                             '<td>' + (index+1) + '</td>' +
-                            '<td>' + value.Date + '</td>' +
-                            '<td>' + value.CID + '</td>' +
-                            '<td>' + value.Name + '</td>' +
-                            '<td>' + value.Referral + '</td>' +
-                            '<td>' + value.ContactNo + '</td>' +
-                            '<td>' + value.Service + '</td>' +
+                            '<td>' + value.AgentName + '</td>' +
+                            '<td>' + value.AgentContact + '</td>' +
+                            '<td>' + value.Email + '</td>' +
+                            '<td>' + value.PaymentDate + '</td>' +
+                            '<td>' + value.PaymentAmount + '</td>' +
                             '<td>' + value.ServiceCharge + '</td>' +
-                            '<td>' + value.Paid + '</td>' +
-                            '<td>' + value.Due + '</td>' +
+                            '<td>' + value.DueAmount + '</td>' +
                         '</tr>'
                     );
                 });
 
-                if (resp.ClientDues.length === 0) {
+                if (resp.AgentDues.length === 0) {
                     tbody.append(
                         '<tr>' +
-                            '<td colspan="10" class="text-center text-danger">NO DATA FOUND</td>' +
+                            '<td colspan="8" class="text-center text-danger">NO DATA FOUND</td>' +
                         '</tr>'
                     );
                 }
                 tbody.append(
                     '<tr>' +
-                        '<td colspan="7" class="text-right">Total:</td>' +
-                        '<td>' + resp.ServiceCharge + '</td>' +
-                        '<td>' + resp.Paid + '</td>' +
-                        '<td>' + resp.Due + '</td>' +
+                        '<td colspan="5" class="text-right">Total:</td>' +
+                        '<td>' + resp.TotalPayment + '</td>' +
+                        '<td>' + resp.TotalServiceCharge+ '</td>' +
+                        '<td>' + resp.DueAmount + '</td>' +
                     '</tr>'
                 );
-                
-                clientDueInfo.show().slideDown(500);;
+
+                agentDueInfo.show().slideDown(500);;
                 $("#print").show();
             }
             else {
                 toastr.error(resp.Msg, 'Error!');
                 tbody.empty();
-                clientDueInfo.hide().slideDown(500);;
+                agentDueInfo.hide().slideDown(500);;
                 $("#print").hide();
             }
         }

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using App.Web.Models;
-using Microsoft.Ajax.Utilities;
 
 namespace App.Web.Controllers
 {
@@ -150,7 +147,7 @@ namespace App.Web.Controllers
 
         // POST: ClientPaymentReport
         [HttpPost]
-        public ActionResult ClientDueReport(ClientDueReportViewModel model)
+        public ActionResult ClientDueReport(DateRangeViewModel model)
         {
             try
             {
@@ -221,7 +218,7 @@ namespace App.Web.Controllers
                 TempData["Toastr"] = Toastr.DbError(ex.Message);
                 return RedirectToAction("Index", "Home");
             }
-            
+
         }
 
         // POST: AgentInfoReport
@@ -230,20 +227,20 @@ namespace App.Web.Controllers
         {
             try
             {
-                var query = _db.AgentInfos.Select(x=> new
+                var query = _db.AgentInfos.Select(x => new
                 {
                     x.Id,
                     x.AgentId,
                     x.OfficeName,
                     x.AgentName,
-                    ContactName = x.ContactName??"",
+                    ContactName = x.ContactName ?? "",
                     MobileNo = x.MobileNo ?? "",
                     x.Email,
                     x.UserName,
                     Channel = x.Channel ?? "System"
-                }).OrderBy(x=>x.AgentId);
+                }).OrderBy(x => x.AgentId);
                 var agentsReport = agentId != null ? query.Where(x => x.Id == agentId).ToList() : query.ToList();
-                return Json(new {Flag = true, AgentsReports = agentsReport});
+                return Json(new { Flag = true, AgentsReports = agentsReport });
             }
             catch (Exception ex)
             {
@@ -282,16 +279,18 @@ namespace App.Web.Controllers
                     x.CustomerId,
                     x.Channel
                 }).OrderByDescending(x => x.PaymentDate);
-                var data = agentId != null 
+                var data = agentId != null
                     ? query.Where(x => x.CustomerId == agentId && x.Channel == Channel.IsAgent).ToList()
-                    : query.Where(x=> x.Channel == Channel.IsAgent).ToList();
-                var serviceAmount = agentId != null 
-                    ? _db.ClientInfos.Where(x=>x.AgentId == agentId).Sum(x=>x.ServiceCharge)
+                    : query.Where(x => x.Channel == Channel.IsAgent).ToList();
+                var serviceAmount = agentId != null
+                    ? _db.ClientInfos.Where(x => x.AgentId == agentId).Sum(x => x.ServiceCharge)
                     : _db.ClientInfos.Where(x => x.AgentId != null).Sum(x => x.ServiceCharge);
-                return Json(new { Flag = true,
-                    AgentsPayments = agentId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate),x.PaymentAmount }).ToList() : null,
-                    TotalPaidAmount = data.Sum(x=>x.PaymentAmount),
-                    TotalDueAmount = serviceAmount - data.Sum(x=>x.PaymentAmount),
+                return Json(new
+                {
+                    Flag = true,
+                    AgentsPayments = agentId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate), x.PaymentAmount }).ToList() : null,
+                    TotalPaidAmount = data.Sum(x => x.PaymentAmount),
+                    TotalDueAmount = serviceAmount - data.Sum(x => x.PaymentAmount),
                     TotalServiceAmount = serviceAmount
                 });
             }
@@ -300,6 +299,61 @@ namespace App.Web.Controllers
                 return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+        // GET: AgentPaymentReport
+        [HttpGet]
+        public ActionResult AgentDueReport()
+        {
+            return View();
+        }
+
+        // POST: AgentPaymentReport
+        [HttpPost]
+        public ActionResult AgentDueReport(DateRangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
+                var data = _db.AgentInfos
+                    .Where(w => _db.ClientInfos.Any(c=>c.AgentId == w.Id && c.AgentId != null))
+                    .Select(x => new
+                    {
+                        x.AgentName,
+                        x.MobileNo,
+                        x.Email,
+                        PaymentDate = _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent)
+                                      .OrderByDescending(o => o.PaymentDate).Select(s => s.PaymentDate).FirstOrDefault(),
+                        PaymentAmount = (double?) _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent).Sum(s => s.PaymentAmount) ?? 0.00,
+                        ServiceCharge = _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s=>s.ServiceCharge),
+                        DueAmount = _db.CustomerPayments.Any(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent) 
+                                    ?  _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge) - 
+                                      _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent).Sum(s => s.PaymentAmount)
+                                    : _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge)
+                    }).ToList();
+                var agentDues = data.Select(x => new
+                {
+                    x.AgentName,
+                    AgentContact = x.MobileNo ?? "",
+                    x.Email,
+                    PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate),
+                    x.PaymentAmount,
+                    x.ServiceCharge,
+                    x.DueAmount
+                }).OrderBy(x => x.AgentName).ToList();
+                return Json(new
+                {
+                    Flag = true,
+                    AgentDues = agentDues,
+                    TotalServiceCharge = agentDues.Sum(x => x.ServiceCharge),
+                    TotalPayment = agentDues.Sum(x => x.PaymentAmount),
+                    DueAmount = agentDues.Sum(x => x.DueAmount)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public JsonResult GetClientsByBranchId(int? branchId)

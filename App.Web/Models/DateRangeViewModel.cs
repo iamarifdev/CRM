@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace App.Web.Models
 {
-    public class ClientDueReportViewModel
+    public class DateRangeViewModel
     {
         [Display(Name = "From Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]

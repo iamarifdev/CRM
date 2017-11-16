@@ -428,7 +428,7 @@
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Models\AgentStatementViewModel.cs" />
     <Compile Include="Models\ChangePassword.cs" />
-    <Compile Include="Models\ClientDueReportViewModel.cs" />
+    <Compile Include="Models\DateRangeViewModel.cs" />
     <Compile Include="Models\ClientInfoViewModel.cs" />
     <Compile Include="Models\ClientPaymentReportViewModel.cs" />
     <Compile Include="Models\ClientPaymentViewModel.cs" />
@@ -5126,6 +5126,7 @@
     <Content Include="Views\Reports\ClientDueReport.cshtml" />
     <Content Include="Views\Reports\AgentInfoReport.cshtml" />
     <Content Include="Views\Reports\AgentPaymentReport.cshtml" />
+    <Content Include="Views\Reports\AgentDueReport.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
