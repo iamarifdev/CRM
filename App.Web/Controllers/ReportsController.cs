@@ -13,9 +13,7 @@ namespace App.Web.Controllers
     public class ReportsController : Controller
     {
         #region Private Zone
-
         private readonly CrmDbContext _db;
-
         #endregion
 
         public ReportsController()
@@ -301,14 +299,14 @@ namespace App.Web.Controllers
 
         }
 
-        // GET: AgentPaymentReport
+        // GET: AgentDueReport
         [HttpGet]
         public ActionResult AgentDueReport()
         {
             return View();
         }
 
-        // POST: AgentPaymentReport
+        // POST: AgentDueReport
         [HttpPost]
         public ActionResult AgentDueReport(DateRangeViewModel model)
         {
@@ -349,6 +347,46 @@ namespace App.Web.Controllers
                     TotalPayment = agentDues.Sum(x => x.PaymentAmount),
                     DueAmount = agentDues.Sum(x => x.DueAmount)
                 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: SupplierInfoReport
+        [HttpGet]
+        public ActionResult SupplierInfoReport()
+        {
+            try
+            {
+                ViewBag.Suppliers = new SelectList(_db.SuppliersInfos.ToList(), "Id", "SupplierName");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // POST: SupplierInfoReport
+        [HttpPost]
+        public ActionResult SupplierInfoReport(int? supplierId)
+        {
+            try
+            {
+                var query = _db.SuppliersInfos.Select(x => new
+                {
+                    x.Id,
+                    x.SupplierId,
+                    x.SupplierName,
+                    x.SupplierEmail,
+                    SupplierPhone = x.SupplierPhone ?? "",
+                    SupplierMobileNo = x.SupplierMobileNo ?? "",
+                }).OrderBy(x => x.SupplierId);
+                var suppliersReport = supplierId != null ? query.Where(x => x.Id == supplierId).ToList() : query.ToList();
+                return Json(new { Flag = true, SuppliersReports = suppliersReport });
             }
             catch (Exception ex)
             {
