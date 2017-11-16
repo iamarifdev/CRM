@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "Supplier Payment Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "OnSuccess",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+    };
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">REPORTS / SUPPLIERS PAYMENT</h6>
+    <div class="card-block">
+        @using (Ajax.BeginForm("SupplierPaymentReport", "Reports", null, options, new { @class = "form-horizontal", @id = "supplierPaymentReportForm" }))
+        {
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-12 form-group">
+                                @Html.Label("SupplierId", "Suppliers", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                                <div class="col-sm-8">
+                                    @Html.DropDownList("SupplierId", (SelectList)ViewBag.Suppliers, "Select One", new { @class = "form-control select2" })
+                                    @Html.ValidationMessage("SupplierId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="offset-sm-4 col-sm-8">
+                                    <button type="submit" class="btn btn-danger"><i class="fa fa-eye"></i> Show Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        @* Need to modify after that portion *@
+        <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
+        <div id="supplierPaymentReportInfo">
+            <br />
+            <br />
+            <div class="row text-center">
+                <img src="~/Content/template/img/site/site-logo.png" alt="Logo" width="80" height="80" /><br /><br />
+                <h3 class="text-underline">Code For Host Inc | Travel</h3>
+                <strong><i>Supplier Payment Report</i></strong>
+            </div>
+            <table class="table table-bordered table-striped" id="supplierPaymentReportTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Payment Date</th>
+                        <th>Payment Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">NO DATA FOUND</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="2">Total Paid Amount</td><td id="totalPaidAmount"></td></tr>
+                    <tr><td colspan="2">Total Due Amount <span class="pull-right">+</span></td><td id="totalDueAmount"></td></tr>
+                    <tr><td colspan="2">Total Service Amount <span class="pull-right">=</span></td><td id="totalServiceAmount"></td></tr>
+                </tfoot>
+            </table>
+            <br /><br /><br />
+            <div class="row text-right">
+                <p class="no-margin-bottom">.............................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="no-margin-bottom">Administrator Siganature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/print.js"></script>
+    <script>
+        $(function () {
+            $("#supplierPaymentReportInfo").hide();
+            $("#print").hide();
+            $("#print").click(function () {
+                PrintDocumentDivById("supplierPaymentReportInfo");
+            });
+        });
+
+        function OnBegin() {}
+
+        function OnComplete() {}
+
+        function OnSuccess(resp) {
+            var supplierPaymentReportInfo = $("#supplierPaymentReportInfo");
+            var tbody = $("#supplierPaymentReportTable tbody");
+            if (resp.Flag) {
+                tbody.empty();
+                $.each(resp.SuppliersPayments, function (index, value) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td>' + (index+1) + '</td>' +
+                            '<td>' + value.PaymentDate + '</td>' +
+                            '<td>' + value.PaymentAmount + '</td>' +
+                        '</tr>'
+                    );
+                });
+
+                if (resp.SuppliersPayments === null) {
+                    tbody.append(
+                        '<tr>' +
+                            '<td colspan="3" class="text-center text-danger">NO DATA FOUND</td>' +
+                        '</tr>'
+                    );
+                }
+                $("#totalPaidAmount").html(resp.TotalPaidAmount);
+                $("#totalDueAmount").html(resp.TotalDueAmount);
+                $("#totalServiceAmount").html(resp.TotalServiceAmount);
+                supplierPaymentReportInfo.show().slideDown(500);
+                $("#print").show();
+            }
+            else {
+                toastr.error(resp.Msg, 'Error!');
+                tbody.empty();
+                supplierPaymentReportInfo.hide().slideDown(500);
+                $("#print").hide();
+            }
+        }
+
+        function OnFailure() {}
+
+    </script>
+}
+

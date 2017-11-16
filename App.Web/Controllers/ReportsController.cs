@@ -394,6 +394,56 @@ namespace App.Web.Controllers
             }
         }
 
+        // GET: SupplierPaymentReport
+        [HttpGet]
+        public ActionResult SupplierPaymentReport()
+        {
+            try
+            {
+                ViewBag.Suppliers = new SelectList(_db.SuppliersInfos.ToList(), "Id", "SupplierName");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // POST: SupplierPaymentReport
+        [HttpPost]
+        public ActionResult SupplierPaymentReport(int? supplierId)
+        {
+            try
+            {
+                var query = _db.CustomerPayments.Select(x => new
+                {
+                    x.PaymentDate,
+                    x.PaymentAmount,
+                    x.CustomerId,
+                    x.Channel
+                }).OrderByDescending(x => x.PaymentDate);
+                var data = supplierId != null
+                    ? query.Where(x => x.CustomerId == supplierId && x.Channel == Channel.IsSupplier).ToList()
+                    : query.Where(x => x.Channel == Channel.IsSupplier).ToList();
+                var serviceAmount = supplierId != null
+                    ? _db.ClientInfos.Where(x => x.SupplierId == supplierId).Sum(x => x.ServiceCharge)
+                    : _db.ClientInfos.Where(x => x.SupplierId != null).Sum(x => x.ServiceCharge);
+                return Json(new
+                {
+                    Flag = true,
+                    SuppliersPayments = supplierId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate), x.PaymentAmount}).ToList() : null,
+                    TotalPaidAmount = data.Sum(x => x.PaymentAmount),
+                    TotalDueAmount = serviceAmount - data.Sum(x => x.PaymentAmount),
+                    TotalServiceAmount = serviceAmount
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult GetClientsByBranchId(int? branchId)
         {
             try
