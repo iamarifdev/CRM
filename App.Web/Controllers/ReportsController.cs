@@ -444,6 +444,59 @@ namespace App.Web.Controllers
             }
         }
 
+        // GET: SupplierDueReport
+        [HttpGet]
+        public ActionResult SupplierDueReport()
+        {
+            return View();
+        }
+
+        // POST: SupplierDueReport
+        [HttpPost]
+        public ActionResult SupplierDueReport(DateRangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
+                var data = _db.SuppliersInfos
+                    .Where(w => _db.ClientInfos.Any(c => c.SupplierId == w.Id && c.SupplierId != null))
+                    .Select(x => new
+                    {
+                        x.SupplierName,
+                        x.SupplierMobileNo,
+                        PaymentDate = _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsSupplier)
+                                      .OrderByDescending(o => o.PaymentDate).Select(s => s.PaymentDate).FirstOrDefault(),
+                        PaymentAmount = (double?)_db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsSupplier).Sum(s => s.PaymentAmount) ?? 0.00,
+                        ServiceCharge = _db.ClientInfos.Where(c => c.SupplierId == x.Id && c.SupplierId != null).Sum(s => s.ServiceCharge),
+                        DueAmount = _db.CustomerPayments.Any(c => c.CustomerId == x.Id && c.Channel == Channel.IsSupplier)
+                                    ? _db.ClientInfos.Where(c => c.SupplierId == x.Id && c.SupplierId != null).Sum(s => s.ServiceCharge) -
+                                      _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsSupplier).Sum(s => s.PaymentAmount)
+                                    : _db.ClientInfos.Where(c => c.SupplierId == x.Id && c.SupplierId != null).Sum(s => s.ServiceCharge)
+                    }).ToList();
+                var supplierDues = data.Select(x => new
+                {
+                    x.SupplierName,
+                    SupplierContact = x.SupplierMobileNo ?? "",
+                    PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate),
+                    x.PaymentAmount,
+                    x.ServiceCharge,
+                    x.DueAmount
+                }).OrderBy(x => x.SupplierName).ToList();
+                return Json(new
+                {
+                    Flag = true,
+                    SupplierDues = supplierDues,
+                    TotalServiceCharge = supplierDues.Sum(x => x.ServiceCharge),
+                    TotalPayment = supplierDues.Sum(x => x.PaymentAmount),
+                    TotalDueAmount = supplierDues.Sum(x => x.DueAmount)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult GetClientsByBranchId(int? branchId)
         {
             try

@@ -5129,6 +5129,7 @@
     <Content Include="Views\Reports\AgentDueReport.cshtml" />
     <Content Include="Views\Reports\SupplierInfoReport.cshtml" />
     <Content Include="Views\Reports\SupplierPaymentReport.cshtml" />
+    <Content Include="Views\Reports\SupplierDueReport.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
