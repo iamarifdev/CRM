@@ -314,7 +314,7 @@ namespace App.Web.Controllers
             {
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid Data." }, JsonRequestBehavior.AllowGet);
                 var data = _db.AgentInfos
-                    .Where(w => _db.ClientInfos.Any(c=>c.AgentId == w.Id && c.AgentId != null))
+                    .Where(w => _db.ClientInfos.Any(c => c.AgentId == w.Id && c.AgentId != null))
                     .Select(x => new
                     {
                         x.AgentName,
@@ -322,10 +322,10 @@ namespace App.Web.Controllers
                         x.Email,
                         PaymentDate = _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent)
                                       .OrderByDescending(o => o.PaymentDate).Select(s => s.PaymentDate).FirstOrDefault(),
-                        PaymentAmount = (double?) _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent).Sum(s => s.PaymentAmount) ?? 0.00,
-                        ServiceCharge = _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s=>s.ServiceCharge),
-                        DueAmount = _db.CustomerPayments.Any(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent) 
-                                    ?  _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge) - 
+                        PaymentAmount = (double?)_db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent).Sum(s => s.PaymentAmount) ?? 0.00,
+                        ServiceCharge = _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge),
+                        DueAmount = _db.CustomerPayments.Any(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent)
+                                    ? _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge) -
                                       _db.CustomerPayments.Where(c => c.CustomerId == x.Id && c.Channel == Channel.IsAgent).Sum(s => s.PaymentAmount)
                                     : _db.ClientInfos.Where(c => c.AgentId == x.Id && c.AgentId != null).Sum(s => s.ServiceCharge)
                     }).ToList();
@@ -432,7 +432,7 @@ namespace App.Web.Controllers
                 return Json(new
                 {
                     Flag = true,
-                    SuppliersPayments = supplierId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate), x.PaymentAmount}).ToList() : null,
+                    SuppliersPayments = supplierId != null ? data.Select(x => new { PaymentDate = string.Format("{0:yyyy-MM-dd}", x.PaymentDate), x.PaymentAmount }).ToList() : null,
                     TotalPaidAmount = data.Sum(x => x.PaymentAmount),
                     TotalDueAmount = serviceAmount - data.Sum(x => x.PaymentAmount),
                     TotalServiceAmount = serviceAmount
@@ -489,6 +489,41 @@ namespace App.Web.Controllers
                     TotalServiceCharge = supplierDues.Sum(x => x.ServiceCharge),
                     TotalPayment = supplierDues.Sum(x => x.PaymentAmount),
                     TotalDueAmount = supplierDues.Sum(x => x.DueAmount)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: DailyPaymentReport
+        [HttpGet]
+        public ActionResult DailyPaymentReport()
+        {
+            return View();
+        }
+
+        // POST: DailyPaymentReport
+        [HttpPost]
+        public ActionResult DailyPaymentReport(DateRangeViewModel model)
+        {
+            try
+            {
+                if (model == null) return Json(new { Flag = false, Msg = "Select a date for report." }, JsonRequestBehavior.AllowGet);
+                var dailyPayments= _db.CustomerPayments
+                    .Where(x => DbFunctions.TruncateTime(x.PaymentDate) == model.FromDate.Date && x.Channel == Channel.IsCustomer)
+                    .Select(x => new { x.PaymentDate, x.PaymentAmount })
+                    .ToList();
+                return Json(new
+                {
+                    Flag = true,
+                    DailyPayments = dailyPayments.OrderByDescending(x => x.PaymentDate).Select(x => new
+                    {
+                        PaymentDate = string.Format("{0:yyyy-MM-dd}",x.PaymentDate),
+                        x.PaymentAmount
+                    }),
+                    TotalPayment = dailyPayments.Sum(s=>s.PaymentAmount)
                 });
             }
             catch (Exception ex)
