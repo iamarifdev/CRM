@@ -13,6 +13,7 @@
     <title>CRM | @ViewBag.Title</title>
     @RenderSection("RareCase", required: false)
     <!-- Vendor CSS -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/template/img/site/site-logo.ico" />
     <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/vendor/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.min.css">
@@ -189,7 +190,6 @@
                         </li>
                     }
 
-
                     <li>
                         <a href="@Url.Action("ChangePassword","Account")" class="waves-effect  waves-light">
                             <span class="s-icon"><i class="fa fa-key"></i></span>
@@ -198,7 +198,7 @@
                     </li>
 
                     <li>
-                        <a href="javascript:void()" class="waves-effect waves-light logOut">
+                        <a href="javascript:void(0);" class="waves-effect waves-light logOut">
                             <span class="s-icon"><i class="fa fa-sign-out"></i></span>
                             <span class="s-text">Logout</span>
                         </a>
