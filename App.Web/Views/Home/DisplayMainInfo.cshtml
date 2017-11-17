@@ -1,4 +1,41 @@
-﻿<div class="row row-md">
+﻿@using System.Data.Entity
+@using App.Entity.Models
+@using App.Web.Context
+@{
+    var errorMessage = "";
+    try
+    {
+        var db = new CrmDbContext();
+        ViewBag.TodayDeposits = db.TransactionsInfos.Any(w => DbFunctions.TruncateTime(w.Date) == DbFunctions.TruncateTime(DateTime.Now) && w.TransactionType == TransactionType.Deposit)
+            ? db.TransactionsInfos.Where(w => DbFunctions.TruncateTime(w.Date) == DbFunctions.TruncateTime(DateTime.Now) && w.TransactionType == TransactionType.Deposit)
+             .Sum(x => x.Amount) : 0;
+
+        ViewBag.TodayExpenses = db.TransactionsInfos.Any(w => DbFunctions.TruncateTime(w.Date) == DbFunctions.TruncateTime(DateTime.Now) && w.TransactionType == TransactionType.Expense)
+            ? db.TransactionsInfos.Where(w => DbFunctions.TruncateTime(w.Date) == DbFunctions.TruncateTime(DateTime.Now) && w.TransactionType == TransactionType.Expense)
+             .Sum(x => x.Amount) : 0;
+
+        ViewBag.ThisMonthsDeposits = db.TransactionsInfos.Any(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit)
+            ? db.TransactionsInfos.Where(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit).Sum(x => x.Amount) : 0;
+
+        ViewBag.ThisMonthsExpenses = db.TransactionsInfos.Any(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense)
+            ? db.TransactionsInfos.Where(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense).Sum(x => x.Amount) : 0;
+    }
+    catch (Exception ex)
+    {
+        errorMessage = ex.Message;
+    }
+}
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/vendor/toastr/toastr.min.js"></script>
+    <script>
+        toastr.error("@errorMessage", 'DB Error!');
+    </script>
+}
+<div class="row row-md">
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div class="box box-block bg-white tile tile-1 m-b-2">
             <div class="t-icon right">
@@ -6,7 +43,7 @@
             </div>
             <div class="t-content">
                 <h6 class="text-uppercase m-b-1">Today Deposits</h6>
-                <h1 class="m-b-1">TK 1,325</h1>
+                <h2 class="m-b-1">TK @ViewBag.TodayDeposits</h2>
             </div>
         </div>
     </div>
@@ -17,7 +54,7 @@
             </div>
             <div class="t-content">
                 <h6 class="text-uppercase m-b-1">Today Expenses</h6>
-                <h1 class="m-b-1">TK 1,325</h1>
+                <h2 class="m-b-1">TK @ViewBag.TodayExpenses</h2>
             </div>
         </div>
     </div>
@@ -28,7 +65,7 @@
             </div>
             <div class="t-content">
                 <h6 class="text-uppercase m-b-1">This Months Deposits</h6>
-                <h1 class="m-b-1">TK 1,325</h1>
+                <h2 class="m-b-1">TK @ViewBag.ThisMonthsDeposits</h2>
             </div>
         </div>
     </div>
@@ -39,7 +76,7 @@
             </div>
             <div class="t-content">
                 <h6 class="text-uppercase m-b-1">This Months Expenses</h6>
-                <h1 class="m-b-1">TK 1,325</h1>
+                <h2 class="m-b-1">TK @ViewBag.ThisMonthsExpenses</h2>
             </div>
         </div>
     </div>
@@ -56,23 +93,23 @@
     </div>
 
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Client Payment</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("ClientPayment","Billing")">Client Payment</a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Agent Payment</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("AgentPayment","Billing")">Agent Payment</a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Payment To Supplier</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("SupplierPayment","Billing")">Payment To Supplier</a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Expenses</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("Index","Expenses")">Expenses</a>
     </div>
 
 
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Transactions</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("Index","Transactions")">Transactions</a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-2">
-        <a class="btn btn-info btn-lg btn-block" href="#">Balance Sheet</a>
+        <a class="btn btn-info btn-lg btn-block" href="@Url.Action("BalanceSheet","Accounts")">Balance Sheet</a>
     </div>
 </div>
