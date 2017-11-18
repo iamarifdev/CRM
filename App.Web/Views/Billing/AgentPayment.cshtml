@@ -6,8 +6,6 @@
     var options = new AjaxOptions
     {
         HttpMethod = "POST",
-        //Confirm = "Do you want to add a new person?",
-        //OnBegin = "OnBegin",
         OnSuccess = "OnSuccess",
         OnComplete = "OnComplete",
         OnFailure = "OnFailure"
@@ -102,7 +100,7 @@
     <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
-        $(".select2").select2();
+        ReSelect2();
         $(".pickDate").datepicker();
 
         function ReValidate() {
@@ -181,15 +179,9 @@
             return false;
         }
 
-        function OnBegin() {
-            //alert('On Begin');
-            console.log('On Begin');
-        }
+        function OnBegin() {}
 
-        function OnComplete() {
-            //alert('On Completed');
-            //console.log('On Completed');
-        }
+        function OnComplete() {}
 
         function OnSuccess(resp) {
             console.log(resp);

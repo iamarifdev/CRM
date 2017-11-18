@@ -6,8 +6,6 @@
     var options = new AjaxOptions
     {
         HttpMethod = "POST",
-        //Confirm = "Do you want to add a new person?",
-        //OnBegin = "OnBegin",
         OnSuccess = "OnSuccess",
         OnComplete = "OnComplete",
         OnFailure = "OnFailure"
@@ -17,7 +15,6 @@
 {
     <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
@@ -98,10 +95,9 @@
     <script src="~/Scripts/mvcfoolproof.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
-        $(".select2").select2();
+        ReSelect2();
         $(".pickDate").datepicker();
 
         function ReValidate() {
@@ -180,18 +176,11 @@
             return false;
         }
 
-        function OnBegin() {
-            //alert('On Begin');
-            console.log('On Begin');
-        }
+        function OnBegin() {}
 
-        function OnComplete() {
-            //alert('On Completed');
-            //console.log('On Completed');
-        }
+        function OnComplete() {}
 
         function OnSuccess(resp) {
-            console.log(resp);
             if (resp.Flag) {
                 toastr.success(resp.Msg, 'Success!');
             }
@@ -204,10 +193,7 @@
             if (!GetSupplierPaymentInfo(value)) $("#supplierPaymentAdditional").empty();
         }
 
-        function OnFailure() {
-            //alert('On Failure');
-            console.log('On Failure');
-        }
+        function OnFailure() {}
 
         $("#BranchId").change(function () {
             var value = $(this).val();

@@ -272,14 +272,6 @@
             }
             $("#Profit").val(0.00);
         }
-
-        function ReSelect2() {
-            $(".select2").select2({ width: '100%' });
-            $(".select2").on("select2:close", function () {
-                $(this).valid();
-            });
-        }
-
         $(function () {
 
             GetAdditionalReferralType();

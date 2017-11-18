@@ -7,7 +7,6 @@
 @section AdditionalStyles
 {
     <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
 }
 <div class="card">
     <h6 class="card-header bg-primary">EXPENSES / EDIT</h6>
@@ -18,7 +17,7 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Id)
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.DropDownListFor(model => model.AccountId, (SelectList)ViewBag.Accounts, "Select One", new { @class = "form-control select2" })
@@ -26,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control pickDate" } })
@@ -34,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
@@ -42,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.MethodId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.DropDownListFor(model => model.MethodId, (SelectList)ViewBag.PaymentMethods, "Select One", new { @class = "form-control select2" })
@@ -50,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
@@ -58,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     <div class="offset-sm-4 col-sm-4">
                         <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Save Changes </button>
                     </div>
@@ -76,7 +75,6 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script>
         $(".pickDate").datepicker({
             autoclose: true,
@@ -85,9 +83,6 @@
         }).on("changeDate", function () {
             $(this).valid();
         });
-        $(".select2").select2();
-        $(".select2").on("select2:close", function () {
-            $(this).valid();
-        });
+        ReSelect2();
     </script>
 }
