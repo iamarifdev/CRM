@@ -13,7 +13,7 @@
     <title>CRM | @ViewBag.Title</title>
     @RenderSection("RareCase", required: false)
     <!-- Vendor CSS -->
-    <link rel="shortcut icon" type="image/x-icon" href="~/Content/template/img/site/site-logo.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" />
     <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="~/vendor/themify-icons/themify-icons.css">
@@ -265,6 +265,8 @@
     <script type="text/javascript" src="~/vendor/jscrollpane/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="~/vendor/jscrollpane/mwheelIntent.js"></script>
     <script type="text/javascript" src="~/vendor/jscrollpane/jquery.jscrollpane.min.js"></script>
+    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
+
     @*<script type="text/javascript" src="~/vendor/waves/waves.min.js"></script>
         <script type="text/javascript" src="~/vendor/chartist/chartist.min.js"></script>
         <script type="text/javascript" src="~/vendor/switchery/dist/switchery.min.js"></script>
@@ -278,7 +280,6 @@
         <script type="text/javascript" src="~/vendor/morris/morris.min.js"></script>
         <script type="text/javascript" src="~/vendor/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
         <script type="text/javascript" src="~/vendor/jvectormap/jquery-jvectormap-world-mill.js"></script>*@
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <!-- Neptune JS -->
     <script type="text/javascript" src="~/Scripts/template/app.js"></script>
     <script type="text/javascript">
@@ -305,8 +306,9 @@
                 $(this).valid();
             });
         }
-        
+
     </script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

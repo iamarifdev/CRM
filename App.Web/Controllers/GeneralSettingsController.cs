@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using App.Web.Context;
 using App.Entity.Models;
@@ -89,7 +91,7 @@ namespace App.Web.Controllers
                 {
                     generalSettings.ForEach(setting =>
                     {
-                        if (_db.GeneralSettings.Count(x => x.SettingName == setting.SettingName) > 0)
+                        if (_db.GeneralSettings.Any(x => x.SettingName == setting.SettingName))
                         {
                             _db.GeneralSettings
                                .Where(x => x.SettingName == setting.SettingName)
@@ -119,7 +121,7 @@ namespace App.Web.Controllers
 
         public JsonResult IsLogoHaveToAdd()
         {
-            var flag = _db.GeneralSettings.Count(x => x.SettingName == "SiteLogo") <= 0;
+            var flag = _db.GeneralSettings.Any(x => x.SettingName == "SiteLogo");
             return Json(flag, JsonRequestBehavior.AllowGet);
         }
 
@@ -127,6 +129,10 @@ namespace App.Web.Controllers
         {
             try
             {
+                var connectionString = WebConfigurationManager.ConnectionStrings["CrmDbContext"].ConnectionString;
+                var builder = new SqlConnectionStringBuilder(connectionString);
+                var databaseName = builder.InitialCatalog;
+
                 var backUpDirectory = Server.MapPath("~/Backup/");
                 var fileName = "CRM_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".bak";
                 var backupPath = Path.Combine(backUpDirectory, fileName);
@@ -136,7 +142,7 @@ namespace App.Web.Controllers
                     System.IO.File.Delete(file);
                 }
 
-                var query = string.Format("BACKUP DATABASE [CRM_DB] TO DISK ='{0}'", backupPath);
+                var query = string.Format("BACKUP DATABASE [{0}] TO DISK ='{1}'", databaseName, backupPath);
                 _db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
 
                 var fileBytes = System.IO.File.ReadAllBytes(backupPath);

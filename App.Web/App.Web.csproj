@@ -466,6 +466,7 @@
     <Content Include="Content\template\img\avatars\7.jpg" />
     <Content Include="Content\template\img\avatars\8.jpg" />
     <Content Include="Content\template\img\avatars\9.jpg" />
+    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1234,6 +1235,16 @@
     <Content Include="vendor\switchery\package.js" />
     <Content Include="vendor\switchery\switchery.css" />
     <Content Include="vendor\switchery\switchery.js" />
+    <Content Include="vendor\tether\css\tether-theme-arrows-dark.css" />
+    <Content Include="vendor\tether\css\tether-theme-arrows-dark.min.css" />
+    <Content Include="vendor\tether\css\tether-theme-arrows.css" />
+    <Content Include="vendor\tether\css\tether-theme-arrows.min.css" />
+    <Content Include="vendor\tether\css\tether-theme-basic.css" />
+    <Content Include="vendor\tether\css\tether-theme-basic.min.css" />
+    <Content Include="vendor\tether\css\tether.css" />
+    <Content Include="vendor\tether\css\tether.min.css" />
+    <Content Include="vendor\tether\js\tether.js" />
+    <Content Include="vendor\tether\js\tether.min.js" />
     <Content Include="vendor\themify-icons\fonts\themify.svg" />
     <Content Include="vendor\themify-icons\themify-icons.css" />
     <Content Include="vendor\toastr\toastr.css" />
