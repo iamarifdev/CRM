@@ -4,10 +4,7 @@
     ViewBag.Title = "Edit Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section AdditionalStyles
-{
-    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-}
+
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / EDIT</h6>
     <div class="card-block">
@@ -184,7 +181,6 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
         var id = $("#Id").val();
@@ -240,9 +236,7 @@
                         $("#ServiceAdditional").empty().html(html).slideDown(500);
                         ReSelect2();
                         ReValidate();
-                        $(".pickDate").datepicker({
-                            autoclose: true, format: "yyyy-mm-dd", setDate: "d"
-                        });
+                        PickDate();
                         return;
                     }
                     $("#ServiceAdditional").empty().slideUp(500);
@@ -278,13 +272,7 @@
             GetAdditionalSupplierFields();
             GetAdditionalServiceFields();
 
-            $(".pickDate").datepicker({
-                autoclose: true,
-                format: "yyyy-mm-dd",
-                setDate: "d"
-            }).on("changeDate", function () {
-                $(this).valid();
-            });
+            PickDate();
             ReSelect2();
             $("#ReferralType").on("change", function () {
                 GetAdditionalReferralType();

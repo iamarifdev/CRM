@@ -4,10 +4,7 @@
     ViewBag.Title = "Add New Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section AdditionalStyles
-{
-    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-}
+
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / ADD NEW</h6>
     <div class="card-block">
@@ -137,13 +134,7 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
-        $(".pickDate").datepicker({
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            setDate: "d"
-        }).on("changeDate", function () {
-            $(this).valid();
-        });
+        PickDate();
         ReSelect2();
         $("#ReferralType").on("change", function() {
             var referralType = $(this).val();
@@ -195,11 +186,7 @@
                         $("#ServiceAdditional").empty().html(html).slideDown(500);
                         ReSelect2();
                         ReValidate();
-                        $(".pickDate").datepicker({
-                            autoclose: true,
-                            format: "yyyy-mm-dd",
-                            setDate: "d"
-                        });
+                        PickDate();
                         return;
                     }
                     $("#ServiceAdditional").empty().slideUp(500);

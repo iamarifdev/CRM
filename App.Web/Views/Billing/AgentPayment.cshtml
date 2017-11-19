@@ -1,6 +1,6 @@
 ﻿@model App.Web.Models.ClientPaymentViewModel
 @{
-    ViewBag.Title = "Agent Payment";
+    ViewBag.Title = "Agent Payments";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var options = new AjaxOptions
@@ -14,8 +14,6 @@
 @section AdditionalStyles
 {
     <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
@@ -96,12 +94,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/mvcfoolproof.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/vendor/select2/dist/js/select2.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
         ReSelect2();
-        $(".pickDate").datepicker();
+        PickDate();
 
         function ReValidate() {
             var form = $("#agentPaymentForm");
@@ -140,11 +136,7 @@
                             if (html === null) return;
                             $("#agentPaymentAdditional").html(html).slideDown(500);
                             $("#paymentFields").hide();
-                            $(".pickDate").datepicker({
-                                autoclose: true,
-                                format: "yyyy-mm-dd",
-                                setDate: "d"
-                            });
+                            PickDate();
                             ReValidate();
                         });
                     } else {

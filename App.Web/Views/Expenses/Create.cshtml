@@ -4,10 +4,7 @@
     ViewBag.Title = "Add New Expense";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section AdditionalStyles
-{
-    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-}
+
 <div class="card">
     <h6 class="card-header bg-primary">EXPENSES / ADD NEW</h6>
     <div class="card-block">
@@ -35,7 +32,7 @@
                 <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
-                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type="number" } })
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                         @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -73,15 +70,8 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
-        $(".pickDate").datepicker({
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            setDate: "d"
-        }).on("changeDate", function () {
-            $(this).valid();
-        });
+        PickDate();
         ReSelect2();
     </script>
 }

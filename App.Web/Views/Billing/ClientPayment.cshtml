@@ -14,7 +14,6 @@
 @section AdditionalStyles
 {
     <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="~/Content/custom.css" rel="stylesheet" />
 }
 <div class="card">
@@ -104,11 +103,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/mvcfoolproof.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
         ReSelect2();
-        $(".pickDate").datepicker();
+        PickDate();
 
         function ReValidate() {
             var form = $("#clientPaymentForm");
@@ -147,11 +145,7 @@
                             if (html === null) return;
                             $("#clientPaymentAdditional").html(html).slideDown(500);
                             $("#paymentFields").hide();
-                            $(".pickDate").datepicker({
-                                autoclose: true,
-                                format: "yyyy-mm-dd",
-                                setDate: "d"
-                            });
+                            PickDate();
                             ReValidate();
                         });
                     } else {
