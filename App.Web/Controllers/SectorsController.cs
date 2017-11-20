@@ -257,6 +257,9 @@ namespace App.Web.Controllers
             {
                 try
                 {
+                    var affectedRows = 0;
+                    var sectors = new List<SectorInfo>();
+
                     if (sectorFile == null || sectorFile.ContentLength <= 0)
                     {
                         TempData["Toastr"] = Toastr.CustomError("Invalid File!", "File is empty or corrupted.");
@@ -276,66 +279,95 @@ namespace App.Web.Controllers
                         return RedirectToAction("Index");
                     }
 
+
                     // File reading begin with following format
                     // +--------------+--------------+--------+
                     // | Airport Name | Airport Code | Status |
                     // | xcxcxcxcxcxc | codecxcxcxcc |   0/1  |
 
-                    using (var stream = sectorFile.InputStream)
+                    if (extension == ".csv")
                     {
-                        IExcelDataReader reader = null;
-                        var sectors = new List<SectorInfo>();
-                        switch (extension)
+                        using (var reader = new BinaryReader(sectorFile.InputStream))
                         {
-                            case ".xls":
-                                reader = ExcelReaderFactory.CreateBinaryReader(stream);
-                                break;
-                            case ".xlsx":
-                                reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                                break;
-                            default:
-                                reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                                break;
-                        }
-                        var affectedRows = 0;
-                        var isHeading = true;
-                        while (reader != null && reader.Read())
-                        {
-                            //skip heading from excel file
-                            if (isHeading)
+                            var binData = reader.ReadBytes(sectorFile.ContentLength);
+                            var result = System.Text.Encoding.UTF8.GetString(binData);
+                            var rows = result.Split('\n');
+                            var rowNumber = 0;
+                            foreach (var row in rows)
                             {
-                                isHeading = false; continue;
+                                if (rowNumber < 1) { rowNumber++; continue;}
+                                if(string.IsNullOrWhiteSpace(row.Trim())) continue;
+                                var cells = row.Trim().Replace("\r","").Split(',');
+                                var sector = new SectorInfo
+                                {
+                                    SectorName = cells[0].ToUpper().Trim(),
+                                    SectorCode = cells[1].ToUpper().Trim(),
+                                    Status = cells[2].Trim() == "Active" ? Status.Active : Status.Inactive,
+                                    EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
+                                    EntryDate = DateTime.Now
+                                };
+                                if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName && x.SectorCode == sector.SectorCode)) continue;
+                                sector.SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1);
+                                sectors.Add(sector);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (var stream = sectorFile.InputStream)
+                        {
+                            IExcelDataReader reader;
+                            switch (extension)
+                            {
+                                case ".xls":
+                                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                                    break;
+                                case ".xlsx":
+                                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                                    break;
+                                default:
+                                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                                    break;
                             }
 
-                            var sector = new SectorInfo
+                            var isHeading = true;
+                            while (reader != null && reader.Read())
                             {
-                                SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1),
-                                SectorName = reader.GetString(0).ToUpper().Trim(),
-                                SectorCode = reader.GetString(1).ToUpper().Trim(),
-                                Status = reader.GetString(2) == "Active" ? Status.Active : Status.Inactive,
-                                EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
-                                EntryDate = DateTime.Now
-                            };
+                                //skip heading from excel file
+                                if (isHeading)
+                                {
+                                    isHeading = false; continue;
+                                }
 
-                            if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName && x.SectorCode == sector.SectorCode)) continue;
+                                var sector = new SectorInfo
+                                {
+                                    SectorName = reader.GetString(0).ToUpper().Trim(),
+                                    SectorCode = reader.GetString(1).ToUpper().Trim(),
+                                    Status = reader.GetString(2) == "Active" ? Status.Active : Status.Inactive,
+                                    EntryBy = _db.Users.First(x => x.UserName == User.Identity.Name).Id,
+                                    EntryDate = DateTime.Now
+                                };
 
-                            sectors.Add(sector);
+                                if (_db.SectorInfos.Any(x => x.SectorName == sector.SectorName && x.SectorCode == sector.SectorCode)) continue;
+                                sector.SectorId = string.Format("BI-{0:000000}", _db.SectorInfos.Count() + 1);
+                                sectors.Add(sector);
+                            }
                         }
-
-                        foreach (var sector in sectors)
-                        {
-                            _db.SectorInfos.Add(sector);
-                            affectedRows += _db.SaveChanges();
-                            //Sending Progress using SignalR
-                            Common.SendProgress("Uploading..", affectedRows, sectors.Count);
-                        }
-                        scope.Complete();
-
-                        Thread.Sleep(1000);
-
-                        TempData["Toastr"] = Toastr.CustomSuccess(string.Format("Sector file uploaded successfully. {0} items added.", affectedRows));
-                        return RedirectToAction("Index");
                     }
+
+                    foreach (var sector in sectors)
+                    {
+                        _db.SectorInfos.Add(sector);
+                        affectedRows += _db.SaveChanges();
+                        //Sending Progress using SignalR
+                        Common.SendProgress("Uploading..", affectedRows, sectors.Count);
+                    }
+                    scope.Complete();
+
+                    Thread.Sleep(1000);
+
+                    TempData["Toastr"] = Toastr.CustomSuccess(string.Format("Sector file uploaded successfully. {0} items added.", affectedRows));
+                    return RedirectToAction("Index");
 
                 }
                 catch (Exception ex)
