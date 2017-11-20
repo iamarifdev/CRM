@@ -269,5 +269,14 @@ namespace App.Web.Controllers
                     return Json(new { }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -38,24 +37,43 @@ namespace App.Web.Controllers
         // GET: Agents/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var agentInfo = _db.AgentInfos.Find(id);
+                if (agentInfo == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(agentInfo);
             }
-            var agentInfo = _db.AgentInfos.Find(id);
-            if (agentInfo == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
             }
-            return View(agentInfo);
+            
         }
 
         // GET: Agents/Create
         public ActionResult Create()
         {
-            ViewBag.UserRoleList = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
-            ViewBag.StatusList = Common.ToSelectList<Status>();
-            return View();
+            try
+            {
+                ViewBag.UserRoleList = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
+                ViewBag.StatusList = Common.ToSelectList<Status>();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+            
         }
 
         // POST: Agents/Create
