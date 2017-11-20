@@ -61,6 +61,7 @@
     <Compile Include="Models\EmployeeBasicInfo.cs" />
     <Compile Include="Models\EmployeeDesignation.cs" />
     <Compile Include="Models\GeneralSetting.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\LoginAttempts.cs" />
     <Compile Include="Models\Meta.cs" />
     <Compile Include="Models\MVCGridToolbarModel.cs" />

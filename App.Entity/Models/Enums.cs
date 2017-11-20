@@ -87,4 +87,10 @@ namespace App.Entity.Models
         Increment,
         Decrement
     }
+
+    public enum Flag
+    {
+        IsOff = 0,
+        IsOn = 1,
+    }
 }

@@ -437,6 +437,10 @@
     <Compile Include="Migrations\ContextB\201711200558280_AddedCountryModelToTheDb.Designer.cs">
       <DependentUpon>201711200558280_AddedCountryModelToTheDb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711201902410_AddedGroupModel.cs" />
+    <Compile Include="Migrations\ContextB\201711201902410_AddedGroupModel.Designer.cs">
+      <DependentUpon>201711201902410_AddedGroupModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1972,6 +1976,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711200558280_AddedCountryModelToTheDb.resx">
       <DependentUpon>201711200558280_AddedCountryModelToTheDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711201902410_AddedGroupModel.resx">
+      <DependentUpon>201711201902410_AddedGroupModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
