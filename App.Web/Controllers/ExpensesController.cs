@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -11,6 +9,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
+    [CrmAuthorize(Roles = "Admin")]
     public class ExpensesController : Controller
     {
         #region Private Zone

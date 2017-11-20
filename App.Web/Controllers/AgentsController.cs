@@ -13,7 +13,7 @@ using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class AgentsController : Controller
     {
         #region Private Zone

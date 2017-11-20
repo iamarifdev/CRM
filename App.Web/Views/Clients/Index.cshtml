@@ -20,7 +20,10 @@
     <div class="card-block">
         <div class="row">
             <div class="col-md-6">
-                <a href="@Url.Action("Create")" class="btn btn-info"> <span class="fa fa-plus"></span> Create New</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Create")" class="btn btn-info"> <span class="fa fa-plus"></span> Create New</a>
+                }
                 <button class="btn btn-outline-info refreshBtn"><span class="fa fa-refresh"></span> Refresh</button>
             </div>
             <br /><br /> <br />

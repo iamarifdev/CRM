@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using App.Web.Context;
+using App.Web.Helper;
 using App.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         // GET: Users
@@ -36,7 +33,7 @@ namespace App.Web.Controllers
             return View();   
         }
 
-        public Boolean IsAdminUser()
+        public bool IsAdminUser()
         {
             if (User.Identity.IsAuthenticated)
             {

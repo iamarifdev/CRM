@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -9,7 +8,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize(Roles = "Admin")]
     public class AirLinesController : Controller
     {
         #region Private Zone

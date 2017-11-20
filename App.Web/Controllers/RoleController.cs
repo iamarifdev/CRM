@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using App.Web.Context;
+using App.Web.Helper;
 using App.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize]
     public class RoleController : Controller
     {
         private readonly ApplicationDbContext _context;

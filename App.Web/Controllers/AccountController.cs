@@ -16,7 +16,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize]
     public class AccountController : Controller
     {
         private readonly CrmDbContext _db = new CrmDbContext();

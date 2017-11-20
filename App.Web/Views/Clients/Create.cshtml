@@ -136,11 +136,11 @@
     <script>
         PickDate();
         ReSelect2();
-        $("#ReferralType").on("change", function() {
+        $("#ReferralType").on("change", function () {
             var referralType = $(this).val();
             $("#SmsNo").val("");
             if (referralType !== "") {
-                $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function(html) {
+                $.post("@Url.Action("GetAdditionalReferralFields", "Clients")", { referralType: referralType }, function (html) {
                     if (html !== null) {
                         $("#ReferralAdditional").empty().html(html).slideDown(500);
                         ReSelect2();
@@ -154,10 +154,10 @@
             $("#ReferralAdditional").empty().slideUp(500);
         });
 
-        $("#RequireSupplier").on("change",function() {
+        $("#RequireSupplier").on("change", function () {
             var requireSupplier = $(this).val();
             if (requireSupplier !== "" && Number(requireSupplier) === 1) {
-                $.post("@Url.Action("GetAdditionalSupplierFields", "Clients")", { requireSupplier: requireSupplier }, function(html) {
+                $.post("@Url.Action("GetAdditionalSupplierFields", "Clients")", { requireSupplier: requireSupplier }, function (html) {
                     if (html !== null) {
                         $("#SupplierAdditional").empty().html(html).slideDown(500);
                         ReSelect2();
@@ -175,13 +175,13 @@
             "VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE",
             "CONFIRM"
         ];
-        $("#ServiceId").on("change", function() {
+        $("#ServiceId").on("change", function () {
             $(".pickDate").datepicker("destroy");
             var serviceName = $("#ServiceId :selected").text();
             var serviceId = $(this).val();
             if (serviceId === "") return;
             if (additionalFields.indexOf(serviceName) !== -1) {
-                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { serviceId: serviceId, serviceName: serviceName }, function(html) {
+                $.post("@Url.Action("GetAdditionalServiceFields", "Clients")", { serviceId: serviceId, serviceName: serviceName }, function (html) {
                     if (html !== null) {
                         $("#ServiceAdditional").empty().html(html).slideDown(500);
                         ReSelect2();
@@ -196,16 +196,16 @@
             $("#ServiceAdditional").empty().slideUp(500);
         });
 
-        $("body").on("change", "#ContactNo", function() {
+        $("body").on("change", "#ContactNo", function () {
             var contactNo = $("#ContactNo");
             $("#SmsNo").val(contactNo.val()).trigger("blur");
         });
 
-        $("body").on("change keyup", "#ServiceCharge", function() {
+        $("body").on("change keyup", "#ServiceCharge", function () {
             CalculateProfit();
         });
 
-        $("body").on("change keyup", "#Cost", function() {
+        $("body").on("change keyup", "#Cost", function () {
             CalculateProfit();
         });
 

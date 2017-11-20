@@ -15,7 +15,7 @@ using WebGrease.Css.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class GeneralSettingsController : Controller
     {
         #region Private Fields

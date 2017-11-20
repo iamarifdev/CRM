@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Transactions;
 using System.Web;
@@ -15,7 +14,7 @@ using ExcelDataReader;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class SectorsController : Controller
     {
         #region Private Zone

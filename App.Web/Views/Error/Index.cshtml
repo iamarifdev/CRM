@@ -1,0 +1,103 @@
+﻿@model int?
+@{
+    Layout = null;
+    string errorName, errorBackground, errorMessage, errorTitle, errorFont;
+
+    switch (Model)
+    {
+        case 302:
+            errorName = "Unauthorized";
+            errorBackground = "bg-danger";
+            errorTitle = "Privilege Error!";
+            errorMessage = "You are allowed to access the resource/content.";
+            errorFont = "ti-shift-right";
+            break;
+        case 400:
+            errorName = "Bad Request";
+            errorBackground = "bg-danger";
+            errorTitle = "Bad Request!";
+            errorMessage = "Its not a valid request, try again properly!";
+            errorFont = "ti-close";
+            break;
+        case 401:
+            errorName = "Unauthorized";
+            errorBackground = "bg-danger";
+            errorTitle = "Unauthorized Access!";
+            errorMessage = "You are not authorized to see the content of the page!";
+            errorFont = "ti-lock";
+            break;
+        case 403:
+            errorName = "Forbidden";
+            errorBackground = "bg-purple";
+            errorTitle = "Forbidden Request!";
+            errorMessage = "The request you are made is forbidden. try again properly!";
+            errorFont = "ti-na";
+            break;
+        case 404:
+            errorName = "Not Found";
+            errorBackground = "bg-warning";
+            errorTitle = "Not Found!";
+            errorMessage = "The resource or content are you looking for either removed or not found.";
+            errorFont = "ti-search";
+            break;
+        case 500:
+            errorName = "Internal";
+            errorBackground = "bg-primary";
+            errorTitle = "Internal Server Error!";
+            errorMessage = "Sorry something went wrong. Don't worry, we will fix it soon.";
+            errorFont = "ti-settings";
+            break;
+        default:
+            errorName = "Unknown";
+            errorBackground = "bg-danger";
+            errorTitle = "Unknown Error Occured!";
+            errorMessage = "We will make it work as soon as possible.";
+            errorFont = "ti-help-alt";
+            break;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Title -->
+    <title>CRM | @errorName</title>
+
+    <!-- Vendor CSS -->
+    <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" />
+    <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/vendor/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Neptune CSS -->
+    <link rel="stylesheet" href="~/Content/template/core.css">
+
+    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="@errorBackground">
+		
+<div class="error-message text-xs-center">
+    <h1 class="m-b-3">@Model<span><i class="@errorFont"></i></span></h1>
+    <h5 class="text-uppercase">@errorTitle</h5>
+    <div class="error-message-text m-b-3">@errorMessage</div>
+    <a class="btn btn-outline-white w-min-md" href="/">Go to home page</a>
+</div>
+
+<!-- Vendor JS -->
+<script type="text/javascript" src="~/vendor/jquery/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="~/vendor/tether/js/tether.min.js"></script>
+<script type="text/javascript" src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
+

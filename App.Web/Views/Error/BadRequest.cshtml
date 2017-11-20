@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_CustomErrorLayout.cshtml";
+    ViewBag.ErrorName = "Bad Request";
+    ViewBag.ErrorBackground = "bg-danger";
+}
+
+<div class="error-message text-xs-center">
+    <h1 class="m-b-3">400<span><i class="ti-close"></i></span></h1>
+    <h5 class="text-uppercase">Bad Request!</h5>
+    <div class="error-message-text m-b-3">Its not a valid request, try again properly!</div>
+    <a class="btn btn-outline-white w-min-md" href="/">Go to home page</a>
+</div>
+

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using App.Web.Helper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -10,7 +10,7 @@ using App.Web.Models;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

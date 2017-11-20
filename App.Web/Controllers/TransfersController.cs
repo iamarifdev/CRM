@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using System.Xml.Xsl;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
@@ -10,7 +9,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class TransfersController : Controller
     {
 

@@ -8,7 +8,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class PaymentMethodsController : Controller
     {
         #region Private Zone

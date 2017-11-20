@@ -9,7 +9,7 @@ using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [CrmAuthorize(Roles = "Admin")]
     public class DesignationsController : Controller
     {
         #region Private Zone
@@ -192,7 +192,7 @@ namespace App.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EmployeeDesignation employeeDesignation = _db.EmployeeDesignations.Find(id);
+            var employeeDesignation = _db.EmployeeDesignations.Find(id);
             if (employeeDesignation == null)
             {
                 return HttpNotFound();

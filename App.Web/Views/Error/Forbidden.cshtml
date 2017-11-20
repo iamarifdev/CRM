@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_CustomErrorLayout.cshtml";
+    ViewBag.ErrorName = "Forbidden";
+    ViewBag.ErrorBackground = "bg-purple";
+}
+
+<div class="error-message text-xs-center">
+    <h1 class="m-b-3">403<span><i class="ti-na"></i></span></h1>
+    <h5 class="text-uppercase">Forbidden Request!</h5>
+    <div class="error-message-text m-b-3">The request you are made is forbidden. try again properly!</div>
+    <a class="btn btn-outline-white w-min-md" href="/">Go to home page</a>
+</div>

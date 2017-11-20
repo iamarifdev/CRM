@@ -4,11 +4,12 @@ using System.Linq;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
+using App.Web.Helper;
 using App.Web.Models;
 
 namespace App.Web.Controllers
 {
-    [Authorize(Roles = "Admin,Agent")]
+    [CrmAuthorize(Roles = "Admin,Agent")]
     public class BillingController : Controller
     {
         #region Private Zone
@@ -22,7 +23,7 @@ namespace App.Web.Controllers
             _db = new CrmDbContext();
         }
 
-        [Authorize(Roles = "Admin,Agent")]
+        [CrmAuthorize(Roles = "Admin,Agent")]
         [HttpGet]
         public ActionResult ClientPayment()
         {
@@ -39,7 +40,7 @@ namespace App.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin,Agent")]
+        [CrmAuthorize(Roles = "Admin,Agent")]
         [HttpPost]
         public ActionResult ClientPayment(ClientPaymentViewModel payment)
         {
@@ -106,7 +107,7 @@ namespace App.Web.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [CrmAuthorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult AgentPayment()
         {
@@ -114,7 +115,7 @@ namespace App.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [CrmAuthorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult AgentPayment(ClientPaymentViewModel payment)
         {
@@ -170,7 +171,7 @@ namespace App.Web.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [CrmAuthorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult SupplierPayment()
         {
@@ -178,7 +179,7 @@ namespace App.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [CrmAuthorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SupplierPayment(ClientPaymentViewModel payment)
         {

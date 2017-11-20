@@ -236,6 +236,7 @@
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DepositsController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -253,6 +254,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Common.cs" />
+    <Compile Include="Helper\CrmAuthorizeAttribute.cs" />
     <Compile Include="Helper\CrmDb.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
@@ -1332,6 +1334,14 @@
     <Content Include="Views\Reports\SupplierPaymentReport.cshtml" />
     <Content Include="Views\Reports\SupplierDueReport.cshtml" />
     <Content Include="Views\Reports\DailyPaymentReport.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\_CustomErrorLayout.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Error\Unknown.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

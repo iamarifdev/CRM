@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_CustomErrorLayout.cshtml";
+    ViewBag.ErrorName = "Internal";
+    ViewBag.ErrorBackground = "bg-primary";
+}
+
+<div class="error-message text-xs-center">
+    <h1 class="m-b-3">500<span><i class="ti-settings"></i></span></h1>
+    <h5 class="text-uppercase">Internal Server Error!</h5>
+    <div class="error-message-text m-b-3">Sorry something went wrong. Don't worry, we will fix it soon.</div>
+    <a class="btn btn-outline-white w-min-md" href="/">Go to home page</a>
+</div>
+

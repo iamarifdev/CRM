@@ -8,7 +8,7 @@ using App.Web.Helper;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
+    [CrmAuthorize]
     public class HomeController : Controller
     {
         #region Private Zone
