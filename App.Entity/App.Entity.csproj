@@ -56,7 +56,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BranchInfo.cs" />
     <Compile Include="Models\ClientInfo.cs" />
-    <Compile Include="Models\CountryList.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\CustomerPayment.cs" />
     <Compile Include="Models\EmployeeBasicInfo.cs" />
     <Compile Include="Models\EmployeeDesignation.cs" />

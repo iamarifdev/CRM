@@ -12,7 +12,7 @@ namespace App.Web.Context
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BranchInfo> BranchInfos { get; set; }
         public DbSet<ClientInfo> ClientInfos { get; set; }
-        public DbSet<CountryList> CountryLists { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<CustomerPayment> CustomerPayments { get; set; }
         public DbSet<EmployeeBasicInfo> EmployeeBasicInfos { get; set; }
         public DbSet<EmployeeDesignation> EmployeeDesignations { get; set; }

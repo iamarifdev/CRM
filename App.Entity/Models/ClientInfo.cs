@@ -115,9 +115,9 @@ namespace App.Entity.Models
         [ForeignKey("UserServedBy")]
         public int ServedBy { get; set; }
 
-        [StringLength(100)]
         [Display(Name = "Flight Time")]
-        public string DoneBy { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd H:mm}")]
+        public DateTime? DoneBy { get; set; }
 
         [Display(Name = "Working Status")]
         public WorkingStatus? WorkingStatus { get; set; }
@@ -157,7 +157,7 @@ namespace App.Entity.Models
         public string SmsNo { get; set; }
 
         [Display(Name = "Country")]
-        [ForeignKey("CountryList")]
+        [ForeignKey("Country")]
         public int? CountryId { get; set; }
 
         [StringLength(10)]
@@ -183,7 +183,7 @@ namespace App.Entity.Models
         public virtual BranchInfo BranchInfo { get; set; }
         public virtual SectorInfo SectorFrom { get; set; }
         public virtual SectorInfo SectorTo { get; set; }
-        public virtual CountryList CountryList { get; set; }
+        public virtual Country Country { get; set; }
         public virtual AirLineInfo AirLineInfo { get; set; }
         public virtual SuppliersInfo SuppliersInfo { get; set; }
         public virtual ServiceInfo ServiceInfo { get; set; }

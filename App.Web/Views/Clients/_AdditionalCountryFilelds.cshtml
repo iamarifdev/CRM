@@ -2,7 +2,7 @@
 @model App.Entity.Models.ClientInfo
 @{
     var db = new CrmDbContext();
-    ViewBag.CountryList = new SelectList(db.CountryLists, "CountryId", "CountryName");
+    ViewBag.CountryList = new SelectList(db.Countries.Where(x=> !x.DelStatus).ToList(), "CountryId", "CountryName");
 
 }
 <div class="form-group row">

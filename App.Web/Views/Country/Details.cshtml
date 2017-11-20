@@ -1,0 +1,37 @@
+﻿@model App.Entity.Models.Country
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">COUNTRY / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    COUNTRY NAME: @Model.CountryName.ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.CountryId })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+
+                    <tr>
+                        <th width="150">@Html.DisplayNameFor(m => m.CountryCode)</th>
+                        <td>@Model.CountryCode</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.DelStatus)</th>
+                        <td>@Model.DelStatus ? "Deleted" : "Not Deleted"</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
+
+</div>

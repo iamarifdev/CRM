@@ -234,6 +234,7 @@
     <Compile Include="Controllers\BillingController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DepositsController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -423,6 +424,18 @@
     <Compile Include="Migrations\ContextB\201711141631131_FullNameAddedToClientInfoModel.cs" />
     <Compile Include="Migrations\ContextB\201711141631131_FullNameAddedToClientInfoModel.Designer.cs">
       <DependentUpon>201711141631131_FullNameAddedToClientInfoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711200528173_DoneByAsDateTimeAddedToClientInfoModel.cs" />
+    <Compile Include="Migrations\ContextB\201711200528173_DoneByAsDateTimeAddedToClientInfoModel.Designer.cs">
+      <DependentUpon>201711200528173_DoneByAsDateTimeAddedToClientInfoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711200556161_DropCountryForeignKey.cs" />
+    <Compile Include="Migrations\ContextB\201711200556161_DropCountryForeignKey.Designer.cs">
+      <DependentUpon>201711200556161_DropCountryForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711200558280_AddedCountryModelToTheDb.cs" />
+    <Compile Include="Migrations\ContextB\201711200558280_AddedCountryModelToTheDb.Designer.cs">
+      <DependentUpon>201711200558280_AddedCountryModelToTheDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
@@ -854,6 +867,56 @@
     <Content Include="vendor\bootstrap-datepicker\tests\suites\touch_navigation\all.js" />
     <Content Include="vendor\bootstrap-datepicker\tests\tests.html" />
     <Content Include="vendor\bootstrap-datepicker\tests\timezone.html" />
+    <Content Include="vendor\bootstrap-datetimepicker\css\bootstrap-datetimepicker.css" />
+    <Content Include="vendor\bootstrap-datetimepicker\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\bootstrap-datetimepicker.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ar.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.az.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bg.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bn.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ca.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.cs.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.da.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.de.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ee.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.el.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.es.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fi.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fr.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.he.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hr.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hu.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hy.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.id.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.is.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.it.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ja.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ka.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ko.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lt.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lv.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ms.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nb.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nl.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.no.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pl.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ro.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs-latin.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ru.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sk.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sl.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sv.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sw.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.th.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.tr.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ua.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.uk.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="vendor\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-TW.js" />
     <Content Include="vendor\bootstrap\css\bootstrap.css" />
     <Content Include="vendor\bootstrap\css\bootstrap.min.css" />
     <Content Include="vendor\bootstrap\js\bootstrap.js" />
@@ -869,6 +932,132 @@
     <Content Include="vendor\jscrollpane\jquery.jscrollpane.min.js" />
     <Content Include="vendor\jscrollpane\jquery.mousewheel.js" />
     <Content Include="vendor\jscrollpane\mwheelIntent.js" />
+    <Content Include="vendor\limitless-login\css\bootstrap.min.css" />
+    <Content Include="vendor\limitless-login\css\colors.min.css" />
+    <Content Include="vendor\limitless-login\css\components.min.css" />
+    <Content Include="vendor\limitless-login\css\core.min.css" />
+    <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.svg" />
+    <Content Include="vendor\limitless-login\css\icomoon\styles.css" />
+    <Content Include="vendor\limitless-login\images\login_cover.jpg" />
+    <Content Include="vendor\limitless-login\js\app.js" />
+    <Content Include="vendor\limitless-login\js\app.min.js" />
+    <Content Include="vendor\limitless-login\js\bootstrap.min.js" />
+    <Content Include="vendor\limitless-login\js\jquery.min.js" />
+    <Content Include="vendor\limitless-login\js\loaders\blockui.min.js" />
+    <Content Include="vendor\limitless-login\js\loaders\pace.min.js" />
+    <Content Include="vendor\limitless-login\js\loaders\progressbar.min.js" />
+    <Content Include="vendor\limitless-login\js\login_validation.js" />
+    <Content Include="vendor\limitless-login\js\styling\switch.min.js" />
+    <Content Include="vendor\limitless-login\js\styling\switchery.min.js" />
+    <Content Include="vendor\limitless-login\js\styling\uniform.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\additional_methods.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ar.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ar.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_bg.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_bg.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ca.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ca.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_cs.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_cs.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_da.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_da.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_de.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_de.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_el.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_el.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_es.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_es.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_es_AR.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_es_AR.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_et.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_et.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_eu.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_eu.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fa.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fa.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fi.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fi.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fr.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_fr.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_gl.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_gl.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_he.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_he.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_hr.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_hr.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_hu.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_hu.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_id.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_id.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_is.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_is.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_it.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_it.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ja.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ja.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ka.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ka.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_kk.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_kk.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ko.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ko.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_lt.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_lt.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_lv.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_lv.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_my.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_my.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_nl.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_nl.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_no.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_no.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pl.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pl.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pt_BR.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pt_BR.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pt_PT.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_pt_PT.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ro.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ro.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ru.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_ru.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_si.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_si.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sk.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sk.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sl.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sl.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sr.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sr.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sr_lat.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sr_lat.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sv.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_sv.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_th.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_th.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_tj.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_tj.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_tr.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_tr.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_uk.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_uk.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_vi.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_vi.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_zh.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_zh.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_zh_TW.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\messages_zh_TW.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_de.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_de.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_es_CL.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_es_CL.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_fi.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_fi.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_nl.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_nl.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_pt.js" />
+    <Content Include="vendor\limitless-login\js\validation\localization\methods_pt.min.js" />
+    <Content Include="vendor\limitless-login\js\validation\validate.min.js" />
     <Content Include="vendor\moment\moment.js" />
     <Content Include="vendor\select2\.gitignore" />
     <Content Include="vendor\select2\dist\css\select2.css" />
@@ -1342,6 +1531,13 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\InternalServerError.cshtml" />
     <Content Include="Views\Error\Unknown.cshtml" />
+    <Content Include="Views\Country\Index.cshtml" />
+    <Content Include="Views\Country\Details.cshtml" />
+    <Content Include="Views\Country\Create.cshtml" />
+    <Content Include="Views\Country\Edit.cshtml" />
+    <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.eot" />
+    <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.ttf" />
+    <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.woff" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1767,6 +1963,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711141631131_FullNameAddedToClientInfoModel.resx">
       <DependentUpon>201711141631131_FullNameAddedToClientInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711200528173_DoneByAsDateTimeAddedToClientInfoModel.resx">
+      <DependentUpon>201711200528173_DoneByAsDateTimeAddedToClientInfoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711200556161_DropCountryForeignKey.resx">
+      <DependentUpon>201711200556161_DropCountryForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711200558280_AddedCountryModelToTheDb.resx">
+      <DependentUpon>201711200558280_AddedCountryModelToTheDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

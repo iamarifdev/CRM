@@ -98,6 +98,70 @@ namespace App.Web
                 })
             );
 
+            // Country Table
+            MVCGridDefinitionTable.Add("countryTable", new MVCGridBuilder<Country>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("CountryName").WithHeaderText("Country Name").WithValueExpression(p => p.CountryName).WithSorting(true);
+                    cols.Add("CountryCode").WithHeaderText("Country Code").WithValueExpression(p => p.CountryCode).WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Deleted").WithValueExpression(p => p.DelStatus ? "Yes" : "No");
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.CountryId.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Coutry/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Coutry/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "CountryName")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<Country>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.Countries.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.CountryName.Contains(globalSearch) ||
+                                    x.CountryCode.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "countryname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.CountryName) : query.OrderBy(p => p.CountryName);
+                                    break;
+                                case "countrycode":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.CountryCode) : query.OrderBy(p => p.CountryCode);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DelStatus) : query.OrderBy(p => p.DelStatus);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
+
+
             //Designation Table
             MVCGridDefinitionTable.Add("designationTable", new MVCGridBuilder<EmployeeDesignation>(defaults)
                 .WithAuthorizationType(AuthorizationType.Authorized)
@@ -586,7 +650,7 @@ namespace App.Web
                     cols.Add("WorkingStatus").WithHeaderText("Working Status").WithValueExpression(p => p.WorkingStatus > 0 ? "Done" : "Pending").WithSorting(true);
                     cols.Add("InfoStatus").WithHeaderText("Update Status").WithValueExpression(p => p.InfoStatus > 0 ? "Updated" : "Not Updated").WithSorting(true);
                     cols.Add("DeliveryStatus").WithHeaderText("Delivery Status").WithValueExpression(p => p.DeliveryStatus > 0 ? "Delivery" : "Not Delivery").WithSorting(true);
-                    cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
+                    cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => string.Format("{0:yyyy-MM-dd HH:mm}",p.DoneBy)).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                             "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
@@ -622,7 +686,7 @@ namespace App.Web
                                     || x.AirLineInfo.AirLineName.Contains(globalSearch)
                                     || x.ServiceInfo.ServiceName.Contains(globalSearch)
                                     || x.UserServedBy.UserName.Contains(globalSearch)
-                                    || x.DoneBy.Contains(globalSearch)
+                                    //|| x.DoneBy.Contains(globalSearch)
                             );
                         }
 
@@ -664,9 +728,9 @@ namespace App.Web
                                 case "deliverystatus":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DeliveryStatus) : query.OrderBy(p => p.DeliveryStatus);
                                     break;
-                                case "doneby":
-                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
-                                    break;
+                                //case "doneby":
+                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
+                                //    break;
                             }
                         }
                         result.TotalRecords = query.Count();
