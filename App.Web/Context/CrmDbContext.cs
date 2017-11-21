@@ -27,7 +27,8 @@ namespace App.Web.Context
         public DbSet<TransactionsInfo> TransactionsInfos { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
-
+        public DbSet<Menu> Menus { get; set; }
+        //public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<TransactionView> TransactionView { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -15,6 +15,7 @@ namespace App.Web
     {
         public static void RegisterGrids()
         {
+            var crmDb = new CrmDbContext();
             var defaults = new GridDefaults()
             {
                 Paging = true,
@@ -22,6 +23,98 @@ namespace App.Web
                 Sorting = true,
                 NoResultsMessage = "Sorry, no results were found."
             };
+
+            // User Table
+            MVCGridDefinitionTable.Add("userTable", new MVCGridBuilder<User>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("Id").WithHeaderText("Id").WithValueExpression(p => p.Id.ToString()).WithSorting(true);
+                    cols.Add("UserName").WithHeaderText("User Name").WithValueExpression(p => p.UserName).WithSorting(true);
+                    cols.Add("BranchName").WithHeaderText("Branch Name")
+                        .WithValueExpression(p => crmDb.BranchInfos.Where(x => x.Id == p.BranchId).Select(x => x.BranchName).FirstOrDefault())
+                        .WithSorting(true);
+                    cols.Add("EmployeeName").WithHeaderText("Employee Name")
+                        .WithValueExpression(p => crmDb.EmployeeBasicInfos.Where(x => x.Id == p.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault())
+                        .WithSorting(true);
+                    cols.Add("UserGroup").WithHeaderText("User Group").WithValueExpression(p => p.Group.Name).WithSorting(true);
+                    cols.Add("UserLevel").WithHeaderText("User Level").WithValueExpression(p => Common.GetDescription(p.Level)).WithSorting(true);
+                    cols.Add("Status").WithHtmlEncoding(false)
+                        .WithHeaderText("Status")
+                        .WithValueExpression((p, c) => p.Status == Status.Active ? "btn-success" : "btn-danger")
+                        .WithValueTemplate("<button class='btn btn-sm m-b-0-25 {Value}' onclick='InactiveOrDeactive({Value})'>{Model.Status}</button>")
+                        .WithSorting(true);
+                    cols.Add("ViewLink")
+                        .WithSorting(false)
+                        .WithHeaderText("Action")
+                        .WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Users/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Users/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "Id")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<User>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.Users.AsQueryable().Include(x=>x.Group);
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.Id.ToString().Contains(globalSearch) ||
+                                    x.UserName.Contains(globalSearch) ||
+                                    x.Group.Name.Contains(globalSearch)
+                                //|| x.EntryDate.ToString().Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "id":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Id) : query.OrderBy(p => p.Id);
+                                    break;
+                                case "username":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.UserName) : query.OrderBy(p => p.UserName);
+                                    break;
+                                case "branchname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.BranchId) : query.OrderBy(p => p.BranchId);
+                                    break;
+                                case "employeename":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EmployeeId) : query.OrderBy(p => p.EmployeeId);
+                                    break;
+                                case "usergroup":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Group.Name) : query.OrderBy(p => p.Group.Name);
+                                    break;
+                                case "userlevel":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Level) : query.OrderBy(p => p.Level);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
 
             // Branch Table
             MVCGridDefinitionTable.Add("branchTable", new MVCGridBuilder<BranchInfo>(defaults)

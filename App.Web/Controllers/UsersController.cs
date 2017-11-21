@@ -10,47 +10,36 @@ namespace App.Web.Controllers
     [CrmAuthorize(Roles = "Admin")]
     public class UsersController : Controller
     {
+        #region Private Zone
+        private readonly CrmDbContext _db;
+        #endregion
+        public UsersController()
+        {
+            _db = new CrmDbContext();
+        }
         // GET: Users
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ViewBag.Name = user.Name;
-
-                ViewBag.displayMenu = "No";
-
-                if (IsAdminUser())
-                {
-                    ViewBag.displayMenu = "Yes";
-                }
-                return View();
-            }
-            else
-            {
-                ViewBag.Name = "Not Logged IN";
-            }
             return View();   
         }
 
         public bool IsAdminUser()
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated) return false;
+            var user = User.Identity;
+            var context = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var s = userManager.GetRoles(user.GetUserId());
+            return s[0] == "Admin";
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "Admin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                _db.Dispose();
             }
-            return false;
+            base.Dispose(disposing);
         }
     }
 }

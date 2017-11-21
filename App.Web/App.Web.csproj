@@ -240,6 +240,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaymentMethodsController.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\CrmAuthorizeAttribute.cs" />
     <Compile Include="Helper\CrmDb.cs" />
+    <Compile Include="Helper\SessionExtensions.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
     <Compile Include="Hubs\ProgressHub.cs" />
@@ -441,11 +443,40 @@
     <Compile Include="Migrations\ContextB\201711201902410_AddedGroupModel.Designer.cs">
       <DependentUpon>201711201902410_AddedGroupModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711210947353_ForUserGroupSeveralChangesToModel.cs" />
+    <Compile Include="Migrations\ContextB\201711210947353_ForUserGroupSeveralChangesToModel.Designer.cs">
+      <DependentUpon>201711210947353_ForUserGroupSeveralChangesToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711210951599_EmployeeBasicInfoModelAdded.cs" />
+    <Compile Include="Migrations\ContextB\201711210951599_EmployeeBasicInfoModelAdded.Designer.cs">
+      <DependentUpon>201711210951599_EmployeeBasicInfoModelAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711211000046_UserModeRedefined.cs" />
+    <Compile Include="Migrations\ContextB\201711211000046_UserModeRedefined.Designer.cs">
+      <DependentUpon>201711211000046_UserModeRedefined.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711211056246_DropManyToManyRelationshipBetweenUserAndGroup.cs" />
+    <Compile Include="Migrations\ContextB\201711211056246_DropManyToManyRelationshipBetweenUserAndGroup.Designer.cs">
+      <DependentUpon>201711211056246_DropManyToManyRelationshipBetweenUserAndGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711211131400_AddGroupIdToTheUserModel.cs" />
+    <Compile Include="Migrations\ContextB\201711211131400_AddGroupIdToTheUserModel.Designer.cs">
+      <DependentUpon>201711211131400_AddGroupIdToTheUserModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711211558276_AddedMenuModel.cs" />
+    <Compile Include="Migrations\ContextB\201711211558276_AddedMenuModel.Designer.cs">
+      <DependentUpon>201711211558276_AddedMenuModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711211849088_UserModelChangedAgain.cs" />
+    <Compile Include="Migrations\ContextB\201711211849088_UserModelChangedAgain.Designer.cs">
+      <DependentUpon>201711211849088_UserModelChangedAgain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Models\AgentStatementViewModel.cs" />
+    <Compile Include="Models\AppData.cs" />
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\DateRangeViewModel.cs" />
     <Compile Include="Models\ClientInfoViewModel.cs" />
@@ -1542,6 +1573,7 @@
     <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.eot" />
     <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.ttf" />
     <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.woff" />
+    <Content Include="Views\Groups\Index.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1979,6 +2011,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711201902410_AddedGroupModel.resx">
       <DependentUpon>201711201902410_AddedGroupModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711210947353_ForUserGroupSeveralChangesToModel.resx">
+      <DependentUpon>201711210947353_ForUserGroupSeveralChangesToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711210951599_EmployeeBasicInfoModelAdded.resx">
+      <DependentUpon>201711210951599_EmployeeBasicInfoModelAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711211000046_UserModeRedefined.resx">
+      <DependentUpon>201711211000046_UserModeRedefined.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711211056246_DropManyToManyRelationshipBetweenUserAndGroup.resx">
+      <DependentUpon>201711211056246_DropManyToManyRelationshipBetweenUserAndGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711211131400_AddGroupIdToTheUserModel.resx">
+      <DependentUpon>201711211131400_AddGroupIdToTheUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711211558276_AddedMenuModel.resx">
+      <DependentUpon>201711211558276_AddedMenuModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711211849088_UserModelChangedAgain.resx">
+      <DependentUpon>201711211849088_UserModelChangedAgain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

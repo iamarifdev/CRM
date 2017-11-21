@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Entity.Models
 {
     public class Group
     {
+        public Group()
+        {
+            Users = new List<User>();
+        }
         public int Id { get; set; }
         [Required]
         [StringLength(40)]
@@ -23,6 +23,6 @@ namespace App.Entity.Models
         public Flag Hrm { get; set; }
         public Flag Setup { get; set; }
 
-
+        public ICollection<User> Users { get; set; }
     }
 }

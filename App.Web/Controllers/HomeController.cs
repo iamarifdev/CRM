@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Linq;
 using System.Web.Mvc;
-using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
+using App.Web.Models;
 
 namespace App.Web.Controllers
 {
@@ -22,12 +20,17 @@ namespace App.Web.Controllers
         {
             try
             {
-                return View();
+                if (Session.Get<AppData>("AppData") != null) return View();
+                
+                Session.RemoveAll();
+                Session.Abandon();
+                return RedirectToAction("Login", "Account");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Toastr"] = Toastr.DbError(ex.Message);
-                return RedirectToAction("Index", "Home");
+                Session.RemoveAll();
+                Session.Abandon();
+                return RedirectToAction("Login", "Account");
             }
             
         }

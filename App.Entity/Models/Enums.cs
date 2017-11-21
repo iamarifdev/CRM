@@ -93,4 +93,68 @@ namespace App.Entity.Models
         IsOff = 0,
         IsOn = 1,
     }
+
+    public enum UserLevel
+    {
+        [Display(Name = "Head Office")]
+        HeadOffice = 1,
+        [Display(Name = "Branch Office")]
+        BranchOffice = 2
+    }
+
+    public enum Gender
+    {
+        Male = 1,
+        Female = 2
+    }
+
+    public enum Ack
+    {
+        Yes = 1,
+        No = 0
+    }
+
+    public enum BloodGroup
+    {
+        [Display(Name = "A+")]
+        APositive = 1,
+        [Display(Name = "A-")]
+        ANegative = 2,
+        [Display(Name = "B+")]
+        BPositive = 3,
+        [Display(Name = "B-")]
+        BNegative = 4,
+        [Display(Name = "AB+")]
+        AbPositive = 6,
+        [Display(Name = "AB-")]
+        AbNegative = 7,
+        [Display(Name = "O+")]
+        OPositive = 6,
+        [Display(Name = "O-")]
+        ONegative = 7,
+    }
+
+    public enum EmployeeLevel
+    {
+        [Display(Name = "Head Office")]
+        HeadOffice = 1,
+        [Display(Name = "Bank Incharge")]
+        BankIncharge = 2,
+        [Display(Name = "Zone Incharge")]
+        ZoneIncharge = 3,
+        [Display(Name = "Service Officer")]
+        ServiceOfficer = 4,
+        [Display(Name = "Branch Manager")]
+        BranchManager = 5,
+    }
+
+    public enum Module
+    {
+        Crm = 1,
+        Billing = 2,
+        Account = 3,
+        Report = 4,
+        Hrm = 5,
+        Setup = 6
+    }
 }

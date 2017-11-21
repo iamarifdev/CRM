@@ -1,4 +1,10 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using App.Entity.Models
+@using App.Web.Helper
+@using App.Web.Models
+@{
+    var appData = Session.Get<AppData>("AppData");
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +20,15 @@
     @RenderSection("RareCase", required: false)
     <!-- Vendor CSS -->
     <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="~/vendor/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/vendor/animate.css/animate.min.css">
     <link rel="stylesheet" href="~/vendor/jscrollpane/jquery.jscrollpane.css">
-    @*<link rel="stylesheet" href="~/vendor/waves/waves.min.css">
-        <link rel="stylesheet" href="~/vendor/chartist/chartist.min.css">
+    <link rel="stylesheet" href="~/vendor/waves/waves.min.css">
+    @*<link rel="stylesheet" href="~/vendor/chartist/chartist.min.css">
         <link rel="stylesheet" href="~/vendor/switchery/dist/switchery.min.css">
         <link rel="stylesheet" href="~/vendor/morris/morris.css">
         <link rel="stylesheet" href="~/vendor/jvectormap/jquery-jvectormap-2.0.3.css">*@
@@ -39,7 +46,10 @@
 </head>
 <body class="large-sidebar fixed-sidebar fixed-header content-appear">
     <div class="wrapper">
-
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logoutForm", style = "display:none;" }))
+        {
+            @Html.AntiForgeryToken()
+        }
         <!-- Sidebar -->
         <div class="site-sidebar-overlay"></div>
         <div class="site-sidebar">
@@ -64,134 +74,176 @@
                             <span class="s-text">Dashboard</span>
                         </a>
                     </li>
-
-                    <li class="with-sub">
-                        <a href="#" class="waves-effect  waves-light">
-                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="fa fa-user-secret"></i></span>
-                            <span class="s-text">CRM</span>
-                        </a>
-                        <ul>
-                            <li><a href="@Url.Action("Index","Clients")">Client Info</a></li>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li>@Html.ActionLink("Agent Info", "Index", "Agents")</li>
-                                <li><a href="aa.html">Flight Progress</a></li>
-                            }
-                        </ul>
-                    </li>
-
-                    <li class="with-sub">
-                        <a href="#" class="waves-effect  waves-light">
-                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                            <span class="s-icon"><i class="fa fa-print"></i></span>
-                            <span class="s-text">Billing</span>
-                        </a>
-                        <ul>
-                            <li><a href="@Url.Action("ClientPayment","Billing")">Client Payment</a></li>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li><a href="@Url.Action("AgentPayment","Billing")">Agent Payment</a></li>
-                                <li><a href="@Url.Action("SupplierPayment","Billing")">Payment to Supplier</a></li>
-                            }
-                        </ul>
-                    </li>
-
-                    @if (User.IsInRole("Admin"))
+                    @if (appData.Group.Crm == Flag.IsOn)
                     {
+                        <!--CRM-->
                         <li class="with-sub">
                             <a href="#" class="waves-effect  waves-light">
                                 <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                <span class="s-icon"><i class="fa fa-envelope"></i></span>
-                                <span class="s-text">Accounts</span>
+                                <span class="s-icon"><i class="fa fa-user-secret"></i></span>
+                                <span class="s-text">CRM</span>
                             </a>
                             <ul>
-                                <li><a href="@Url.Action("Index","Deposits")">Deposits</a></li>
-                                <li><a href="@Url.Action("Index","Expenses")">Expenses</a></li>
-                                <li><a href="@Url.Action("Index","Transactions")">Transactions</a></li>
-                                <li><a href="@Url.Action("Index","Transfers")">Transfer</a></li>
-                                <li><a href="@Url.Action("BalanceSheet","Accounts")">Balance Sheet</a></li>
-                                <li class="with-sub">
-                                    <a href="javascript: void(0);">
-                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                        <span class="s-text">Statement</span>
-                                    </a>
-                                    <ul>
-                                        <li><a href="@Url.Action("AgentSatement","Accounts")">Agent Statement</a></li>
-                                        <li><a href="javascript: void(0);">Supplier Statement</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="@Url.Action("Index", "Clients")">Client Info</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li>@Html.ActionLink("Agent Info", "Index", "Agents")</li>
+                                    <li><a href="aa.html">Flight Progress</a></li>
+                                }
                             </ul>
                         </li>
-
-                        <li class="with-sub compact-hide">
-                            <a href="javascript: void(0);" class="waves-effect  waves-light">
-                                <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                <span class="s-icon"><i class="fa fa-bar-chart"></i></span>
-                                <span class="s-text">Report</span>
-                            </a>
-                            <ul>
-                                <li class="with-sub">
-                                    <a href="javascript: void(0);">
-                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                        <span class="s-text">Client</span>
-                                    </a>
-                                    <ul>
-                                        <li><a href="@Url.Action("ClientInfoReport","Reports")">Info Report</a></li>
-                                        <li><a href="@Url.Action("ClientPaymentReport","Reports")">Payment Report</a></li>
-                                        <li><a href="@Url.Action("ClientDueReport","Reports")">Due Report</a></li>
-                                    </ul>
-                                </li>
-                                <li class="with-sub">
-                                    <a href="javascript: void(0);">
-                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                        <span class="s-text">Agent</span>
-                                    </a>
-                                    <ul>
-                                        <li><a href="@Url.Action("AgentInfoReport","Reports")">Info Report</a></li>
-                                        <li><a href="@Url.Action("AgentPaymentReport","Reports")">Payment Report</a></li>
-                                        <li><a href="@Url.Action("AgentDueReport","Reports")">Due Report</a></li>
-                                    </ul>
-                                </li>
-                                <li class="with-sub">
-                                    <a href="javascript: void(0);">
-                                        <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                        <span class="s-text">Supplier</span>
-                                    </a>
-                                    <ul>
-                                        <li><a href="@Url.Action("SupplierInfoReport","Reports")">Info Report</a></li>
-                                        <li><a href="@Url.Action("SupplierPaymentReport","Reports")">Payment Report</a></li>
-                                        <li><a href="@Url.Action("SupplierDueReport","Reports")">Due Report</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="@Url.Action("DailyPaymentReport","Reports")">Daily Payment Report</a></li>
-                                <li><a href="javascript: void(0);">Profit Report</a></li>
-                                <li><a href="javascript: void(0);">SMS Report</a></li>
-                            </ul>
-                        </li>
-
+                    }
+                    @if (appData.Group.Billing == Flag.IsOn)
+                    {
+                        <!--Billing-->
                         <li class="with-sub">
                             <a href="#" class="waves-effect  waves-light">
                                 <span class="s-caret"><i class="fa fa-angle-down"></i></span>
-                                <span class="s-icon"><i class="fa fa-wrench"></i></span>
-                                <span class="s-text">Setup</span>
+                                <span class="s-icon"><i class="fa fa-print"></i></span>
+                                <span class="s-text">Billing</span>
                             </a>
                             <ul>
-                                <li>@Html.ActionLink("General Setting", "Index", "GeneralSettings")</li>
-                                <li>@Html.ActionLink("Accounts Setup", "Index", "Accounts")</li>
-                                <li>@Html.ActionLink("Designation", "Index", "Designations")</li>
-                                <li>@Html.ActionLink("Service", "Index", "Services")</li>
-                                <li>@Html.ActionLink("Branch", "Index", "Branch")</li>
-                                <li>@Html.ActionLink("Country", "Index", "Country")</li>
-                                <li>@Html.ActionLink("Sector Info", "Index", "Sectors")</li>
-                                <li>@Html.ActionLink("AirLines", "Index", "AirLines")</li>
-                                <li>@Html.ActionLink("SMS Purchase", "Index", "GeneralSettings")</li>
-                                <li>@Html.ActionLink("Suppliers", "Index", "Suppliers")</li>
-                                <li>@Html.ActionLink("Payment Methods", "Index", "PaymentMethods")</li>
+                                <li><a href="@Url.Action("ClientPayment","Billing")">Client Payment</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("AgentPayment","Billing")">Agent Payment</a></li>
+                                    <li><a href="@Url.Action("SupplierPayment","Billing")">Payment to Supplier</a></li>
+                                }
                             </ul>
                         </li>
                     }
 
+                    @if (User.IsInRole("Admin"))
+                    {
+                        if (appData.Group.Account == Flag.IsOn)
+                        {
+                             <!--Accounts-->
+                            <li class="with-sub">
+                                <a href="#" class="waves-effect  waves-light">
+                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                    <span class="s-icon"><i class="fa fa-envelope"></i></span>
+                                    <span class="s-text">Accounts</span>
+                                </a>
+                                <ul>
+                                    <li><a href="@Url.Action("Index", "Deposits")">Deposits</a></li>
+                                    <li><a href="@Url.Action("Index", "Expenses")">Expenses</a></li>
+                                    <li><a href="@Url.Action("Index", "Transactions")">Transactions</a></li>
+                                    <li><a href="@Url.Action("Index", "Transfers")">Transfer</a></li>
+                                    <li><a href="@Url.Action("BalanceSheet", "Accounts")">Balance Sheet</a></li>
+                                    <li class="with-sub">
+                                        <a href="javascript: void(0);">
+                                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                            <span class="s-text">Statement</span>
+                                        </a>
+                                        <ul>
+                                            <li><a href="@Url.Action("AgentSatement", "Accounts")">Agent Statement</a></li>
+                                            <li><a href="javascript: void(0);">Supplier Statement</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        if (appData.Group.Report == Flag.IsOn)
+                        {
+                             <!--Report-->
+                            <li class="with-sub compact-hide">
+                                <a href="javascript: void(0);" class="waves-effect  waves-light">
+                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                    <span class="s-icon"><i class="fa fa-bar-chart"></i></span>
+                                    <span class="s-text">Report</span>
+                                </a>
+                                <ul>
+                                    <li class="with-sub">
+                                        <a href="javascript: void(0);">
+                                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                            <span class="s-text">Client</span>
+                                        </a>
+                                        <ul>
+                                            <li><a href="@Url.Action("ClientInfoReport","Reports")">Info Report</a></li>
+                                            <li><a href="@Url.Action("ClientPaymentReport","Reports")">Payment Report</a></li>
+                                            <li><a href="@Url.Action("ClientDueReport","Reports")">Due Report</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="with-sub">
+                                        <a href="javascript: void(0);">
+                                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                            <span class="s-text">Agent</span>
+                                        </a>
+                                        <ul>
+                                            <li><a href="@Url.Action("AgentInfoReport","Reports")">Info Report</a></li>
+                                            <li><a href="@Url.Action("AgentPaymentReport","Reports")">Payment Report</a></li>
+                                            <li><a href="@Url.Action("AgentDueReport","Reports")">Due Report</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="with-sub">
+                                        <a href="javascript: void(0);">
+                                            <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                            <span class="s-text">Supplier</span>
+                                        </a>
+                                        <ul>
+                                            <li><a href="@Url.Action("SupplierInfoReport","Reports")">Info Report</a></li>
+                                            <li><a href="@Url.Action("SupplierPaymentReport","Reports")">Payment Report</a></li>
+                                            <li><a href="@Url.Action("SupplierDueReport","Reports")">Due Report</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="@Url.Action("DailyPaymentReport","Reports")">Daily Payment Report</a></li>
+                                    <li><a href="javascript: void(0);">Profit Report</a></li>
+                                    <li><a href="javascript: void(0);">SMS Report</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        if (appData.Group.Hrm == Flag.IsOn)
+                        {
+                            <!--HRM-->
+                            <li class="with-sub">
+                                <a href="javascript: void(0);" class="waves-effect  waves-light">
+                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                    <span class="s-icon"><i class="fa fa-users"></i></span>
+                                    <span class="s-text">HRM</span>
+                                </a>
+                                <ul>
+                                    <li>@Html.ActionLink("Employee", "Index", "Employee")</li>
+                                    <li>@Html.ActionLink("User Management", "Index", "Users")</li>
+                                    <li>@Html.ActionLink("Group", "Index", "Groups")</li>
+                                </ul>
+                            </li>
+                        }
+                        if (appData.Group.Setup == Flag.IsOn)
+                        {
+                            <!--Setup-->
+                            <li class="with-sub">
+                                <a href="javascript: void(0);" class="waves-effect  waves-light">
+                                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                                    <span class="s-icon"><i class="fa fa-wrench"></i></span>
+                                    <span class="s-text">Setup</span>
+                                </a>
+                                <ul>
+                                    <li>@Html.ActionLink("General Setting", "Index", "GeneralSettings")</li>
+                                    <li>@Html.ActionLink("Accounts Setup", "Index", "Accounts")</li>
+                                    <li>@Html.ActionLink("Designation", "Index", "Designations")</li>
+                                    <li>@Html.ActionLink("Service", "Index", "Services")</li>
+                                    <li>@Html.ActionLink("Branch", "Index", "Branch")</li>
+                                    <li>@Html.ActionLink("Country", "Index", "Country")</li>
+                                    <li>@Html.ActionLink("Sector Info", "Index", "Sectors")</li>
+                                    <li>@Html.ActionLink("AirLines", "Index", "AirLines")</li>
+                                    <li>@Html.ActionLink("SMS Purchase", "Index", "GeneralSettings")</li>
+                                    <li>@Html.ActionLink("Suppliers", "Index", "Suppliers")</li>
+                                    <li>@Html.ActionLink("Payment Methods", "Index", "PaymentMethods")</li>
+                                </ul>
+                            </li>
+                        }
+                    }
+
+                    @if (appData.IsDevelopmentMode)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Navigation")" class="waves-effect  waves-light">
+                                <span class="s-icon"><i class="ti-dashboard"></i></span>
+                                <span class="s-text">Set Menu</span>
+                            </a>
+                        </li>
+                    }
                     <li>
                         <a href="@Url.Action("ChangePassword","Account")" class="waves-effect  waves-light">
                             <span class="s-icon"><i class="fa fa-key"></i></span>
@@ -206,6 +258,7 @@
                         </a>
                     </li>
                 </ul>
+
             </div>
         </div>
 
@@ -221,18 +274,14 @@
                 </ul>
                 <ul class="nav navbar-nav pull-xs-right">
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="javascript:void()" data-toggle="dropdown" aria-expanded="false">
-                            Welcome, @User.Identity.GetUserName()!
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="dropdown" aria-expanded="false">
+                            Welcome, @appData.UserName!
                             <div class="avatar box-32">
                                 <img src="~/Content/template/img/avatars/1.jpg" alt="">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animated flipInY">
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logoutForm" }))
-                            {
-                                @Html.AntiForgeryToken()
-                            }
-                            <a class="dropdown-item logOut" href="javascript:void()"><i class="fa fa-sign-out m-r-0-5"></i> Logout</a>
+                            <a class="dropdown-item logOut" href="javascript:void(0);"><i class="fa fa-sign-out m-r-0-5"></i> Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -257,7 +306,6 @@
     </div>
 
     <!-- Vendor JS -->
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="~/vendor/jquery/jquery-1.12.3.min.js"></script>
     <script type="text/javascript" src="~/vendor/tether/js/tether.min.js"></script>
     <script type="text/javascript" src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -267,9 +315,8 @@
     <script type="text/javascript" src="~/vendor/jscrollpane/mwheelIntent.js"></script>
     <script type="text/javascript" src="~/vendor/jscrollpane/jquery.jscrollpane.min.js"></script>
     <script src="~/vendor/select2/dist/js/select2.min.js"></script>
-
-    @*<script type="text/javascript" src="~/vendor/waves/waves.min.js"></script>
-        <script type="text/javascript" src="~/vendor/chartist/chartist.min.js"></script>
+    <script type="text/javascript" src="~/vendor/waves/waves.min.js"></script>
+    @*<script type="text/javascript" src="~/vendor/chartist/chartist.min.js"></script>
         <script type="text/javascript" src="~/vendor/switchery/dist/switchery.min.js"></script>
         <script type="text/javascript" src="~/vendor/flot/jquery.flot.min.js"></script>
         <script type="text/javascript" src="~/vendor/flot/jquery.flot.resize.min.js"></script>

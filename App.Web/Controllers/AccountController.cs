@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
@@ -51,16 +53,6 @@ namespace App.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            var generalSetting = _db.GeneralSettings.FirstOrDefault(x => x.SettingName == "SiteLogo");
-            if (generalSetting != null)
-            {
-                var logoName = generalSetting.SettingValue;
-                ViewBag.LogoName = logoName;
-            }
-            else
-            {
-                ViewBag.LogoName = string.Empty;
-            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -72,27 +64,61 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(model);
-            }
+                if (!ModelState.IsValid) return View(model);
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-            switch (result)
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+
+                        var appData = new AppData();
+                        var userName = model.UserName;
+                        var environment = System.Configuration.ConfigurationManager.AppSettings["Environment"];
+                        //var groupId = _db.Users.Where(x => x.UserName == userName).Select(x=>x.GroupId).First();
+                        var query = _db.Menus.Where(x => x.Status == Status.Active).AsQueryable();
+                        if (_db.Menus.Any())
+                        {
+                            if (appData.Group.Account == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Account);
+                            if (appData.Group.Billing == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Billing);
+                            if (appData.Group.Crm == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Crm);
+                            if (appData.Group.Hrm == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Hrm);
+                            if (appData.Group.Report == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Report);
+                            if (appData.Group.Setup == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Setup);
+                        }
+
+                        appData.Group = _db.Users.Include(x=>x.Group).First(x => x.UserName == userName).Group;
+                        appData.MenuList = query.ToList();
+                        appData.UserName = userName;
+                        appData.IsDevelopmentMode = environment == "DEV";
+
+                        Session.Set("AppData",appData);
+
+                        return RedirectToLocal(returnUrl);
+
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, model.RememberMe });
+                    //case SignInStatus.Failure:
+
+                    default:
+                        ModelState.AddModelError("UserName", @"User name may be invalid!");
+                        ModelState.AddModelError("Password", @"Entered Password may be wrong!");
+                        return View(model);
+                }
+            }
+            catch(Exception ex)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, model.RememberMe });
-                //case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("UserName", @"User name may be invalid!");
-                    ModelState.AddModelError("Password", @"Entered Password may be wrong!");
-                    return View(model);
+                return RedirectToRoute(new RouteValueDictionary
+                {
+                    {"action", "InternalServerError"},
+                    {"controller", "Error"}
+                });
             }
         }
 
@@ -151,7 +177,7 @@ namespace App.Web.Controllers
                 "Name");
 
             ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
-            ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
+            //ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
             ViewBag.Active = Common.ToSelectList<Status>();
             return View();
         }
@@ -184,7 +210,7 @@ namespace App.Web.Controllers
                 ViewBag.UserRoles = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin"))
                     .ToList(), "Name", "Name");
                 ViewBag.BranchId = new SelectList(_db.BranchInfos.ToList(), "BranchId", "BranchName");
-                ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
+                //ViewBag.EmployeeId = new SelectList(_db.EmployeeBasicInfos.ToList(), "EmployeeId", "EmployeeName");
                 ViewBag.Active = Common.ToSelectList<Status>();
                 AddErrors(result);
             }
@@ -418,8 +444,21 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                if(Session["AppData"] != null) Session.Clean("AppData");
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToRoute(new RouteValueDictionary
+                {
+                    {"action", "InternalServerError"},
+                    {"controller", "Error"}
+                });
+            }
+            
         }
 
         //

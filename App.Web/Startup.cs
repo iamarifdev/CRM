@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using System.Web.Services.Description;
 using App.Web.Context;
 using App.Entity.Models;
 using App.Web.Models;
@@ -36,7 +35,24 @@ namespace App.Web
 
                         // first we create Admin role   
                         var role = new IdentityRole { Name = "Admin" };
-                        roleManager.Create(role);
+                        var ack = roleManager.Create(role);
+                        var group = new Group();
+                        if (ack.Succeeded)
+                        {
+                            group = new Group
+                            {
+                                Name = "Admin",
+                                Description = "Administrator",
+                                Account = Flag.IsOn,
+                                Billing = Flag.IsOn,
+                                Crm = Flag.IsOn,
+                                Hrm = Flag.IsOn,
+                                Report = Flag.IsOn,
+                                Setup = Flag.IsOn
+                            };
+                            db.Groups.Add(group);
+                            db.SaveChanges();
+                        }
 
                         //Here we create a Admin super user who will maintain the website                  
 
@@ -54,10 +70,11 @@ namespace App.Web
                             UserName = userName,
                             Email = email,
                             IpAddress = "127.0.0.1",
-                            CreatedOn = DateTime.Now.Ticks,
-                            Active = Status.Active,
-                            Level = "Head Office",
-                            Uid = uId
+                            CreatedOn = DateTime.Now,
+                            Status = Status.Active,
+                            Level = UserLevel.HeadOffice,
+                            Uid = uId,
+                            GroupId = group.Id
                         };
 
                         const string userPwd = "112233";
@@ -91,7 +108,7 @@ namespace App.Web
             }
 
         }
-        private void AddServices()
+        private static void AddServices()
         {
             var db = new CrmDbContext();
             using (var transaction = db.Database.BeginTransaction())
@@ -125,11 +142,10 @@ namespace App.Web
                 catch (Exception)
                 {
                     transaction.Rollback();
-                    return;
                 }
             }
         }
-        private void AddDefaultBranch()
+        private static void AddDefaultBranch()
         {
             var db = new CrmDbContext();
             using (var transaction = db.Database.BeginTransaction())
@@ -154,7 +170,6 @@ namespace App.Web
                 catch (Exception)
                 {
                     transaction.Rollback();
-                    return;
                 }
                 
             }

@@ -6,71 +6,87 @@ namespace App.Entity.Models
 {
     public class EmployeeBasicInfo
     {
-        [Key]
-        public int RowId { get; set; }
+        public int Id { get; set; }
 
+        [Required]
         [StringLength(20)]
-        [Index("IX_Employee_Id", 1, IsUnique = true)]
+        [Display(Name = "Employee ID")]
         public string EmployeeId { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Employee Name")]
         public string EmployeeName { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Father's Name")]
         public string FatherName { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Mothers Name")]
         public string MotherName { get; set; }
 
+        [Display(Name = "Birth Date")]
         public DateTime? Dob { get; set; }
 
-        [StringLength(10)]
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
 
-        [StringLength(10)]
-        public string MaritalStatus { get; set; }
+        [Display(Name = "Marital Status")]
+        public Ack MaritalStatus { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Spouse Name")]
         public string SpouseName { get; set; }
 
         [StringLength(50)]
+        [Display(Name="NID Number")]
         public string NidNo { get; set; }
 
-        [StringLength(20)]
-        public string EmployeeDesignation { get; set; }
+        [Display(Name = "Employee Designation")]
+        [ForeignKey("EmployeeDesignation")]
+        public int EmployeeDesignationId { get; set; }
 
-        [StringLength(25)]
+        [StringLength(255)]
+        [Display(Name = "Profile Photo")]
+        [FileExtensions(Extensions = "jpg,png,jpeg,gif,bmp", ErrorMessage = "Only .jpg, .png, .jpeg, .gif, .bmp file types are allowed.")]
         public string ImageUrl { get; set; }
 
+        [Display(Name = "Basic Salary")]
         public double? BasicSalary { get; set; }
 
+        [Display(Name = "Other Allownce")]
         public double? OtherAllowance { get; set; }
 
+        [Display(Name = "Date Of Joining")]
         public DateTime? DateOfJoining { get; set; }
 
+        [Display(Name = "Next Increment Date")]
         public DateTime? IncrementDate { get; set; }
 
-        [StringLength(15)]
-        public string BloodGroup { get; set; }
+        [Display(Name = "Blood Group")]
+        public BloodGroup? BloodGroup { get; set; }
 
         [StringLength(16)]
+        [Display(Name = "Land Line Number")]
         public string LandLineNumber { get; set; }
 
-        [StringLength(11)]
+        [Required]
+        [StringLength(15)]
+        [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Contact Person")]
         public string ContactPerson { get; set; }
 
-        [StringLength(11)]
+        [StringLength(15)]
+        [Display(Name = "Contact Number")]
         public string ContactNumber { get; set; }
 
-        [Column(TypeName = "text")]
-        [StringLength(65535)]
+        [StringLength(500)]
         public string Address { get; set; }
 
-        [StringLength(20)]
-        public string UserLevel { get; set; }
+        [Display(Name = "User Level")]
+        public EmployeeLevel? UserLevel { get; set; }
 
         [StringLength(20)]
         public string ZoneId { get; set; }
@@ -81,14 +97,19 @@ namespace App.Entity.Models
         [StringLength(20)]
         public string WarehouseId { get; set; }
 
-        [StringLength(10)]
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
-        public int DelStatus { get; set; }
+        [Display(Name = "Delete Status")]
+        public bool DelStatus { get; set; }
 
-        [StringLength(20)]
-        public string EntryBy { get; set; }
+        [Display(Name = "Entry By")]
+        [ForeignKey("User")]
+        public int EntryBy { get; set; }
 
-        public DateTime? EntryDate { get; set; }
+        [Display(Name = "Entry Date")]
+        public DateTime EntryDate { get; set; }
+
+        public virtual EmployeeDesignation EmployeeDesignation { get; set; }
+        public virtual User User { get; set; }
     }
 }
