@@ -1,5 +1,6 @@
 ﻿@using App.Entity.Models
-@model App.Entity.Models.ClientInfo
+@using App.Web.Helper
+@model ClientInfo
 
 @{
     ViewBag.Title = "Details";
@@ -12,7 +13,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h5>
-                    CLIENT NAME: @string.Join(" ", new string[] { Model.FirstName, Model.LastName }).ToUpper()
+                    CLIENT NAME: @Model.FullName.ToUpper()
                     @if (User.IsInRole("Admin"))
                     {
                         <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
@@ -172,8 +173,8 @@
                     @if (Model.ServiceInfo.ServiceName == "STUDENT VISA")
                     {
                         <tr>
-                            <th>@Html.DisplayNameFor(m => m.CountryList.CountryName)</th>
-                            <td>@Model.CountryList.CountryName</td>
+                            <th>@Html.DisplayNameFor(m => m.Country.CountryName)</th>
+                            <td>@Model.Country.CountryName</td>
                         </tr>
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.CollageName)</th>
@@ -191,8 +192,8 @@
                             <td>@Model.AirLineInfo.AirLineName</td>
                         </tr>
                         <tr>
-                            <th>@Html.DisplayNameFor(m => m.CountryList.CountryName)</th>
-                            <td>@Model.CountryList.CountryName</td>
+                            <th>@Html.DisplayNameFor(m => m.Country.CountryName)</th>
+                            <td>@Model.Country.CountryName</td>
                         </tr>
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
@@ -221,19 +222,19 @@
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.WorkingStatus)</th>
-                        <td>@Model.WorkingStatus</td>
+                        <td>@Common.GetDescription(Model.WorkingStatus)</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.SmsConfirmation)</th>
-                        <td>@Model.SmsConfirmation</td>
+                        <td>@Common.GetDescription(Model.SmsConfirmation)</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.InfoStatus)</th>
-                        <td>@Model.InfoStatus</td>
+                        <td>@Common.GetDescription(Model.InfoStatus)</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.DeliveryStatus)</th>
-                        <td>@Model.DeliveryStatus</td>
+                        <td>@Common.GetDescription(Model.DeliveryStatus)</td>
                     </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.Status)</th>

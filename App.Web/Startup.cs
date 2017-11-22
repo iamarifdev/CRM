@@ -138,6 +138,7 @@ namespace App.Web
                         db.ServiceInfos.Add(service);
                         db.SaveChanges();
                     }
+                    transaction.Commit();
                 }
                 catch (Exception)
                 {

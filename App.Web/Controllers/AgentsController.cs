@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
@@ -8,7 +10,6 @@ using App.Web.Models;
 using EntityFramework.Extensions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using EntityState = System.Data.Entity.EntityState;
 
 namespace App.Web.Controllers
 {
@@ -81,7 +82,7 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,OfficeName,AgentName,ContactName,MobileNo,Address,OfficeNo,FaxNo,Email,UserName,Password")] AgentInfo agent)
         {
-            using (var dbTransaction = _db.Database.BeginTransaction())
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
@@ -96,7 +97,7 @@ namespace App.Web.Controllers
                         var ack = _userManager.Create(user, agent.Password);
                         if (!ack.Succeeded)
                         {
-                            dbTransaction.Rollback();
+                            transaction.Complete();
                             return View(agent);
                         }
                         _userManager.AddToRole(user.Id, "Agent");
@@ -104,17 +105,17 @@ namespace App.Web.Controllers
                         _db.AgentInfos.Add(agent);
                         _db.SaveChanges();
 
-                        dbTransaction.Commit();
+                        transaction.Complete();
                         TempData["Toastr"] = Toastr.Added;
 
                         return RedirectToAction("Index");
                     }
-                    dbTransaction.Rollback();
+                    Transaction.Current.Rollback();
                     return View(agent);
                 }
                 catch (Exception ex)
                 {
-                    dbTransaction.Rollback();
+                    Transaction.Current.Rollback();
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
@@ -159,7 +160,7 @@ namespace App.Web.Controllers
         public ActionResult Edit([Bind(Include = "Id,OfficeName,AgentName,ContactName,MobileNo,Address,OfficeNo,FaxNo,Email,UserName,Password,Status")] AgentInfo agent, int? id)
         {
 
-            using (var dbTransaction = _db.Database.BeginTransaction())
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
@@ -215,14 +216,14 @@ namespace App.Web.Controllers
                     _context.Entry(appUser).State = EntityState.Modified;
                     _context.SaveChanges();
 
-                    dbTransaction.Commit();
+                    transaction.Complete();
 
                     TempData["Toastr"] = Toastr.Updated;
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    dbTransaction.Rollback();
+                    Transaction.Current.Rollback();
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
@@ -252,7 +253,7 @@ namespace App.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
-            using (var dbTransaction = _db.Database.BeginTransaction())
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
@@ -275,14 +276,14 @@ namespace App.Web.Controllers
                     _db.AgentInfos.Remove(agent);
                     _db.SaveChanges();
 
-                    dbTransaction.Commit();
+                    transaction.Complete();
 
                     TempData["Toastr"] = Toastr.Deleted;
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    dbTransaction.Rollback();
+                    Transaction.Current.Rollback();
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
