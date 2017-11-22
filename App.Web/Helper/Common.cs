@@ -73,7 +73,7 @@ namespace App.Web.Helper
             }
         }
 
-        public static string HasPassword(string newPassword)
+        public static string HashPassword(string newPassword)
         {
             using (var userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>()))
             {

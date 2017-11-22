@@ -43,12 +43,12 @@ namespace App.Web
                             {
                                 Name = "Admin",
                                 Description = "Administrator",
-                                Account = Flag.IsOn,
-                                Billing = Flag.IsOn,
-                                Crm = Flag.IsOn,
-                                Hrm = Flag.IsOn,
-                                Report = Flag.IsOn,
-                                Setup = Flag.IsOn
+                                Account = true,
+                                Billing = true,
+                                Crm = true,
+                                Hrm = true,
+                                Report = true,
+                                Setup = true
                             };
                             db.Groups.Add(group);
                             db.SaveChanges();

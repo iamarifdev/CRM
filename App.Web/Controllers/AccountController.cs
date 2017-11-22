@@ -82,12 +82,12 @@ namespace App.Web.Controllers
                         var query = _db.Menus.Where(x => x.Status == Status.Active).AsQueryable();
                         if (_db.Menus.Any())
                         {
-                            if (appData.Group.Account == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Account);
-                            if (appData.Group.Billing == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Billing);
-                            if (appData.Group.Crm == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Crm);
-                            if (appData.Group.Hrm == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Hrm);
-                            if (appData.Group.Report == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Report);
-                            if (appData.Group.Setup == Flag.IsOn) query = _db.Menus.Where(x => x.ModuleName == Module.Setup);
+                            if (appData.Group.Account) query = _db.Menus.Where(x => x.ModuleName == Module.Account);
+                            if (appData.Group.Billing) query = _db.Menus.Where(x => x.ModuleName == Module.Billing);
+                            if (appData.Group.Crm) query = _db.Menus.Where(x => x.ModuleName == Module.Crm);
+                            if (appData.Group.Hrm) query = _db.Menus.Where(x => x.ModuleName == Module.Hrm);
+                            if (appData.Group.Report) query = _db.Menus.Where(x => x.ModuleName == Module.Report);
+                            if (appData.Group.Setup) query = _db.Menus.Where(x => x.ModuleName == Module.Setup);
                         }
 
                         appData.Group = _db.Users.Include(x=>x.Group).First(x => x.UserName == userName).Group;

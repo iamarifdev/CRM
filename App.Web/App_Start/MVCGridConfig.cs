@@ -116,6 +116,92 @@ namespace App.Web
                 })
             );
 
+            // Group Table
+            MVCGridDefinitionTable.Add("groupTable", new MVCGridBuilder<Group>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("Id").WithHeaderText("Id").WithValueExpression(p => p.Id.ToString()).WithSorting(true);
+                    cols.Add("Name").WithHeaderText("Group Name").WithValueExpression(p => p.Name).WithSorting(true);
+                    cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
+                    cols.Add("Crm").WithHeaderText("Crm").WithValueExpression(p => p.Crm ? "YES" : "NO").WithSorting(true);
+                    cols.Add("Billing").WithHeaderText("Billing").WithValueExpression(p => p.Billing ? "YES" : "NO").WithSorting(true);
+                    cols.Add("Account").WithHeaderText("Accounts").WithValueExpression(p => p.Account ? "YES" : "NO").WithSorting(true);
+                    cols.Add("Report").WithHeaderText("Report").WithValueExpression(p => p.Report ? "YES" : "NO").WithSorting(true);
+                    cols.Add("Hrm").WithHeaderText("Hrm").WithValueExpression(p => p.Hrm ? "YES" : "NO").WithSorting(true);
+                    cols.Add("Setup").WithHeaderText("Setup").WithValueExpression(p => p.Setup ? "YES" : "NO").WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Groups/Edit/{Value}'>Edit</a>"
+                     );
+                })
+                .WithSorting(true, "Name")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<Group>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.Groups.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.Id.ToString().Contains(globalSearch) ||
+                                    x.Name.Contains(globalSearch) ||
+                                    x.Description.Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "id":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Id) : query.OrderBy(p => p.Id);
+                                    break;
+                                case "name":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Name) : query.OrderBy(p => p.Name);
+                                    break;
+                                case "description":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Description) : query.OrderBy(p => p.Description);
+                                    break;
+                                case "crm":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Crm) : query.OrderBy(p => p.Crm);
+                                    break;
+                                case "billing":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Billing) : query.OrderBy(p => p.Billing);
+                                    break;
+                                case "account":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Account) : query.OrderBy(p => p.Account);
+                                    break;
+                                case "report":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Report) : query.OrderBy(p => p.Report);
+                                    break;
+                                case "hrm":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Hrm) : query.OrderBy(p => p.Hrm);
+                                    break;
+                                case "setup":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Setup) : query.OrderBy(p => p.Setup);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
+
             // Branch Table
             MVCGridDefinitionTable.Add("branchTable", new MVCGridBuilder<BranchInfo>(defaults)
                 .WithAuthorizationType(AuthorizationType.Authorized)

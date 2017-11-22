@@ -1,1 +1,1 @@
-N:\Projects\Development\CRM\App.Web\obj\Debug\App.Web.dll
+N:\Projects\Development\CRM\App.Web\bin\EntityFramework.dll

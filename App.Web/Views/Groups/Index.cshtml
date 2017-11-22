@@ -8,12 +8,6 @@
 {
     <link href="~/vendor/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/MvcGridPagination.css" rel="stylesheet" />
-    <link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-}
-
-@using (Html.BeginForm("Delete", "Groups", FormMethod.Post, new { @style = "display:none;", @id = "deleteForm" }))
-{
-    @Html.Hidden("Id")
 }
 <div class="card">
     <h6 class="card-header bg-primary">GROUPS / LIST</h6>
@@ -41,8 +35,6 @@
 {
     <script src="~/MVCGridHandler.axd/script.js"></script>
     <script src="~/vendor/toastr/toastr.min.js"></script>
-    <script src="~/vendor/sweetalert2/sweetalert2.min.js"></script>
-    <script src="~/Scripts/index.js"></script>
     <script>
         @if (TempData["Toastr"] != null)
         {

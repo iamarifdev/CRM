@@ -1,5 +1,4 @@
-﻿@using App.Entity.Models
-@using App.Web.Helper
+﻿@using App.Web.Helper
 @using App.Web.Models
 @{
     var appData = Session.Get<AppData>("AppData");
@@ -74,7 +73,7 @@
                             <span class="s-text">Dashboard</span>
                         </a>
                     </li>
-                    @if (appData.Group.Crm == Flag.IsOn)
+                    @if (appData.Group.Crm)
                     {
                         <!--CRM-->
                         <li class="with-sub">
@@ -93,7 +92,7 @@
                             </ul>
                         </li>
                     }
-                    @if (appData.Group.Billing == Flag.IsOn)
+                    @if (appData.Group.Billing)
                     {
                         <!--Billing-->
                         <li class="with-sub">
@@ -115,7 +114,7 @@
 
                     @if (User.IsInRole("Admin"))
                     {
-                        if (appData.Group.Account == Flag.IsOn)
+                        if (appData.Group.Account)
                         {
                              <!--Accounts-->
                             <li class="with-sub">
@@ -143,7 +142,7 @@
                                 </ul>
                             </li>
                         }
-                        if (appData.Group.Report == Flag.IsOn)
+                        if (appData.Group.Report)
                         {
                              <!--Report-->
                             <li class="with-sub compact-hide">
@@ -193,7 +192,7 @@
                             </li>
                         }
 
-                        if (appData.Group.Hrm == Flag.IsOn)
+                        if (appData.Group.Hrm)
                         {
                             <!--HRM-->
                             <li class="with-sub">
@@ -209,7 +208,7 @@
                                 </ul>
                             </li>
                         }
-                        if (appData.Group.Setup == Flag.IsOn)
+                        if (appData.Group.Setup)
                         {
                             <!--Setup-->
                             <li class="with-sub">

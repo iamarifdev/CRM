@@ -11,17 +11,18 @@ namespace App.Entity.Models
         }
         public int Id { get; set; }
         [Required]
-        [StringLength(40)]
+        [StringLength(40, MinimumLength = 3)]
+        [System.Web.Mvc.Remote("IsGroupAvailable", "Groups", AdditionalFields = "Id", HttpMethod = "POST", ErrorMessage = "Group Name already exist, try another.")]
         public string Name { get; set; }
         [Required]
         [StringLength(200)]
         public string Description { get; set; }
-        public Flag Crm { get; set; }
-        public Flag Billing { get; set; }
-        public Flag Account { get; set; }
-        public Flag Report { get; set; }
-        public Flag Hrm { get; set; }
-        public Flag Setup { get; set; }
+        public bool Crm { get; set; }
+        public bool Billing { get; set; }
+        public bool Account { get; set; }
+        public bool Report { get; set; }
+        public bool Hrm { get; set; }
+        public bool Setup { get; set; }
 
         public ICollection<User> Users { get; set; }
     }

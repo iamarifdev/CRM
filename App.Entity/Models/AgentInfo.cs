@@ -41,6 +41,7 @@ namespace App.Entity.Models
         [Required]
         [EmailAddress]
         [StringLength(100)]
+        [System.Web.Mvc.Remote("IsEmailAvailable", "Agents", AdditionalFields = "Id", HttpMethod = "POST", ErrorMessage = "Email already in use, try another.")]
         public string Email { get; set; }
 
         [Required]

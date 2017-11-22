@@ -1,0 +1,121 @@
+﻿@model App.Entity.Models.Group
+
+@{
+    ViewBag.Title = "Add New Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section AdditionalStyles
+{
+    <link href="~/vendor/switchery/dist/switchery.min.css" rel="stylesheet" />
+}
+<div class="card">
+    <h6 class="card-header bg-primary">GROUP / ADD NEW</h6>
+    <div class="card-block">
+        <div class="row">
+            @using (Html.BeginForm("Create", "Groups", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+                @*<div class="row">*@
+
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Crm, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Crm, new { @class = "js-switch", @data_color = "#01c469", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Billing, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Billing, new { @class = "js-switch", @data_color = "#01c469", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Account, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Account, new { @class = "js-switch", @data_color = "#01c469", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Report, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Report, new { @class = "js-switch", @data_color = "#01c469", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Hrm, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Hrm, new { @class = "js-switch", @data_color = "#01c469", @disabled = "disabled", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Setup, new { @class = "badge badge-primary" })<br>
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.Setup, new { @class = "js-switch", @data_color = "#01c469", @data_secondary_color = "#ff0000" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*</div>*@
+
+                <div class="form-group col-md-12">
+                    <div class="offset-sm-9 col-sm-3">
+                        <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
+                    </div>
+                </div>
+            }
+            <br/>
+            <div class="col-md-3">
+                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/vendor/switchery/dist/switchery.min.js"></script>
+    <script>
+        $('.js-switch').each(function () {
+            new Switchery($(this)[0], $(this).data());
+        });
+    </script>
+}

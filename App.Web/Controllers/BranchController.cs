@@ -137,8 +137,16 @@ namespace App.Web.Controllers
             {
                 try
                 {
-                    if (id == null) return HttpNotFound();
-                    if (_db.BranchInfos.Count(x => x.Id == id) < 1) return HttpNotFound();
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    if (_db.BranchInfos.Count(x => x.Id == id) < 1)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
                     var branch = _db.BranchInfos.Single(x => x.Id == id);
 
                     ModelState.Clear();

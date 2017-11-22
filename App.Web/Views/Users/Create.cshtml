@@ -1,0 +1,109 @@
+﻿@model App.Web.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Add New User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">USERS / ADD NEW</h6>
+    <div class="card-block">
+        <div class="row">
+            @using (Html.BeginForm("Create", "Users", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.StatusList, "Select One", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.EmployeeId, (SelectList)ViewBag.Employees, "Select One", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.BranchId, (SelectList)ViewBag.Branches, "Select One", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.GroupId, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.GroupId, (SelectList)ViewBag.Groups, "Select One", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                    <div class="form-group offset-md-2 col-md-8">
+                        @Html.LabelFor(model => model.Level, htmlAttributes: new { @class = "control-label col-sm-3 text-md-right" })
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.Level, (SelectList)ViewBag.UserLevels, "Select One", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.Level, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group offset-md-2 col-md-8">
+                        <div class="offset-sm-6 col-sm-3">
+                            <button type="submit" class="btn btn-success pull-right"> <span class="fa fa-plus"></span> Add New </button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-3">
+                <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

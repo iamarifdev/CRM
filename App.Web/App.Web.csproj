@@ -45,14 +45,6 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DataTables.AspNet.Core, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DataTables.AspNet.Core.2.0.2\lib\net45\DataTables.AspNet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DataTables.AspNet.Mvc5, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DataTables.AspNet.Mvc5.2.0.2\lib\net45\DataTables.AspNet.Mvc5.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
       <Private>True</Private>
@@ -135,6 +127,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -258,6 +251,7 @@
     <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\CrmAuthorizeAttribute.cs" />
     <Compile Include="Helper\CrmDb.cs" />
+    <Compile Include="Helper\CrmPermissionAttribute.cs" />
     <Compile Include="Helper\SessionExtensions.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
@@ -471,6 +465,10 @@
     <Compile Include="Migrations\ContextB\201711211849088_UserModelChangedAgain.Designer.cs">
       <DependentUpon>201711211849088_UserModelChangedAgain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711221019418_GroupModelChanges.cs" />
+    <Compile Include="Migrations\ContextB\201711221019418_GroupModelChanges.Designer.cs">
+      <DependentUpon>201711221019418_GroupModelChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -488,6 +486,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\TransferViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1574,6 +1573,8 @@
     <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.ttf" />
     <Content Include="vendor\limitless-login\css\icomoon\fonts\icomoon.woff" />
     <Content Include="Views\Groups\Index.cshtml" />
+    <Content Include="Views\Groups\Create.cshtml" />
+    <Content Include="Views\Groups\Edit.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1856,6 +1857,8 @@
     <Content Include="Views\Transfers\Create.cshtml" />
     <Content Include="Views\Transfers\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2032,6 +2035,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711211849088_UserModelChangedAgain.resx">
       <DependentUpon>201711211849088_UserModelChangedAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711221019418_GroupModelChanges.resx">
+      <DependentUpon>201711221019418_GroupModelChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

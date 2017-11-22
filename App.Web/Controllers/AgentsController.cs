@@ -211,7 +211,7 @@ namespace App.Web.Controllers
                     var appUser = _userManager.FindByName(_db.AgentInfos.Find(id).UserName);
                     appUser.UserName = agent.UserName;
                     appUser.Email = agent.Email;
-                    appUser.PasswordHash = Common.HasPassword(agent.Password);
+                    appUser.PasswordHash = Common.HashPassword(agent.Password);
                     _context.Entry(appUser).State = EntityState.Modified;
                     _context.SaveChanges();
 
@@ -289,6 +289,36 @@ namespace App.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult IsEmailAvailable(string email, int? id)
+        {
+            try
+            {
+                var flag = true;
+                //create mode
+                if (id == null)
+                {
+                    flag = !_db.Users.Any(x => x.Email == email);
+                    if (flag) flag = !_db.AgentInfos.Any(x => x.Email == email);
+                }
+                // edit mode
+                else
+                {
+                    var agent = _db.AgentInfos.Find(id);
+                    if (agent == null) return Json(false, JsonRequestBehavior.AllowGet);
+                    if (agent.Email != email)
+                    {
+                        flag = !_db.Users.Any(x => x.Email == email);
+                        if (flag) flag = !_db.AgentInfos.Any(x => x.Email == email);
+                    }
+                }
+                return Json(flag, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
