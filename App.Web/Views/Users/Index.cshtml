@@ -49,8 +49,19 @@
             @Html.Raw(TempData["Toastr"])
         }
 
-        $(".refreshBtn").click(function () {
+        $(".refreshBtn").click(function() {
             MVCGrid.reloadGrid('userTable');
         });
+
+        function InactiveOrDeactive(userId) {
+            $.post("@Url.Action("UpdateUserStatus", "Users")", {userId: userId}, function(resp) {
+                if (resp.Flag) {
+                    toastr.success(resp.Msg, "Success");
+                    MVCGrid.reloadGrid('userTable');
+                } else {
+                    toastr.error(resp.Msg, "Error");
+                }
+            });
+        }
     </script>
 }

@@ -42,7 +42,7 @@ namespace App.Web
                     cols.Add("Status").WithHtmlEncoding(false)
                         .WithHeaderText("Status")
                         .WithValueExpression((p, c) => p.Status == Status.Active ? "btn-success" : "btn-danger")
-                        .WithValueTemplate("<button class='btn btn-sm m-b-0-25 {Value}' onclick='InactiveOrDeactive({Value})'>{Model.Status}</button>")
+                        .WithValueTemplate("<button class='btn btn-sm m-b-0-25 {Value}' onclick='InactiveOrDeactive({Model.Id})'>{Model.Status}</button>")
                         .WithSorting(true);
                     cols.Add("ViewLink")
                         .WithSorting(false)

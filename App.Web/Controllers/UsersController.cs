@@ -311,6 +311,41 @@ namespace App.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult UpdateUserStatus(int? userId)
+        {
+            try
+            {
+                if (userId == null) return Json(new {Flag = false, Msg = "Invalid Data Submitted."});
+
+                var user = _db.Users.Find(userId);
+                if (user == null) return Json(new { Flag = false, Msg = "User not found." });
+                if (user.UserName == "admin") return Json(new { Flag = false, Msg = "User admin cannot be Deactiveed." });
+                using (var dbTransaction = _db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        if (user.Status == Status.Inactive) _db.Users.Where(x=>x.Id == userId).Update(u => new User { Status = Status.Active });
+                        else _db.Users.Where(x => x.Id == userId).Update(u => new User { Status = Status.Inactive });
+                        dbTransaction.Commit();
+                        return Json(new
+                        {
+                            Flag = true, 
+                            Msg = user.Status == Status.Active ? "User Succesfully Deactived." : "User Succesfully Actived."
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return Json(new { Flag = false, Msg = ex.Message });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Flag = false, Msg = ex.Message });
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
