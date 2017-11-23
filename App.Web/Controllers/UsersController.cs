@@ -36,6 +36,30 @@ namespace App.Web.Controllers
             return View();
         }
 
+        // GET: Users/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+
+                var user = _db.Users.Find(id);
+                if (user != null) return View(user);
+
+                TempData["Toastr"] = Toastr.HttpNotFound;
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
         // GET: Users/Create
         [HttpGet]
         public ActionResult Create()

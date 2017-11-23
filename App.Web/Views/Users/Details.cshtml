@@ -1,0 +1,56 @@
+﻿@using App.Web.Context
+@using App.Web.Helper
+@model App.Entity.Models.User
+
+@{
+    ViewBag.Title = "User Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var db = new CrmDbContext();
+}
+
+<div class="card">
+    <h6 class="card-header bg-primary">USER / DETAILS</h6>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>
+                    USER ID: @Model.Uid.ToUpper()
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-sm"> <span class="fa fa-edit"></span> Edit</a>
+                </h5>
+                <br />
+                <table class="table table-striped m-md-b-0">
+
+                    <tr>
+                        <th width="150">@Html.DisplayNameFor(m => m.UserName)</th>
+                        <td>@Model.UserName.ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.BranchId)</th>
+                        <td>@db.BranchInfos.Where(x=>x.Id == Model.BranchId).Select(x=>x.BranchName).FirstOrDefault()</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.EmployeeId)</th>
+                        <td>@db.EmployeeBasicInfos.Where(x => x.Id == Model.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault()</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Level)</th>
+                        <td>@Common.GetDescription(Model.Level)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.GroupId)</th>
+                        <td>@Model.Group.Name</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.CreatedOn)</th>
+                        <td>@string.Format("{0:dd/MM/yyyy hh:mm tt}",Model.CreatedOn)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-3">
+            <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+        </div>
+    </div>
+
+</div>
