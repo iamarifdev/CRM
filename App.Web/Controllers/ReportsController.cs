@@ -10,6 +10,7 @@ using App.Web.Models;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class ReportsController : Controller
     {
         #region Private Zone

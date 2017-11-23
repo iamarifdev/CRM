@@ -20,53 +20,6 @@ namespace App.Web
             ModelBinders.Binders.DefaultBinder = new TrimModelBinder();
         }
 
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    var ex = Server.GetLastError().GetBaseException();
-        //    var httpContext = ((MvcApplication)sender).Context;
-
-        //    var routeData = new RouteData();
-        //    routeData.Values.Add("controller", "Error");
-
-        //    if (ex.GetType() == typeof(HttpException))
-        //    {
-        //        var httpException = (HttpException)ex;
-        //        var code = httpException.GetHttpCode();
-        //        switch (code)
-        //        {
-        //            case 400:
-        //                routeData.Values.Add("action", "BadRequest");
-        //                break;
-
-        //            case 401:
-        //                routeData.Values.Add("action", "Unauthorized");
-        //                break;
-
-        //            case 403:
-        //                routeData.Values.Add("action", "Forbidden");
-        //                break;
-
-        //            case 404:
-        //                routeData.Values.Add("action", "NotFound");
-        //                break;
-
-        //            default:
-        //                routeData.Values.Add("action", "Unknown");
-        //                break;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        routeData.Values.Add("action", "InternalServerError");
-        //    }
-        //    //routeData.Values.Add("error", ex);
-        //    httpContext.ClearError();
-        //    httpContext.Response.Clear();
-        //    httpContext.Response.ContentType = "text/html";
-        //    IController controller = new ErrorController();
-        //    controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
-        //}
-
         protected void Application_Error(object sender, EventArgs e)
         {
             var httpContext = ((MvcApplication)sender).Context;

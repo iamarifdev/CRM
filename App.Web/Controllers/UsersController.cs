@@ -17,6 +17,7 @@ using WebGrease.Css.Extensions;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class UsersController : Controller
     {
         #region Private Zone
@@ -82,7 +83,6 @@ namespace App.Web.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,UserName,Password,ConfirmPassword,Email,Status,EmployeeId,BranchId,Level,GroupId")]UserViewModel userView)
         {

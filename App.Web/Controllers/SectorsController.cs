@@ -15,6 +15,7 @@ using ExcelDataReader;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class SectorsController : Controller
     {
         #region Private Zone

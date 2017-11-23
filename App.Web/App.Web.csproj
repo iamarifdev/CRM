@@ -236,6 +236,7 @@
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\PaymentMethodsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1546,7 +1547,7 @@
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />
     <Content Include="Views\Accounts\BalanceSheet.cshtml" />
-    <Content Include="Views\Accounts\AgentSatement.cshtml" />
+    <Content Include="Views\Accounts\AgentStatement.cshtml" />
     <Content Include="Views\Reports\ClientInfoReport.cshtml" />
     <Content Include="Views\Reports\ClientPaymentReport.cshtml" />
     <Content Include="Views\Reports\ClientDueReport.cshtml" />
@@ -1575,6 +1576,8 @@
     <Content Include="Views\Groups\Index.cshtml" />
     <Content Include="Views\Groups\Create.cshtml" />
     <Content Include="Views\Groups\Edit.cshtml" />
+    <Content Include="Views\Navigation\Index.cshtml" />
+    <Content Include="Views\Navigation\Create.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -5,6 +5,11 @@ namespace App.Web.Models
 {
     public class AppData
     {
+        public AppData()
+        {
+            Group = new Group();
+            MenuList = new List<Menu>();
+        }
         public string UserName { get; set; }
         public Group Group { get; set; } 
         public ICollection<Menu> MenuList { get; set; }

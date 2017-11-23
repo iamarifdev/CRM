@@ -9,6 +9,7 @@ using EntityFramework.Extensions;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class BranchController : Controller
     {
         #region Private Zone

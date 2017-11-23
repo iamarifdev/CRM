@@ -10,6 +10,7 @@ using EntityFramework.Extensions;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class AccountsController : Controller
     {
         #region Private Zone
@@ -250,7 +251,7 @@ namespace App.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult AgentSatement()
+        public ActionResult AgentStatement()
         {
             try
             {
@@ -265,7 +266,7 @@ namespace App.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AgentSatement(AgentStatementViewModel agentStatement)
+        public ActionResult AgentStatement(AgentStatementViewModel agentStatement)
         {
             try
             {

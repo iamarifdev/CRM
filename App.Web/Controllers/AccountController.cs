@@ -79,18 +79,17 @@ namespace App.Web.Controllers
                         var userName = model.UserName;
                         var environment = System.Configuration.ConfigurationManager.AppSettings["Environment"];
                         //var groupId = _db.Users.Where(x => x.UserName == userName).Select(x=>x.GroupId).First();
+                        appData.Group = _db.Users.Include(x => x.Group).First(x => x.UserName == userName).Group;
                         var query = _db.Menus.Where(x => x.Status == Status.Active).AsQueryable();
                         if (_db.Menus.Any())
                         {
-                            if (appData.Group.Account) query = _db.Menus.Where(x => x.ModuleName == Module.Account);
-                            if (appData.Group.Billing) query = _db.Menus.Where(x => x.ModuleName == Module.Billing);
-                            if (appData.Group.Crm) query = _db.Menus.Where(x => x.ModuleName == Module.Crm);
-                            if (appData.Group.Hrm) query = _db.Menus.Where(x => x.ModuleName == Module.Hrm);
-                            if (appData.Group.Report) query = _db.Menus.Where(x => x.ModuleName == Module.Report);
-                            if (appData.Group.Setup) query = _db.Menus.Where(x => x.ModuleName == Module.Setup);
+                            if (!appData.Group.Account) query = query.Where(x => x.ModuleName != Module.Account);
+                            if (!appData.Group.Billing) query = query.Where(x => x.ModuleName != Module.Billing);
+                            if (!appData.Group.Crm) query = query.Where(x => x.ModuleName != Module.Crm);
+                            if (!appData.Group.Hrm) query = query.Where(x => x.ModuleName != Module.Hrm);
+                            if (!appData.Group.Report) query = query.Where(x => x.ModuleName != Module.Report);
+                            if (!appData.Group.Setup) query = query.Where(x => x.ModuleName != Module.Setup);
                         }
-
-                        appData.Group = _db.Users.Include(x=>x.Group).First(x => x.UserName == userName).Group;
                         appData.MenuList = query.ToList();
                         appData.UserName = userName;
                         appData.IsDevelopmentMode = environment == "DEV";

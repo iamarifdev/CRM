@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class AgentsController : Controller
     {
         #region Private Zone

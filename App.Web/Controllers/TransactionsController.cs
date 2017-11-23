@@ -7,6 +7,7 @@ using App.Web.Helper;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin")]
+    [CrmPermission]
     public class TransactionsController : Controller
     {
         #region Private Zone

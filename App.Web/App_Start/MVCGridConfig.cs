@@ -4,7 +4,6 @@ using MVCGrid.Models;
 using MVCGrid.Web;
 using App.Entity.Models;
 using App.Web.Context;
-using Microsoft.AspNet.Identity;
 using App.Web.Helper;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(App.Web.MVCGridConfig), "RegisterGrids")]
@@ -23,6 +22,83 @@ namespace App.Web
                 Sorting = true,
                 NoResultsMessage = "Sorry, no results were found."
             };
+
+            // Menu Table
+            MVCGridDefinitionTable.Add("navigationTable", new MVCGridBuilder<Menu>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("MenuId").WithHeaderText("Menu Id").WithValueExpression(p => p.MenuId.ToString()).WithSorting(true);
+                    cols.Add("ModuleName").WithHeaderText("Module Name").WithValueExpression(p => Common.GetDescription(p.ModuleName)).WithSorting(true);
+                    cols.Add("ControllerName").WithHeaderText("Controller Name").WithValueExpression(p => p.ControllerName).WithSorting(true);
+                    cols.Add("ActionName").WithHeaderText("Action Name").WithValueExpression(p => p.ActionName).WithSorting(true);
+                    cols.Add("Status").WithHtmlEncoding(false)
+                        .WithHeaderText("Status")
+                        .WithValueExpression((p, c) => p.Status == Status.Active ? "btn-success" : "btn-danger")
+                        .WithValueTemplate("<button class='btn btn-sm m-b-0-25 {Value}' onclick='InactiveOrDeactive({Model.MenuId})'>{Model.Status}</button>")
+                        .WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.MenuId.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Navigation/Edit/{Value}'>Edit</a> "
+                        +"<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "MenuId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<Menu>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.Menus.AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.MenuId.ToString().Contains(globalSearch) ||
+                                    //Common.GetDescription(x.ModuleName).Contains(globalSearch) ||
+                                    x.ControllerName.Contains(globalSearch) ||
+                                    x.ActionName.Contains(globalSearch) ||
+                                    x.Status.ToString().Contains(globalSearch)
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "menuid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MenuId) : query.OrderBy(p => p.MenuId);
+                                    break;
+                                case "modulename":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ModuleName) : query.OrderBy(p => p.ModuleName);
+                                    break;
+                                case "controllername":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ControllerName) : query.OrderBy(p => p.ControllerName);
+                                    break;
+                                case "actionname":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ActionName) : query.OrderBy(p => p.ActionName);
+                                    break;
+                                case "status":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Status) : query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
 
             // User Table
             MVCGridDefinitionTable.Add("userTable", new MVCGridBuilder<User>(defaults)

@@ -9,6 +9,7 @@ using EntityFramework.Extensions;
 namespace App.Web.Controllers
 {
     [CrmAuthorize(Roles = "Admin,Agent")]
+    [CrmPermission]
     public class ClientsController : Controller
     {
 
