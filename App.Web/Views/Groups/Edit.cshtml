@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Edit Group";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var isGroupIsAdmin = (bool)ViewBag.IsGroupIsAdmin;
 }
 @section AdditionalStyles
 {
@@ -16,10 +17,16 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model=>model.Id)
-
+                if (isGroupIsAdmin)
+                {
+                    @Html.HiddenFor(model=>model.Name)
+                }
                 <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @(!isGroupIsAdmin
+                        ? Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        : Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    )
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
 

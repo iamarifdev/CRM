@@ -166,10 +166,11 @@ namespace App.Web.Controllers
                 }
                 ViewBag.Employees = new SelectList(_db.EmployeeBasicInfos.Where(x => x.Status == Status.Active), "Id", "EmployeeName",user.EmployeeId);
                 ViewBag.Branches = new SelectList(_db.BranchInfos.Where(x => x.Status == Status.Active), "Id", "BranchName",user.BranchId);
-                ViewBag.Groups = new SelectList(_db.Groups.Where(x=>x.Name.ToLower() != "admin"), "Id", "Name",user.GroupId);
+                var isUserAdmin = _db.Users.Any(x => x.Id == id && x.UserName.ToLower() == "admin");
+                ViewBag.Groups = isUserAdmin ? new SelectList(_db.Groups, "Id", "Name", user.GroupId) : new SelectList(_db.Groups.Where(x=>x.Name.ToLower() != "admin"), "Id", "Name",user.GroupId);
                 ViewBag.StatusList = Common.ToSelectList<Status>(user.Status);
                 ViewBag.UserLevels = Common.ToSelectList<UserLevel>(user.Level);
-                ViewBag.IsUserIsAdmin = _db.Users.Where(x=>x.Id == id).Select(x=>x.UserName).First().ToLower() == "admin";
+                ViewBag.IsUserIsAdmin = isUserAdmin;
                 var userView = new UserViewModel
                 {
                     Id = user.Id,
@@ -198,15 +199,22 @@ namespace App.Web.Controllers
             {
                 try
                 {
-                    if (!ModelState.IsValid)
-                    {
-                        transaction.Dispose();
-                        return View(userView);
-                    }
                     if (id == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        transaction.Dispose();
+                        ViewBag.Employees = new SelectList(_db.EmployeeBasicInfos.Where(x => x.Status == Status.Active), "Id", "EmployeeName", userView.EmployeeId);
+                        ViewBag.Branches = new SelectList(_db.BranchInfos.Where(x => x.Status == Status.Active), "Id", "BranchName", userView.BranchId);
+                        var isUserAdmin = _db.Users.Any(x => x.Id == id && x.UserName.ToLower() == "admin");
+                        ViewBag.Groups = isUserAdmin ? new SelectList(_db.Groups, "Id", "Name", userView.GroupId) : new SelectList(_db.Groups.Where(x => x.Name.ToLower() != "admin"), "Id", "Name", userView.GroupId);
+                        ViewBag.StatusList = Common.ToSelectList<Status>(userView.Status);
+                        ViewBag.UserLevels = Common.ToSelectList<UserLevel>(userView.Level);
+                        ViewBag.IsUserIsAdmin = isUserAdmin;
+                        return View(userView);
                     }
                     if (!_db.Users.Any(x => x.Id == id))
                     {
@@ -260,14 +268,6 @@ namespace App.Web.Controllers
                     Transaction.Current.Rollback();
                     TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
-                }
-                finally
-                {
-                    ViewBag.Employees = new SelectList(_db.EmployeeBasicInfos.Where(x => x.Status == Status.Active), "Id", "EmployeeName", userView.EmployeeId);
-                    ViewBag.Branches = new SelectList(_db.BranchInfos.Where(x => x.Status == Status.Active), "Id", "BranchName", userView.BranchId);
-                    ViewBag.Groups = new SelectList(_db.Groups.Where(x => x.Name.ToLower() != "admin"), "Id", "Name", userView.GroupId);
-                    ViewBag.StatusList = Common.ToSelectList<Status>(userView.Status);
-                    ViewBag.UserLevels = Common.ToSelectList<UserLevel>(userView.Level);
                 }
             }
         }

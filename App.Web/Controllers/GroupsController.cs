@@ -74,6 +74,7 @@ namespace App.Web.Controllers
                     return RedirectToAction("Index");
                 }
                 var group = _db.Groups.Find(id);
+                ViewBag.IsGroupIsAdmin = _db.Groups.Any(x => x.Id == id && x.Name.ToLower() == "admin");
                 if (group != null) return View(group);
 
                 TempData["Toastr"] = Toastr.HttpNotFound;
@@ -94,11 +95,16 @@ namespace App.Web.Controllers
             {
                 try
                 {
-                    if(!ModelState.IsValid) 
                     if (id == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        dbTransaction.Dispose();
+                        ViewBag.IsGroupIsAdmin = _db.Groups.Any(x => x.Id == id && x.Name.ToLower() == "admin");
+                        return View(model);
                     }
                     if (!_db.Groups.Any(x => x.Id == id))
                     {
