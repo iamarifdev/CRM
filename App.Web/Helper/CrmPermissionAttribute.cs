@@ -26,11 +26,11 @@ namespace App.Web.Helper
 
             var actionName = filterContext.ActionDescriptor.ActionName;
             var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            var appData = filterContext.HttpContext.Session.Get<AppData>("AppData");
+            var application = filterContext.HttpContext.Session.Get<AppData>("AppData");
 
             if (string.Equals(controllerName, "Home", StringComparison.CurrentCultureIgnoreCase)) return;
-            if (string.Equals(controllerName, "Navigation", StringComparison.CurrentCultureIgnoreCase)) return;
-            if (!appData.MenuList.Any(x => 
+            if (string.Equals(controllerName, "Navigation", StringComparison.CurrentCultureIgnoreCase) && application.IsDevelopmentMode) return;
+            if (!application.MenuList.Any(x => 
                 string.Equals(x.ActionName, actionName, StringComparison.CurrentCultureIgnoreCase) 
                 && string.Equals(x.ControllerName, controllerName, StringComparison.CurrentCultureIgnoreCase) 
                 && x.Status == Status.Active)
