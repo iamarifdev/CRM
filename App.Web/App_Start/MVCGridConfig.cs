@@ -29,7 +29,7 @@ namespace App.Web
                 .AddColumns(cols =>
                 {
                     cols.Add("MenuId").WithHeaderText("Menu Id").WithValueExpression(p => p.MenuId.ToString()).WithSorting(true);
-                    cols.Add("ModuleName").WithHeaderText("Module Name").WithValueExpression(p => Common.GetDescription(p.ModuleName)).WithSorting(true);
+                    cols.Add("ModuleName").WithHeaderText("Module Name").WithValueExpression(p => p.ModuleName.ToString()).WithSorting(true);
                     cols.Add("ControllerName").WithHeaderText("Controller Name").WithValueExpression(p => p.ControllerName).WithSorting(true);
                     cols.Add("ActionName").WithHeaderText("Action Name").WithValueExpression(p => p.ActionName).WithSorting(true);
                     cols.Add("Status").WithHtmlEncoding(false)
@@ -60,7 +60,7 @@ namespace App.Web
                         {
                             query = query.Where(x =>
                                     x.MenuId.ToString().Contains(globalSearch) ||
-                                    //Common.GetDescription(x.ModuleName).Contains(globalSearch) ||
+                                    x.ModuleName.ToString().Contains(globalSearch) ||
                                     x.ControllerName.Contains(globalSearch) ||
                                     x.ActionName.Contains(globalSearch) ||
                                     x.Status.ToString().Contains(globalSearch)

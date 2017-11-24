@@ -86,6 +86,83 @@ namespace App.Web.Controllers
             }
         }
 
+        // GET: Navigation/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var menu = _db.Menus.Find(id);
+                if (menu == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.Modules = Common.ToSelectList<Module>(menu.ModuleName);
+                ViewBag.StatusList = Common.ToSelectList<Status>(menu.Status);
+
+                return View(menu);
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Menu menu, int? menuId)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        dbTransaction.Dispose();
+                        ViewBag.Modules = Common.ToSelectList<Module>(menu.ModuleName);
+                        ViewBag.StatusList = Common.ToSelectList<Status>(menu.Status);
+                        return View(menu);
+                    }
+                    if (menuId == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    if (!_db.BranchInfos.Any(x => x.Id == menuId))
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+
+                    _db.Menus
+                        .Where(x => x.MenuId == menuId)
+                        .Update(u => new Menu
+                        {
+                            ModuleName = menu.ModuleName,
+                            ControllerName = menu.ControllerName,
+                            ActionName = menu.ActionName,
+                            Status = menu.Status
+                        });
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Updated;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
         [HttpPost]
         public JsonResult UpdateMenuStatus(int? menuId)
         {
@@ -241,6 +318,42 @@ namespace App.Web.Controllers
                 {
                     Transaction.Current.Rollback();
                     TempData["Toastr"] = Toastr.CustomError("Exception!", ex.Message);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
+
+        // POST: Navigation/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var menu = _db.Menus.Find(id);
+                    if (menu == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    _db.Menus.Remove(menu);
+                    _db.SaveChanges();
+                    dbTransaction.Commit();
+
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
                     return RedirectToAction("Index");
                 }
             }
