@@ -78,9 +78,22 @@ namespace App.Web.Controllers
                         var appData = new AppData();
                         var userName = model.UserName;
                         var environment = System.Configuration.ConfigurationManager.AppSettings["Environment"];
-                        //var groupId = _db.Users.Where(x => x.UserName == userName).Select(x=>x.GroupId).First();
-                        appData.Group = _db.Users.Include(x => x.Group).First(x => x.UserName == userName).Group;
                         var query = _db.Menus.Where(x => x.Status == Status.Active).AsQueryable();
+
+                        if (_db.Users.Any(x => x.UserName == userName && x.Status == Status.Active)) 
+                            appData.Group = _db.Users.Include(x => x.Group).First(x => x.UserName == userName).Group;
+
+                        else if (_db.AgentInfos.Any(x => x.UserName == userName && x.Status == Status.Active))
+                            appData.Group = new Group {Crm = true, Billing = true};
+                        else
+                        {
+                            Session.RemoveAll();
+                            Session.Abandon();
+                            ModelState.AddModelError("UserName", @"User name may be invalid!");
+                            ModelState.AddModelError("Password", @"Entered Password may be wrong!");
+                            return View(model);
+                        }
+
                         if (_db.Menus.Any())
                         {
                             if (!appData.Group.Account) query = query.Where(x => x.ModuleName != Module.Account);
@@ -113,6 +126,8 @@ namespace App.Web.Controllers
             }
             catch(Exception ex)
             {
+                Session.RemoveAll();
+                Session.Abandon();
                 return RedirectToRoute(new RouteValueDictionary
                 {
                     {"action", "InternalServerError"},
