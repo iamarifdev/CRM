@@ -1872,6 +1872,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Backup\" />
     <Folder Include="Content\template\img\site\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
