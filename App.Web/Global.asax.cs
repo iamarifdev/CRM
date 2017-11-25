@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -18,6 +19,32 @@ namespace App.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ModelBinders.Binders.DefaultBinder = new TrimModelBinder();
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            // If upper case letters are found in the URL, redirect to lower case URL.
+            // Was receiving undesirable results here as my QueryString was also being converted to lowercase.
+            // You may want this, but I did not.
+            //if (Regex.IsMatch(HttpContext.Current.Request.Url.ToString(), @"[A-Z]") == true)
+            //{
+            //    string LowercaseURL = HttpContext.Current.Request.Url.ToString().ToLower();
+
+            //    Response.Clear();
+            //    Response.Status = "301 Moved Permanently";
+            //    Response.AddHeader("Location", LowercaseURL);
+            //    Response.End();
+            //}
+
+            // If upper case letters are found in the URL, redirect to lower case URL (keep querystring the same).
+            var lowercaseUrl = (Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.Url.AbsolutePath);
+            if (!Regex.IsMatch(lowercaseUrl, @"[A-Z]")) return;
+            lowercaseUrl = lowercaseUrl.ToLower() + HttpContext.Current.Request.Url.Query;
+
+            Response.Clear();
+            Response.Status = "301 Moved Permanently";
+            Response.AddHeader("Location", lowercaseUrl);
+            Response.End();
         }
 
         protected void Application_Error(object sender, EventArgs e)

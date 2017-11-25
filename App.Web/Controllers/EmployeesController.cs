@@ -31,6 +31,37 @@ namespace App.Web.Controllers
             return View();
         }
 
+        // GET: Employees/Details/5
+        public ActionResult Details(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var employee = _db.EmployeeBasicInfos.Find(id);
+                if (employee == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                var imageToShow = !string.IsNullOrWhiteSpace(employee.ImageUrl) ? employee.ImageUrl : "/Content/template/img/avatars/default.png";
+                ViewBag.Designations = new SelectList(_db.EmployeeDesignations, "Id", "DesignationTitleEn", employee.EmployeeDesignationId);
+                ViewBag.BloodGroups = Common.ToSelectList<BloodGroup>(employee.BloodGroup);
+                ViewBag.Levels = Common.ToSelectList<EmployeeLevel>(employee.UserLevel);
+                ViewBag.Image = System.IO.File.Exists(Server.MapPath("~" + imageToShow)) ? imageToShow : "";
+                return View(employee);
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+
+        }
+
         // GET: Employees/Create
         public ActionResult Create()
         {
@@ -254,6 +285,43 @@ namespace App.Web.Controllers
                     ViewBag.Designations = new SelectList(_db.EmployeeDesignations, "Id", "DesignationTitleEn", model.EmployeeDesignationId);
                     ViewBag.BloodGroups = Common.ToSelectList<BloodGroup>(model.BloodGroup);
                     ViewBag.Levels = Common.ToSelectList<EmployeeLevel>(model.UserLevel);
+                }
+            }
+        }
+
+        // POST: Employees/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var employee = _db.EmployeeBasicInfos.Find(id);
+                    if (employee == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    var imgUrl = employee.ImageUrl;
+                    _db.EmployeeBasicInfos.Remove(employee);
+                    _db.SaveChanges();
+                    dbTransaction.Commit();
+                    if (!string.IsNullOrWhiteSpace(imgUrl) && System.IO.File.Exists(Server.MapPath("~/" + imgUrl))) 
+                        System.IO.File.Delete(Server.MapPath("~/" + imgUrl));
+                    TempData["Toastr"] = Toastr.Deleted;
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
                 }
             }
         }

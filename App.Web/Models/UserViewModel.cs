@@ -35,7 +35,7 @@ namespace App.Web.Models
         public Status Status { get; set; }
 
         [Display(Name = "Employee")]
-        public int? EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
 
         [Display(Name = "Branch")]
         public int BranchId { get; set; }

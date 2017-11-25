@@ -2,21 +2,26 @@
 @model EmployeeBasicInfo
 
 @{
-    ViewBag.Title = "Edit Employee";
+    ViewBag.Title = "Employee Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="card">
-    <h6 class="card-header bg-primary">EMPLOYEE / EDIT</h6>
+    <h6 class="card-header bg-primary">EMPLOYEE / DETAILS</h6>
     <div class="card-block">
         <div class="row">
-            @using (Html.BeginForm("Edit", "Employees", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => model.Id)
+            <div class="form-horizontal">
                 <div class="col-md-6">
                     <span class="tag tag-info">Employee Personal Information</span>
                     <br /><br />
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "control-label col-sm-5 text-md-right" })
+                        <div class="col-sm-7">
+                            <div class="clearfix"></div>
+                            <img id="profileImage" style="margin-top: 5px;" class="img-thumbnail" height="200" width="200" src="@ViewBag.Image" alt="Profile Image" />
+                        </div>
+                    </div>
+
                     <div class="form-group col-md-12 col-sm-12 col-xs-12">
                         @Html.LabelFor(model => model.EmployeeName, htmlAttributes: new { @class = "control-label col-sm-5 text-md-right" })
                         <div class="col-sm-7">
@@ -61,7 +66,7 @@
                                 {
                                     <label>@Html.RadioButtonFor(model => model.Gender, (int)Gender.Male) Male</label>
                                 }
-                                
+
                             </label>
                             <label class="radio-inline" style="padding-left: 20px;">
                                 @if (Model.Gender == Gender.Female)
@@ -124,16 +129,6 @@
                         <div class="col-sm-7">
                             @Html.DropDownListFor(model => model.EmployeeDesignationId, (SelectList)ViewBag.Designations, "Select One", new { @class = "form-control select2" })
                             @Html.ValidationMessageFor(model => model.EmployeeDesignationId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "control-label col-sm-5 text-md-right" })
-                        <div class="col-sm-7">
-                            @Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control", @type = "file", @onchange = "readUrl(this)" } })
-                            @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger" })
-                            <div class="clearfix"></div>
-                            <img id="profileImage" style="margin-top: 5px;" class="img-thumbnail" height="77" width="77" src="@ViewBag.Image" alt="Profile Image" />
                         </div>
                     </div>
 
@@ -232,41 +227,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 pull-right">
-                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                        <div class="offset-sm-5 col-sm-7">
-                            <button type="submit" class="btn btn-success"> <span class="fa fa-plus"></span> Save Changes </button>
-                        </div>
-                    </div>
-                </div>
-            }
+            </div>
             <div class="clearfix"></div>
             <br />
             <div class="col-md-3">
                 <a href="@Url.Action("Index")" class="btn btn-info"> <span class="fa fa-chevron-left"></span> Back to List</a>
+                <a href="@Url.Action("Edit","Employees", new{Id = Model.Id})" class="btn btn-success"> <span class="fa fa-edit"></span> Edit</a>
             </div>
 
         </div>
     </div>
 </div>
-
 @section Scripts
 {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/additional-methods.min.js"></script>
     <script>
-        PickDate();
-        function readUrl(input) {
-            var defaultImage = "/Content/template/img/avatars/default.png";
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#profileImage').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                $('#profileImage').attr('src', defaultImage);
-            }
-        }
+        $(function() {
+            $("input,select,textarea").attr('disabled', 'disabled');
+        });
     </script>
 }

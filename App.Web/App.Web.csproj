@@ -254,6 +254,7 @@
     <Compile Include="Helper\CrmAuthorizeAttribute.cs" />
     <Compile Include="Helper\CrmDb.cs" />
     <Compile Include="Helper\CrmPermissionAttribute.cs" />
+    <Compile Include="Helper\RouteExtensions.cs" />
     <Compile Include="Helper\SessionExtensions.cs" />
     <Compile Include="Helper\Toastr.cs" />
     <Compile Include="Helper\TrimModelBinder.cs" />
@@ -1585,6 +1586,7 @@
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Employees\Create.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
