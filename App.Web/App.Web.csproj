@@ -1584,6 +1584,7 @@
     <Content Include="Views\Navigation\Edit.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

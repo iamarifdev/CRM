@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
+using EntityFramework.Extensions;
 
 namespace App.Web.Controllers
 {
@@ -126,6 +128,132 @@ namespace App.Web.Controllers
                     ViewBag.Designations = new SelectList(_db.EmployeeDesignations, "Id", "DesignationTitleEn");
                     ViewBag.BloodGroups = Common.ToSelectList<BloodGroup>();
                     ViewBag.Levels = Common.ToSelectList<EmployeeLevel>();
+                }
+            }
+        }
+
+        // GET: Employess/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    TempData["Toastr"] = Toastr.BadRequest;
+                    return RedirectToAction("Index");
+                }
+                var employee = _db.EmployeeBasicInfos.Find(id);
+                if (employee == null)
+                {
+                    TempData["Toastr"] = Toastr.HttpNotFound;
+                    return RedirectToAction("Index");
+                }
+                var imageToShow = !string.IsNullOrWhiteSpace(employee.ImageUrl)? employee.ImageUrl : "/Content/template/img/avatars/default.png";
+                ViewBag.Designations = new SelectList(_db.EmployeeDesignations, "Id", "DesignationTitleEn",employee.EmployeeDesignationId);
+                ViewBag.BloodGroups = Common.ToSelectList<BloodGroup>(employee.BloodGroup);
+                ViewBag.Levels = Common.ToSelectList<EmployeeLevel>(employee.UserLevel);
+                ViewBag.Image = System.IO.File.Exists(Server.MapPath("~" + imageToShow)) ? imageToShow : "";
+                return View(employee);
+            }
+            catch (Exception ex)
+            {
+                TempData["Toastr"] = Toastr.DbError(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        // POST: Employees/Edit/5
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EmployeeBasicInfo model, int? id)
+        {
+            using (var dbTransaction = _db.Database.BeginTransaction())
+            {
+                const string basePath = @"/Images/Employees/Profile/";
+                var filePath = "";
+                try
+                {
+                    if (id == null)
+                    {
+                        TempData["Toastr"] = Toastr.BadRequest;
+                        return RedirectToAction("Index");
+                    }
+                    var employee = _db.EmployeeBasicInfos.AsNoTracking().Single(x=>x.Id == id);
+                    if (employee == null)
+                    {
+                        TempData["Toastr"] = Toastr.HttpNotFound;
+                        return RedirectToAction("Index");
+                    }
+                    model.EmployeeId = employee.EmployeeId;
+                    model.Status = employee.Status;
+                    model.EntryBy = employee.EntryBy;
+                    model.EntryDate = employee.EntryDate;
+                    model.ImageUrl = employee.ImageUrl;
+                    ModelState.Clear();
+
+                    var serverPath = Server.MapPath("~" + basePath);
+                    var profilePhoto = Request.Files["ImageUrl"];
+                    // ReSharper disable once PossibleNullReferenceException
+                    if (profilePhoto.ContentLength > 0)
+                    {
+                        // 1048567 bytes = 1 MegaByte
+                        if (profilePhoto.FileName == string.Empty || profilePhoto.ContentLength > 2097152)
+                        {
+                            ModelState.AddModelError("ImageUrl", @"Max file size: 2 MB!");
+                            return View(model);
+                        }
+                        var extension = Path.GetExtension(profilePhoto.FileName);
+                        if (extension == null)
+                        {
+                            ModelState.AddModelError("ImageUrl", @"Its not a valid file.");
+                            return View(model);
+                        }
+                        extension = extension.ToLower();
+                        if (_allowedLogoFileTypes.IndexOf(extension) == -1)
+                        {
+                            ModelState.AddModelError("ImageUrl",
+                                @"Only .jpg, .png, .jpeg, .gif, .bmp file types are allowed.");
+                            return View(model);
+                        }
+                        var image = Image.FromStream(profilePhoto.InputStream);
+                        if (image.Width != image.Height)
+                        {
+                            ModelState.AddModelError("ImageUrl", @"Image Should be square size.");
+                            return View(model);
+                        }
+                        var generatedFileName = string.Format("{0}_{1}", model.EmployeeId, profilePhoto.FileName);
+                        filePath = Path.Combine(serverPath, generatedFileName);
+                        if (!Directory.Exists(serverPath)) Directory.CreateDirectory(serverPath);
+                        profilePhoto.SaveAs(filePath);
+                        model.ImageUrl = string.Format("{0}{1}", basePath, generatedFileName);
+                    }
+
+                    TryValidateModel(model);
+                    if (ModelState.IsValid)
+                    {
+                        _db.Entry(model).State = EntityState.Modified;
+                        _db.SaveChanges();
+                        dbTransaction.Commit();
+                        TempData["Toastr"] = Toastr.Updated;
+                        return RedirectToAction("Index");
+                    }
+                    dbTransaction.Rollback();
+                    if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
+                    TempData["Toastr"] = Toastr.DbError(ex.Message);
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    ViewBag.Designations = new SelectList(_db.EmployeeDesignations, "Id", "DesignationTitleEn", model.EmployeeDesignationId);
+                    ViewBag.BloodGroups = Common.ToSelectList<BloodGroup>(model.BloodGroup);
+                    ViewBag.Levels = Common.ToSelectList<EmployeeLevel>(model.UserLevel);
                 }
             }
         }
