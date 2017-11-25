@@ -108,6 +108,11 @@ namespace App.Entity.Models
         Female = 2
     }
 
+    public enum MaritalStatus
+    {
+        Married = 1,
+        Unmarried = 0
+    }
     public enum Ack
     {
         Yes = 1,

@@ -17,10 +17,12 @@ namespace App.Entity.Models
         [Required]
         [StringLength(200)]
         public string Description { get; set; }
+        [Display(Name = "CRM")]
         public bool Crm { get; set; }
         public bool Billing { get; set; }
         public bool Account { get; set; }
         public bool Report { get; set; }
+        [Display(Name = "HRM")]
         public bool Hrm { get; set; }
         public bool Setup { get; set; }
 

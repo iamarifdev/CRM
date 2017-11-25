@@ -13,6 +13,7 @@ namespace App.Entity.Models
         [Display(Name = "Employee ID")]
         public string EmployeeId { get; set; }
 
+        [Required]
         [StringLength(100)]
         [Display(Name = "Employee Name")]
         public string EmployeeName { get; set; }
@@ -31,7 +32,7 @@ namespace App.Entity.Models
         public Gender Gender { get; set; }
 
         [Display(Name = "Marital Status")]
-        public Ack MaritalStatus { get; set; }
+        public MaritalStatus MaritalStatus { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Spouse Name")]
@@ -78,6 +79,7 @@ namespace App.Entity.Models
         [Display(Name = "Contact Person")]
         public string ContactPerson { get; set; }
 
+        [Required]
         [StringLength(15)]
         [Display(Name = "Contact Number")]
         public string ContactNumber { get; set; }
@@ -86,7 +88,7 @@ namespace App.Entity.Models
         public string Address { get; set; }
 
         [Display(Name = "User Level")]
-        public EmployeeLevel? UserLevel { get; set; }
+        public EmployeeLevel UserLevel { get; set; }
 
         [StringLength(20)]
         public string ZoneId { get; set; }

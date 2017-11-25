@@ -23,6 +23,89 @@ namespace App.Web
                 NoResultsMessage = "Sorry, no results were found."
             };
 
+            // Employee Table
+            MVCGridDefinitionTable.Add("employeeTable", new MVCGridBuilder<EmployeeBasicInfo>(defaults)
+                .WithAuthorizationType(AuthorizationType.Authorized)
+                .AddColumns(cols =>
+                {
+                    cols.Add("EmployeeId").WithHeaderText("ID").WithValueExpression(p => p.EmployeeId).WithSorting(true);
+                    cols.Add("EmployeeName").WithHeaderText("Employee Name").WithValueExpression(p => p.EmployeeName).WithSorting(true);
+                    cols.Add("Designation").WithHeaderText("Designation").WithValueExpression(p => p.EmployeeDesignation.DesignationTitleEn).WithSorting(true);
+                    cols.Add("BirthDate").WithHeaderText("BirthDate").WithValueExpression(p => string.Format("{0:yyyy-MM-dd}", p.Dob)).WithSorting(true);
+                    cols.Add("MobileNumber").WithHeaderText("Mobile Number").WithValueExpression(p => p.MobileNumber).WithSorting(true);
+                    cols.Add("Gender").WithHeaderText("Gender").WithValueExpression(p => p.Gender.ToString()).WithSorting(true);
+                    cols.Add("MaritalStatus").WithHeaderText("Marital Status").WithValueExpression(p => p.MaritalStatus.ToString()).WithSorting(true);
+                    cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Employees/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Employees/Details/{Value}'>Details</a> "
+                        + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
+                     );
+                })
+                .WithSorting(true, "EmployeeId")
+                .WithPaging(true, 10, true, 100)
+                .WithAdditionalQueryOptionNames("Search")
+                .WithAdditionalSetting("RenderLoadingDiv", false)
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+                    var result = new QueryResult<EmployeeBasicInfo>();
+                    using (var db = new CrmDbContext())
+                    {
+                        var query = db.EmployeeBasicInfos.Include(x=>x.EmployeeDesignation).AsQueryable();
+
+                        var globalSearch = options.GetAdditionalQueryOptionString("Search");
+                        if (!string.IsNullOrWhiteSpace(globalSearch))
+                        {
+                            query = query.Where(x =>
+                                    x.EmployeeId.ToString().Contains(globalSearch) ||
+                                    x.EmployeeName.ToString().Contains(globalSearch) ||
+                                    x.EmployeeDesignation.DesignationTitleEn.Contains(globalSearch) ||
+                                    x.MobileNumber.Contains(globalSearch) ||
+                                    x.Gender.ToString().Contains(globalSearch) ||
+                                    x.MaritalStatus.ToString().Contains(globalSearch) 
+                            );
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(options.SortColumnName))
+                        {
+                            var direction = options.SortDirection;
+                            switch (options.SortColumnName.ToLower())
+                            {
+                                case "employeeid":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EmployeeId) : query.OrderBy(p => p.EmployeeId);
+                                    break;
+                                case "employeename":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EmployeeName) : query.OrderBy(p => p.EmployeeName);
+                                    break;
+                                case "designation":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.EmployeeDesignation.DesignationTitleEn) : query.OrderBy(p => p.EmployeeDesignation.DesignationTitleEn);
+                                    break;
+                                case "birthdate":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Dob) : query.OrderBy(p => p.Dob);
+                                    break;
+                                case "mobilenumber":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MobileNumber) : query.OrderBy(p => p.MobileNumber);
+                                    break;
+                                case "gender":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.Gender) : query.OrderBy(p => p.Gender);
+                                    break;
+                                case "maritalstatus":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.MaritalStatus) : query.OrderBy(p => p.MaritalStatus);
+                                    break;
+                            }
+                        }
+                        result.TotalRecords = query.Count();
+                        if (options.GetLimitOffset().HasValue && query.Count() != 0)
+                        {
+                            query = query.Skip(options.GetLimitOffset().Value).Take(options.GetLimitRowcount().Value);
+                        }
+                        result.Items = query.ToList();
+                    }
+                    return result;
+                })
+            );
+
             // Menu Table
             MVCGridDefinitionTable.Add("navigationTable", new MVCGridBuilder<Menu>(defaults)
                 .WithAuthorizationType(AuthorizationType.Authorized)

@@ -230,6 +230,7 @@
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DepositsController.cs" />
     <Compile Include="Controllers\DesignationsController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
@@ -470,6 +471,14 @@
     <Compile Include="Migrations\ContextB\201711221019418_GroupModelChanges.Designer.cs">
       <DependentUpon>201711221019418_GroupModelChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711250710095_MadeRequiredNameForEmployee.cs" />
+    <Compile Include="Migrations\ContextB\201711250710095_MadeRequiredNameForEmployee.Designer.cs">
+      <DependentUpon>201711250710095_MadeRequiredNameForEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.cs" />
+    <Compile Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.Designer.cs">
+      <DependentUpon>201711250715496_MadeRequiredNameForEmployeeSeveralField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -516,6 +525,7 @@
     <Content Include="Content\template\img\avatars\7.jpg" />
     <Content Include="Content\template\img\avatars\8.jpg" />
     <Content Include="Content\template\img\avatars\9.jpg" />
+    <Content Include="Content\template\img\avatars\default.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1572,6 +1582,8 @@
     <Content Include="Views\Navigation\Index.cshtml" />
     <Content Include="Views\Navigation\Create.cshtml" />
     <Content Include="Views\Navigation\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
     <None Include="Views\Shared\_MVCGridToolbar.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2034,6 +2046,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711221019418_GroupModelChanges.resx">
       <DependentUpon>201711221019418_GroupModelChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711250710095_MadeRequiredNameForEmployee.resx">
+      <DependentUpon>201711250710095_MadeRequiredNameForEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.resx">
+      <DependentUpon>201711250715496_MadeRequiredNameForEmployeeSeveralField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
