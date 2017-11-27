@@ -15,7 +15,7 @@
     <meta name="author" content="">
 
     <!-- Title -->
-    <title>CRM | @ViewBag.Title</title>
+    <title>@appData.CompanyName | @ViewBag.Title</title>
     @RenderSection("RareCase", required: false)
     <!-- Vendor CSS -->
     <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" />
@@ -276,7 +276,7 @@
                         <a class="nav-link" href="javascript:void(0);" data-toggle="dropdown" aria-expanded="false">
                             Welcome, @appData.UserName!
                             <div class="avatar box-32">
-                                <img src="~/Content/template/img/avatars/1.jpg" alt="">
+                                <img src="@appData.UserImgUrl" alt="Profile Photo" class="img-responsive">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animated flipInY">

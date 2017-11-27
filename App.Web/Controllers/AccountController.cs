@@ -79,9 +79,15 @@ namespace App.Web.Controllers
                         var userName = model.UserName;
                         var environment = System.Configuration.ConfigurationManager.AppSettings["Environment"];
                         var query = _db.Menus.Where(x => x.Status == Status.Active).AsQueryable();
-
-                        if (_db.Users.Any(x => x.UserName == userName && x.Status == Status.Active)) 
+                        var userImgUrl = "/Content/template/img/avatars/default.png";
+                        if (_db.Users.Any(x => x.UserName == userName && x.Status == Status.Active))
+                        {
                             appData.Group = _db.Users.Include(x => x.Group).First(x => x.UserName == userName).Group;
+                            userImgUrl = _db.Users
+                                .Where(x => x.UserName == userName && x.EmployeeId != null)
+                                .Select(x=> _db.EmployeeBasicInfos.Where(w=> w.Id == x.EmployeeId).Select(s=>s.ImageUrl).FirstOrDefault())
+                                .FirstOrDefault() ?? userImgUrl;
+                        }
 
                         else if (_db.AgentInfos.Any(x => x.UserName == userName && x.Status == Status.Active))
                             appData.Group = new Group {Crm = true, Billing = true};
@@ -105,8 +111,10 @@ namespace App.Web.Controllers
                         }
                         appData.MenuList = query.ToList();
                         appData.UserName = userName;
+                        appData.UserImgUrl = userImgUrl;
                         appData.IsDevelopmentMode = environment == "DEV";
-
+                        appData.CompanyName = _db.GeneralSettings
+                            .Where(x => x.SettingName == "SiteName").Select(x => x.SettingValue).FirstOrDefault() ?? "CRM";
                         Session.Set("AppData",appData);
 
                         return RedirectToLocal(returnUrl);
