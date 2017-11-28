@@ -13,13 +13,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2017 19:02:37</publishTime>
     </File>
     <File Include="bin/App.Data.dll">
-      <publishTime>11/19/2017 12:00:06</publishTime>
+      <publishTime>11/28/2017 13:42:15</publishTime>
     </File>
     <File Include="bin/App.Entity.dll">
-      <publishTime>11/19/2017 12:00:06</publishTime>
+      <publishTime>11/28/2017 13:42:14</publishTime>
     </File>
     <File Include="bin/App.Web.dll">
-      <publishTime>11/19/2017 12:00:08</publishTime>
+      <publishTime>11/28/2017 13:42:16</publishTime>
     </File>
     <File Include="bin/DataTables.AspNet.Core.dll">
       <publishTime>07/27/2017 22:48:34</publishTime>
@@ -228,8 +228,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/template/img/avatars/9.jpg">
       <publishTime>07/27/2017 19:04:02</publishTime>
     </File>
+    <File Include="Content/template/img/avatars/default.png">
+      <publishTime>11/25/2017 12:43:36</publishTime>
+    </File>
     <File Include="favicon.ico">
-      <publishTime>07/26/2017 19:21:16</publishTime>
+      <publishTime>11/19/2017 11:37:01</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>07/31/2017 19:02:48</publishTime>
@@ -253,7 +256,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2017 01:08:23</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>10/29/2017 00:02:37</publishTime>
+      <publishTime>11/23/2017 02:02:23</publishTime>
     </File>
     <File Include="Scripts/additional-methods.min.js">
       <publishTime>08/18/2017 21:07:51</publishTime>
@@ -265,7 +268,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2017 19:02:47</publishTime>
     </File>
     <File Include="Scripts/index.js">
-      <publishTime>08/17/2017 13:32:45</publishTime>
+      <publishTime>11/28/2017 13:02:50</publishTime>
     </File>
     <File Include="Scripts/jquery-3.1.1.js">
       <publishTime>07/28/2017 16:31:11</publishTime>
@@ -457,7 +460,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/27/2017 18:59:28</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>11/19/2017 11:51:54</publishTime>
+      <publishTime>11/20/2017 13:50:58</publishTime>
     </File>
     <File Include="vendor/animate.css/.editorconfig">
       <publishTime>07/27/2017 18:56:01</publishTime>
@@ -1691,6 +1694,156 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="vendor/bootstrap-daterangepicker/website/website.js">
       <publishTime>07/27/2017 18:56:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ar.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.az.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.bg.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.bn.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ca.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.cs.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.da.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.de.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ee.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.el.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.es.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fi.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.he.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.hr.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.hu.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.hy.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.id.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.is.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.it.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ja.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ka.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ko.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.lt.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.lv.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ms.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.nb.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.nl.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.no.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.pl.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.pt-BR.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.pt.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ro.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.rs-latin.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.rs.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ru.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.sk.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.sl.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.sv.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.sw.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.th.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.tr.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ua.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.uk.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
+    </File>
+    <File Include="vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js">
+      <publishTime>11/20/2017 11:06:02</publishTime>
     </File>
     <File Include="vendor/bootstrap-inputmask/bootstrap-inputmask.min.js">
       <publishTime>07/27/2017 18:56:02</publishTime>
@@ -8628,6 +8781,393 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="vendor/jvectormap/jquery-jvectormap-world-mill.js">
       <publishTime>07/27/2017 18:56:08</publishTime>
     </File>
+    <File Include="vendor/limitless-login/css/bootstrap.min.css">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/colors.min.css">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/components.min.css">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/core.min.css">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/icomoon/fonts/icomoon.eot">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/icomoon/fonts/icomoon.svg">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/icomoon/fonts/icomoon.ttf">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/icomoon/fonts/icomoon.woff">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/css/icomoon/styles.css">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/images/login_cover.jpg">
+      <publishTime>11/20/2017 14:42:26</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/app.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/app.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/bootstrap.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/jquery.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/loaders/blockui.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/loaders/pace.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/loaders/progressbar.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/login_validation.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/styling/switch.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/styling/switchery.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/styling/uniform.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/additional_methods.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ar.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ar.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_bg.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_bg.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ca.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ca.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_cs.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_cs.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_da.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_da.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_de.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_de.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_el.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_el.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_es.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_es.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_es_AR.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_es_AR.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_et.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_et.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_eu.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_eu.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fa.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fa.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fi.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fi.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fr.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_fr.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_gl.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_gl.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_he.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_he.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_hr.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_hr.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_hu.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_hu.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_id.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_id.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_is.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_is.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_it.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_it.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ja.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ja.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ka.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ka.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_kk.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_kk.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ko.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ko.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_lt.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_lt.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_lv.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_lv.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_my.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_my.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_nl.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_nl.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_no.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_no.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pl.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pl.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pt_BR.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pt_BR.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pt_PT.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_pt_PT.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ro.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ro.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ru.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_ru.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_si.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_si.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sk.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sk.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sl.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sl.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sr.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sr.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sr_lat.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sr_lat.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sv.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_sv.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_th.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_th.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_tj.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_tj.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_tr.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_tr.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_uk.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_uk.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_vi.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_vi.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_zh.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_zh.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_zh_TW.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/messages_zh_TW.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_de.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_de.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_es_CL.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_es_CL.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_fi.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_fi.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_nl.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_nl.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_pt.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/localization/methods_pt.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
+    <File Include="vendor/limitless-login/js/validation/validate.min.js">
+      <publishTime>08/31/2016 11:11:11</publishTime>
+    </File>
     <File Include="vendor/Magnific-Popup/.gitignore">
       <publishTime>07/27/2017 18:56:08</publishTime>
     </File>
@@ -11809,34 +12349,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/27/2017 18:56:11</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-arrows-dark.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-arrows-dark.min.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-arrows.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-arrows.min.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-basic.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether-theme-basic.min.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/css/tether.min.css">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/js/tether.js">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/tether/js/tether.min.js">
-      <publishTime>07/27/2017 18:56:11</publishTime>
+      <publishTime>11/19/2017 17:42:30</publishTime>
     </File>
     <File Include="vendor/themify-icons/fonts/themify.eot">
       <publishTime>07/27/2017 18:56:11</publishTime>
@@ -16501,7 +17041,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/26/2017 19:21:27</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>08/04/2017 20:27:41</publishTime>
+      <publishTime>11/28/2017 11:42:31</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
       <publishTime>08/01/2017 22:37:08</publishTime>
@@ -16523,6 +17063,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Accounts/AgentSatement.cshtml">
       <publishTime>11/18/2017 12:19:57</publishTime>
+    </File>
+    <File Include="Views/Accounts/AgentStatement.cshtml">
+      <publishTime>11/23/2017 15:44:52</publishTime>
     </File>
     <File Include="Views/Accounts/BalanceSheet.cshtml">
       <publishTime>11/04/2017 23:49:31</publishTime>
@@ -16588,7 +17131,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/05/2017 20:22:33</publishTime>
     </File>
     <File Include="Views/Branch/Details.cshtml">
-      <publishTime>10/06/2017 20:16:06</publishTime>
+      <publishTime>11/20/2017 12:17:19</publishTime>
     </File>
     <File Include="Views/Branch/Edit.cshtml">
       <publishTime>11/19/2017 11:30:20</publishTime>
@@ -16597,19 +17140,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2017 22:52:22</publishTime>
     </File>
     <File Include="Views/Clients/Create.cshtml">
-      <publishTime>11/19/2017 11:22:32</publishTime>
+      <publishTime>11/20/2017 13:50:36</publishTime>
     </File>
     <File Include="Views/Clients/Delete.cshtml">
       <publishTime>08/17/2017 13:12:02</publishTime>
     </File>
     <File Include="Views/Clients/Details.cshtml">
-      <publishTime>10/29/2017 23:55:10</publishTime>
+      <publishTime>11/23/2017 01:05:47</publishTime>
     </File>
     <File Include="Views/Clients/Edit.cshtml">
-      <publishTime>11/19/2017 11:23:10</publishTime>
+      <publishTime>11/28/2017 12:52:11</publishTime>
     </File>
     <File Include="Views/Clients/Index.cshtml">
-      <publishTime>09/22/2017 23:21:06</publishTime>
+      <publishTime>11/19/2017 19:23:02</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalAgentFields.cshtml">
       <publishTime>09/26/2017 00:58:09</publishTime>
@@ -16618,7 +17161,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2017 22:27:04</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalCountryFilelds.cshtml">
-      <publishTime>09/26/2017 22:27:26</publishTime>
+      <publishTime>11/28/2017 12:28:36</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalDateChangeFields.cshtml">
       <publishTime>09/26/2017 23:54:43</publishTime>
@@ -16636,13 +17179,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/28/2017 23:37:49</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalStudentVisaFilelds.cshtml">
-      <publishTime>11/01/2017 00:08:16</publishTime>
+      <publishTime>11/28/2017 12:29:03</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalSupplierFields.cshtml">
       <publishTime>09/26/2017 22:29:22</publishTime>
     </File>
     <File Include="Views/Clients/_AdditionalTktMp_NewTicketFields.cshtml">
-      <publishTime>09/26/2017 23:56:52</publishTime>
+      <publishTime>11/28/2017 12:29:26</publishTime>
+    </File>
+    <File Include="Views/Country/Create.cshtml">
+      <publishTime>11/20/2017 12:17:22</publishTime>
+    </File>
+    <File Include="Views/Country/Details.cshtml">
+      <publishTime>11/20/2017 12:14:30</publishTime>
+    </File>
+    <File Include="Views/Country/Edit.cshtml">
+      <publishTime>11/28/2017 12:06:53</publishTime>
+    </File>
+    <File Include="Views/Country/Index.cshtml">
+      <publishTime>11/20/2017 12:10:20</publishTime>
     </File>
     <File Include="Views/Deposits/Create.cshtml">
       <publishTime>11/19/2017 11:19:54</publishTime>
@@ -16677,20 +17232,62 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Designations/Index.cshtml">
       <publishTime>11/02/2017 22:53:30</publishTime>
     </File>
+    <File Include="Views/Employees/Create.cshtml">
+      <publishTime>11/25/2017 16:11:05</publishTime>
+    </File>
+    <File Include="Views/Employees/Details.cshtml">
+      <publishTime>11/25/2017 19:02:57</publishTime>
+    </File>
+    <File Include="Views/Employees/Edit.cshtml">
+      <publishTime>11/25/2017 18:44:45</publishTime>
+    </File>
+    <File Include="Views/Employees/Index.cshtml">
+      <publishTime>11/25/2017 11:05:38</publishTime>
+    </File>
+    <File Include="Views/Error/BadRequest.cshtml">
+      <publishTime>11/20/2017 09:15:04</publishTime>
+    </File>
+    <File Include="Views/Error/Forbidden.cshtml">
+      <publishTime>11/20/2017 09:18:09</publishTime>
+    </File>
+    <File Include="Views/Error/Index.cshtml">
+      <publishTime>11/20/2017 09:23:59</publishTime>
+    </File>
+    <File Include="Views/Error/InternalServerError.cshtml">
+      <publishTime>11/20/2017 09:23:45</publishTime>
+    </File>
+    <File Include="Views/Error/NotFound.cshtml">
+      <publishTime>11/20/2017 09:21:40</publishTime>
+    </File>
+    <File Include="Views/Error/Unauthorized.cshtml">
+      <publishTime>11/23/2017 21:40:18</publishTime>
+    </File>
+    <File Include="Views/Error/Unknown.cshtml">
+      <publishTime>11/20/2017 09:47:50</publishTime>
+    </File>
     <File Include="Views/Expenses/Create.cshtml">
-      <publishTime>11/19/2017 11:19:03</publishTime>
+      <publishTime>11/28/2017 13:32:55</publishTime>
     </File>
     <File Include="Views/Expenses/Details.cshtml">
       <publishTime>11/02/2017 22:27:42</publishTime>
     </File>
     <File Include="Views/Expenses/Edit.cshtml">
-      <publishTime>11/19/2017 11:31:49</publishTime>
+      <publishTime>11/28/2017 13:15:17</publishTime>
     </File>
     <File Include="Views/Expenses/Index.cshtml">
       <publishTime>11/02/2017 22:53:55</publishTime>
     </File>
     <File Include="Views/GeneralSettings/Index.cshtml">
       <publishTime>10/07/2017 11:26:27</publishTime>
+    </File>
+    <File Include="Views/Groups/Create.cshtml">
+      <publishTime>11/25/2017 10:39:23</publishTime>
+    </File>
+    <File Include="Views/Groups/Edit.cshtml">
+      <publishTime>11/25/2017 10:42:23</publishTime>
+    </File>
+    <File Include="Views/Groups/Index.cshtml">
+      <publishTime>11/22/2017 16:51:26</publishTime>
     </File>
     <File Include="Views/Home/DisplayMainInfo.cshtml">
       <publishTime>11/18/2017 01:28:10</publishTime>
@@ -16715,6 +17312,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Manage/VerifyPhoneNumber.cshtml">
       <publishTime>07/26/2017 19:21:27</publishTime>
+    </File>
+    <File Include="Views/Navigation/Create.cshtml">
+      <publishTime>11/23/2017 18:51:14</publishTime>
+    </File>
+    <File Include="Views/Navigation/Edit.cshtml">
+      <publishTime>11/24/2017 11:56:09</publishTime>
+    </File>
+    <File Include="Views/Navigation/Index.cshtml">
+      <publishTime>11/23/2017 19:10:40</publishTime>
     </File>
     <File Include="Views/PaymentMethods/Create.cshtml">
       <publishTime>10/07/2017 11:34:04</publishTime>
@@ -16774,7 +17380,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/07/2017 00:46:04</publishTime>
     </File>
     <File Include="Views/Sectors/Edit.cshtml">
-      <publishTime>10/07/2017 11:30:49</publishTime>
+      <publishTime>11/24/2017 11:51:13</publishTime>
     </File>
     <File Include="Views/Sectors/Index.cshtml">
       <publishTime>11/02/2017 22:55:02</publishTime>
@@ -16800,8 +17406,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Shared/Lockout.cshtml">
       <publishTime>07/26/2017 19:21:27</publishTime>
     </File>
+    <File Include="Views/Shared/_CustomErrorLayout.cshtml">
+      <publishTime>11/20/2017 09:06:23</publishTime>
+    </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/19/2017 11:37:34</publishTime>
+      <publishTime>11/28/2017 11:38:24</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>07/29/2017 19:27:09</publishTime>
@@ -16816,7 +17425,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/07/2017 01:03:04</publishTime>
     </File>
     <File Include="Views/Suppliers/Edit.cshtml">
-      <publishTime>10/07/2017 11:35:24</publishTime>
+      <publishTime>11/28/2017 11:56:20</publishTime>
     </File>
     <File Include="Views/Suppliers/Index.cshtml">
       <publishTime>11/02/2017 22:56:02</publishTime>
@@ -16831,13 +17440,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2017 21:27:29</publishTime>
     </File>
     <File Include="Views/Transfers/Edit.cshtml">
-      <publishTime>11/19/2017 11:38:07</publishTime>
+      <publishTime>11/28/2017 13:12:20</publishTime>
     </File>
     <File Include="Views/Transfers/Index.cshtml">
       <publishTime>11/04/2017 21:28:31</publishTime>
     </File>
+    <File Include="Views/Users/Create.cshtml">
+      <publishTime>11/22/2017 13:10:38</publishTime>
+    </File>
+    <File Include="Views/Users/Details.cshtml">
+      <publishTime>11/23/2017 10:58:18</publishTime>
+    </File>
+    <File Include="Views/Users/Edit.cshtml">
+      <publishTime>11/22/2017 21:40:02</publishTime>
+    </File>
     <File Include="Views/Users/Index.cshtml">
-      <publishTime>09/21/2017 22:38:27</publishTime>
+      <publishTime>11/23/2017 00:32:28</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/06/2017 23:48:01</publishTime>
@@ -16846,7 +17464,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/30/2017 19:40:22</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/19/2017 12:00:09</publishTime>
+      <publishTime>11/28/2017 13:42:18</publishTime>
     </File>
   </ItemGroup>
 </Project>

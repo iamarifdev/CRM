@@ -136,7 +136,7 @@ namespace App.Web.Controllers
                 ViewBag.StatusList = Common.ToSelectList<Status>();
                 ViewBag.BranchList = new SelectList(_db.BranchInfos, "Id", "BranchName", client.BranchId);
                 ViewBag.ReferralTypes = Common.ToSelectList<ReferralsType>(client.ReferralType);
-                ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(client.SupplierId == null ? RequireSuppiler.No : RequireSuppiler.Yes);
+                ViewBag.IsRequireSupplier = Common.ToSelectList<RequireSuppiler>(client.SupplierId == null ? (int)RequireSuppiler.No : (int)RequireSuppiler.Yes);
                 ViewBag.ServiceList = new SelectList(_db.ServiceInfos.OrderBy(x => x.ServiceName), "Id", "ServiceName", client.ServiceId);
                 ViewBag.WorkingStatusList = Common.ToSelectList<WorkingStatus>(client.WorkingStatus);
                 ViewBag.SmsConfirmationList = Common.ToSelectList<SmsConfirmation>(client.SmsConfirmation);

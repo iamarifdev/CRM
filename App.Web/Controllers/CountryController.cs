@@ -99,16 +99,16 @@ namespace App.Web.Controllers
         }
 
         // GET: Country/Edit/5
-        public ActionResult Edit(int? countryId)
+        public ActionResult Edit(int? id)
         {
             try
             {
-                if (countryId == null)
+                if (id == null)
                 {
                     TempData["Toastr"] = Toastr.BadRequest;
                     return RedirectToAction("Index");
                 }
-                var country = _db.Countries.Find(countryId);
+                var country = _db.Countries.Find(id);
                 if (country != null) return View(country);
 
                 TempData["Toastr"] = Toastr.HttpNotFound;
@@ -126,23 +126,23 @@ namespace App.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CountryId,CountryName,CountryCode,DelStatus")] Country country, int? countryId)
+        public ActionResult Edit([Bind(Include = "Id,CountryName,CountryCode,DelStatus")] Country country, int? id)
         {
             using (var dbTransaction = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (countryId == null)
+                    if (id == null)
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    if (!_db.Countries.Any(x=>x.CountryId == countryId))
+                    if (!_db.Countries.Any(x=>x.Id == id))
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
-                    var data = _db.Countries.Single(x => x.CountryId == countryId);
+                    var data = _db.Countries.Single(x => x.Id == id);
 
                     ModelState.Clear();
 
@@ -154,7 +154,7 @@ namespace App.Web.Controllers
                     if (!ModelState.IsValid) return View(country);
 
                     _db.Countries
-                        .Where(x => x.CountryId == countryId)
+                        .Where(x => x.Id == id)
                         .Update( u => new Country {
                             CountryName = country.CountryName,
                             CountryCode = country.CountryCode
@@ -201,14 +201,14 @@ namespace App.Web.Controllers
                         TempData["Toastr"] = Toastr.BadRequest;
                         return RedirectToAction("Index");
                     }
-                    if (!_db.Countries.Any(x=>x.CountryId == countryId))
+                    if (!_db.Countries.Any(x=>x.Id == countryId))
                     {
                         TempData["Toastr"] = Toastr.HttpNotFound;
                         return RedirectToAction("Index");
                     }
 
                     _db.Countries
-                        .Where(x => x.CountryId == countryId)
+                        .Where(x => x.Id == countryId)
                         .Update(u => new Country
                         {
                             DelStatus = true

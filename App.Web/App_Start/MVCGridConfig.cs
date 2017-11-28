@@ -369,7 +369,7 @@ namespace App.Web
                     cols.Add("BranchId").WithHeaderText("Branch Id").WithValueExpression(p => p.BranchId).WithSorting(true);
                     cols.Add("BranchName").WithHeaderText("Branch Name").WithValueExpression(p => p.BranchName).WithSorting(true);
                     cols.Add("BranchCode").WithHeaderText("Branch Code").WithValueExpression(p => p.BranchCode).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status == Status.Active ? "Active" : "Inactive");
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString());
                     //cols.Add("DelStatus").WithHeaderText("Delete Status").WithValueExpression(p => p.DelStatus.ToString());
                     //cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString()).WithSorting(true);
                     //cols.Add("EntryBy").WithHeaderText("Entry By").WithValueExpression(p => p.EntryBy.GetUserName()).WithSorting(true);
@@ -445,9 +445,9 @@ namespace App.Web
                     cols.Add("CountryCode").WithHeaderText("Country Code").WithValueExpression(p => p.CountryCode).WithSorting(true);
                     cols.Add("Status").WithHeaderText("Deleted").WithValueExpression(p => p.DelStatus ? "Yes" : "No");
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-                        .WithValueExpression(p => p.CountryId.ToString()).WithValueTemplate(
-                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Coutry/Edit/{Value}'>Edit</a> "
-                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Coutry/Details/{Value}'>Details</a> "
+                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
+                        "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Country/Edit/{Value}'>Edit</a> "
+                        + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Country/Details/{Value}'>Details</a> "
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
@@ -508,7 +508,7 @@ namespace App.Web
                     cols.Add("DesignationId").WithHeaderText("Designation Id").WithValueExpression(p => p.DesignationId).WithSorting(true);
                     cols.Add("DesignationTitleBn").WithHeaderText("Designation Name (BN)").WithValueExpression(p => p.DesignationTitleBn);
                     cols.Add("DesignationTitleEn").WithHeaderText("Designation Name (EN)").WithValueExpression(p => p.DesignationTitleEn).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status == Status.Active ? "Active" : "Inactive");
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString());
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Designations/Edit/{Value}'>Edit</a> "
@@ -571,7 +571,7 @@ namespace App.Web
                 {
                     cols.Add("ServiceId").WithHeaderText("Service Id").WithValueExpression(p => p.ServiceId).WithSorting(true);
                     cols.Add("ServiceName").WithHeaderText("Service Name").WithValueExpression(p => p.ServiceName).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive");
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString());
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Services/Edit/{Value}'>Edit</a> "
@@ -632,7 +632,7 @@ namespace App.Web
                     cols.Add("SectorId").WithHeaderText("Airport Id").WithValueExpression(p => p.SectorId).WithSorting(true);
                     cols.Add("SectorName").WithHeaderText("Airport Name").WithValueExpression(p => p.SectorName).WithSorting(true);
                     cols.Add("SectorCode").WithHeaderText("Airport Code").WithValueExpression(p => p.SectorCode).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Sectors/Edit/{Value}'>Edit</a> "
@@ -700,7 +700,7 @@ namespace App.Web
                     cols.Add("AirLineId").WithHeaderText("AirLine Id").WithValueExpression(p => p.AirLineId).WithSorting(true);
                     cols.Add("AirLineName").WithHeaderText("AirLine Name").WithValueExpression(p => p.AirLineName).WithSorting(true);
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Airlines/Edit/{Value}'>Edit</a> "
@@ -896,7 +896,7 @@ namespace App.Web
                     cols.Add("OfficeNo").WithHeaderText("Office No").WithValueExpression(p => p.OfficeNo).WithSorting(true);
                     cols.Add("Email").WithHeaderText("Email").WithValueExpression(p => p.Email).WithSorting(true);
                     cols.Add("UserName").WithHeaderText("Username").WithValueExpression(p => p.UserName).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Agents/Edit/{Value}'>Edit</a> " +
@@ -1093,7 +1093,7 @@ namespace App.Web
                     cols.Add("BankName").WithHeaderText("Bank Name").WithValueExpression(p => p.BankName).WithSorting(true);
                     cols.Add("BranchName").WithHeaderText("Branch Name").WithValueExpression(p => p.BranchName).WithSorting(true);
                     cols.Add("Balance").WithHeaderText("Balance").WithValueExpression(p => p.Balance.ToString()).WithSorting(true);
-                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status > 0 ? "Active" : "Inactive").WithSorting(true);
+                    cols.Add("Status").WithHeaderText("Status").WithValueExpression(p => p.Status.ToString()).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Accounts/Edit/{Value}'>Edit</a> "

@@ -6,7 +6,8 @@
     ViewBag.Title = "Log in";
 
     var db = new CrmDbContext();
-    var logoName = db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue).FirstOrDefault();
+    var logoName = db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue)
+        .FirstOrDefault() ?? "site-logo.png";
 }
 
 <!DOCTYPE html>
@@ -63,7 +64,7 @@
                         <div class="panel panel-body login-form">
                             <div class="text-center">
                                 <div class="icon-object border-slate-300 text-slate-300">
-                                    @if (!string.IsNullOrWhiteSpace(logoName))
+                                    @if (File.Exists(Server.MapPath("~/Content/Template/img/site/" + logoName)))
                                     {
                                         <img src="~/Content/template/img/site/@logoName" width="50" height="50" alt="CRM">
                                     }

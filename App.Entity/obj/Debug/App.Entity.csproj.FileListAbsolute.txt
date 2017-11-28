@@ -1,0 +1,9 @@
+N:\Projects\Development\CRM\App.Entity\bin\Debug\App.Entity.dll.config
+N:\Projects\Development\CRM\App.Entity\bin\Debug\App.Entity.dll
+N:\Projects\Development\CRM\App.Entity\bin\Debug\App.Entity.pdb
+N:\Projects\Development\CRM\App.Entity\bin\Debug\EntityFramework.dll
+N:\Projects\Development\CRM\App.Entity\bin\Debug\EntityFramework.SqlServer.dll
+N:\Projects\Development\CRM\App.Entity\bin\Debug\EntityFramework.xml
+N:\Projects\Development\CRM\App.Entity\bin\Debug\EntityFramework.SqlServer.xml
+N:\Projects\Development\CRM\App.Entity\obj\Debug\App.Entity.dll
+N:\Projects\Development\CRM\App.Entity\obj\Debug\App.Entity.pdb

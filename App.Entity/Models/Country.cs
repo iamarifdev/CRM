@@ -7,10 +7,11 @@ namespace App.Entity.Models
     public class Country
     {
         [Key]
-        public int CountryId { get; set; }
+        [Display(Name = "Country Id")]
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(2)]
+        [StringLength(3)]
         [Display(Name = "Country Code")]
         public string CountryCode { get; set; }
 

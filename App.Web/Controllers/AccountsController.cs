@@ -239,7 +239,7 @@ namespace App.Web.Controllers
             {
                 var data = _db.BankAccounts.AsNoTracking().AsQueryable();
                 ViewBag.Accounts = data.Select(x => new AccountViewModel { Account = x.AccountName, Balance = x.Balance }).ToList();
-                ViewBag.TotalBalance = data.Sum(x => x.Balance);
+                ViewBag.TotalBalance = data.Any() ? data.Sum(x => x.Balance) : 0;
                 return View();
             }
             catch (Exception ex)

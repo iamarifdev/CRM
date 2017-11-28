@@ -14,7 +14,7 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-group col-md-12">
-                    @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
+                    @Html.LabelFor(model => model.AccountId, "Account", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                     <div class="col-sm-4">
                         @Html.DropDownListFor(model => model.AccountId, (SelectList)ViewBag.Accounts, "Select One", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })

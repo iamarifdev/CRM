@@ -77,7 +77,10 @@ namespace App.Web.Controllers
 
                 var setting = new GeneralSetting { SettingName = "SiteLogo", SettingValue = siteLogo.FileName };
                 generalSettings.Add(setting);
-                siteLogo.SaveAs(Server.MapPath("~/Content/Template/img/site/site-logo" + extension));
+                var serverPath = Server.MapPath("~/Content/Template/img/site");
+                if (!Directory.Exists(serverPath)) Directory.CreateDirectory(serverPath);
+                var filePath = Path.Combine(serverPath, "site-logo" + extension);
+                siteLogo.SaveAs(filePath);
             }
 
             collection.AllKeys.ForEach(key =>

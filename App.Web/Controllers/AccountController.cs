@@ -113,8 +113,10 @@ namespace App.Web.Controllers
                         appData.UserName = userName;
                         appData.UserImgUrl = userImgUrl;
                         appData.IsDevelopmentMode = environment == "DEV";
-                        appData.CompanyName = _db.GeneralSettings
-                            .Where(x => x.SettingName == "SiteName").Select(x => x.SettingValue).FirstOrDefault() ?? "CRM";
+                        appData.CompanyName = _db.GeneralSettings.Where(x => x.SettingName == "SiteName").Select(x => x.SettingValue)
+                            .FirstOrDefault() ?? "CRM";
+                        appData.SiteLogo =_db.GeneralSettings.Where(x => x.SettingName == "SiteLogo").Select(x => x.SettingValue)
+                            .FirstOrDefault() ?? "site-logo.png";
                         Session.Set("AppData",appData);
 
                         return RedirectToLocal(returnUrl);

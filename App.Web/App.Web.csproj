@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -479,6 +480,18 @@
     <Compile Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.cs" />
     <Compile Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.Designer.cs">
       <DependentUpon>201711250715496_MadeRequiredNameForEmployeeSeveralField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711280558215_CountryModelChangedForCountryCodeLength.cs" />
+    <Compile Include="Migrations\ContextB\201711280558215_CountryModelChangedForCountryCodeLength.Designer.cs">
+      <DependentUpon>201711280558215_CountryModelChangedForCountryCodeLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711280617064_CountryModelPrimaryKeyRenamed.cs" />
+    <Compile Include="Migrations\ContextB\201711280617064_CountryModelPrimaryKeyRenamed.Designer.cs">
+      <DependentUpon>201711280617064_CountryModelPrimaryKeyRenamed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711280624019_CoutryIdForeignKeyAddedToClientInfo.cs" />
+    <Compile Include="Migrations\ContextB\201711280624019_CoutryIdForeignKeyAddedToClientInfo.Designer.cs">
+      <DependentUpon>201711280624019_CoutryIdForeignKeyAddedToClientInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
@@ -2057,6 +2070,15 @@
     <EmbeddedResource Include="Migrations\ContextB\201711250715496_MadeRequiredNameForEmployeeSeveralField.resx">
       <DependentUpon>201711250715496_MadeRequiredNameForEmployeeSeveralField.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711280558215_CountryModelChangedForCountryCodeLength.resx">
+      <DependentUpon>201711280558215_CountryModelChangedForCountryCodeLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711280617064_CountryModelPrimaryKeyRenamed.resx">
+      <DependentUpon>201711280617064_CountryModelPrimaryKeyRenamed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711280624019_CoutryIdForeignKeyAddedToClientInfo.resx">
+      <DependentUpon>201711280624019_CoutryIdForeignKeyAddedToClientInfo.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -2073,7 +2095,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2288</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -2,7 +2,7 @@
 @model App.Entity.Models.ClientInfo
 @{
     var db = new CrmDbContext();
-    ViewBag.CountryList = new SelectList(db.Countries.Where(x => !x.DelStatus).ToList(), "CountryId", "CountryName");
+    ViewBag.CountryList = new SelectList(db.Countries.Where(x => !x.DelStatus).ToList(), "Id", "CountryName");
 }
 <div class="form-group row">
     @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })

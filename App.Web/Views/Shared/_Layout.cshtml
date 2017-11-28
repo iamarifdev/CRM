@@ -54,10 +54,10 @@
         <div class="site-sidebar">
             <a class="logo" href="@Url.Action("Index", "Home")">
 
-                @if (File.Exists(Server.MapPath("~/Content/Template/img/site/site-logo" + ".png")))
+                @if (File.Exists(Server.MapPath("~/Content/Template/img/site/"+appData.SiteLogo)))
                 {
                     <span class="l-text">
-                        <img src="~/Content/Template/img/site/site-logo.png" width="60" height="60" alt="CRM" />
+                        <img src="~/Content/Template/img/site/@appData.SiteLogo" width="60" height="60" alt="CRM" />
                     </span>
                 }
                 else
@@ -87,7 +87,7 @@
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li>@Html.ActionLink("Agent Info", "Index", "Agents")</li>
-                                    <li><a href="aa.html">Flight Progress</a></li>
+                                    <li><a href="javascript: void(0);">Flight Progress</a></li>
                                 }
                             </ul>
                         </li>

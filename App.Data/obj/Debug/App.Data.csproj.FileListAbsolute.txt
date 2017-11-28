@@ -1,0 +1,15 @@
+N:\Projects\Development\CRM\App.Data\bin\Debug\App.Data.dll.config
+N:\Projects\Development\CRM\App.Data\bin\Debug\App.Data.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\App.Data.pdb
+N:\Projects\Development\CRM\App.Data\bin\Debug\App.Entity.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.Extended.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.SqlServer.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.Utilities.dll
+N:\Projects\Development\CRM\App.Data\bin\Debug\App.Entity.pdb
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.xml
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.Extended.xml
+N:\Projects\Development\CRM\App.Data\bin\Debug\EntityFramework.SqlServer.xml
+N:\Projects\Development\CRM\App.Data\obj\Debug\App.Data.csprojResolveAssemblyReference.cache
+N:\Projects\Development\CRM\App.Data\obj\Debug\App.Data.dll
+N:\Projects\Development\CRM\App.Data\obj\Debug\App.Data.pdb

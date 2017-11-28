@@ -13,6 +13,7 @@ namespace App.Web.Models
         public string CompanyName { get; set; }
         public string UserName { get; set; }
         public string UserImgUrl { get; set; }
+        public string SiteLogo { get; set; }
         public Group Group { get; set; } 
         public ICollection<Menu> MenuList { get; set; }
         public bool IsDevelopmentMode { get; set; }

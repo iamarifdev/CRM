@@ -30,3 +30,5 @@
         });
     }
 });
+
+$(".table").parent().css("overflow-x","scroll")
