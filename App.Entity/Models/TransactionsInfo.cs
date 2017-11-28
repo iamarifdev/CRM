@@ -23,7 +23,7 @@ namespace App.Entity.Models
         [Display(Name = "To Account")]
         public int? AccountTo { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         public PayerType? PayerType { get; set; }
 

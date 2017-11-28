@@ -493,6 +493,14 @@
     <Compile Include="Migrations\ContextB\201711280624019_CoutryIdForeignKeyAddedToClientInfo.Designer.cs">
       <DependentUpon>201711280624019_CoutryIdForeignKeyAddedToClientInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ContextB\201711281552489_ClientInfoModelDoneBySetToString.cs" />
+    <Compile Include="Migrations\ContextB\201711281552489_ClientInfoModelDoneBySetToString.Designer.cs">
+      <DependentUpon>201711281552489_ClientInfoModelDoneBySetToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ContextB\201711281928524_DateMadeToRequiredInTransactionInfo.cs" />
+    <Compile Include="Migrations\ContextB\201711281928524_DateMadeToRequiredInTransactionInfo.Designer.cs">
+      <DependentUpon>201711281928524_DateMadeToRequiredInTransactionInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ContextB\ConfigB.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -2078,6 +2086,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ContextB\201711280624019_CoutryIdForeignKeyAddedToClientInfo.resx">
       <DependentUpon>201711280624019_CoutryIdForeignKeyAddedToClientInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711281552489_ClientInfoModelDoneBySetToString.resx">
+      <DependentUpon>201711281552489_ClientInfoModelDoneBySetToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ContextB\201711281928524_DateMadeToRequiredInTransactionInfo.resx">
+      <DependentUpon>201711281928524_DateMadeToRequiredInTransactionInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

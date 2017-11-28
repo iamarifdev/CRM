@@ -116,8 +116,7 @@ namespace App.Entity.Models
         public int ServedBy { get; set; }
 
         [Display(Name = "Flight Time")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd H:mm}")]
-        public DateTime? DoneBy { get; set; }
+        public string DoneBy { get; set; }
 
         [Display(Name = "Working Status")]
         public WorkingStatus? WorkingStatus { get; set; }

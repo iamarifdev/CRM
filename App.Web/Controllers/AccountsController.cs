@@ -272,8 +272,10 @@ namespace App.Web.Controllers
             {
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid data." }, JsonRequestBehavior.AllowGet);
                 var query = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
-                if (agentStatement.FromDate != null && agentStatement.ToDate != null) query = query.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
-                if (agentStatement.FromDate != null && agentStatement.ToDate == null) query = query.Where(x => x.Date >= agentStatement.FromDate);
+                if (agentStatement.FromDate != null && agentStatement.ToDate != null) 
+                    query = query.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
+                if (agentStatement.FromDate != null && agentStatement.ToDate == null) 
+                    query = query.Where(x => x.Date >= agentStatement.FromDate);
                 var data = query.ToList();
                 var statements = data.Select(s => new { No = s.TransactionId, Date = string.Format("{0:yyyy-MM-dd}", s.Date), Narration = s.Description, Debit = s.Amount, Credit = 0 }).ToList();
                 return Json(new { Flag = true, Statements = statements }, JsonRequestBehavior.AllowGet);

@@ -188,16 +188,8 @@
                     @if (Model.ServiceInfo.ServiceName == "TOURIST VISA" || Model.ServiceInfo.ServiceName == "VISA CHECK")
                     {
                         <tr>
-                            <th>@Html.DisplayNameFor(m => m.AirLineInfo.AirLineName)</th>
-                            <td>@Model.AirLineInfo.AirLineName</td>
-                        </tr>
-                        <tr>
                             <th>@Html.DisplayNameFor(m => m.Country.CountryName)</th>
                             <td>@Model.Country.CountryName</td>
-                        </tr>
-                        <tr>
-                            <th>@Html.DisplayNameFor(m => m.SectorFrom.SectorName)</th>
-                            <td>@Model.SectorFrom.SectorName</td>
                         </tr>
                     }
                     <tr>

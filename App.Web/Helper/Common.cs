@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.SqlServer;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -104,6 +105,15 @@ namespace App.Web.Helper
         public static string NullDateToString(this DateTime? date)
         {
             return date == null ? "" : string.Format("{0:yyyy-MM-dd}", date);
+        }
+
+        public static string QueryToDateString(DateTime date)
+        {
+            return SqlFunctions.DateName("year", date) + "-" +
+                   SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double) date.Month).TrimStart().Length) +
+                   SqlFunctions.StringConvert((double) date.Month).TrimStart() + "-" +
+                   SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", date).Trim().Length) +
+                   SqlFunctions.DateName("dd", date).Trim();
         }
     }
 }

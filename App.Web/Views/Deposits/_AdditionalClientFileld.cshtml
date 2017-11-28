@@ -6,7 +6,7 @@
     ViewBag.Clients = new SelectList(db.ClientInfos, "Id", "FirstName");
 }
 
-<div class="form-group row">
+<div class="form-group col-md-12">
     @Html.LabelFor(model => model.PayerId, "Client", htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
     <div class="col-sm-4">
         @Html.DropDownListFor(model => model.PayerId, (SelectList)ViewBag.Clients, "Select One", new { @class = "form-control select2", @required = "required" })

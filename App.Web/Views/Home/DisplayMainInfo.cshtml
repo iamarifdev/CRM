@@ -14,11 +14,11 @@
             ? db.TransactionsInfos.Where(w => DbFunctions.TruncateTime(w.Date) == DbFunctions.TruncateTime(DateTime.Now) && w.TransactionType == TransactionType.Expense)
              .Sum(x => x.Amount) : 0;
 
-        ViewBag.ThisMonthsDeposits = db.TransactionsInfos.Any(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit)
-            ? db.TransactionsInfos.Where(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit).Sum(x => x.Amount) : 0;
+        ViewBag.ThisMonthsDeposits = db.TransactionsInfos.Any(w => w.Date.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit)
+            ? db.TransactionsInfos.Where(w => w.Date.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Deposit).Sum(x => x.Amount) : 0;
 
-        ViewBag.ThisMonthsExpenses = db.TransactionsInfos.Any(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense)
-            ? db.TransactionsInfos.Where(w => w.Date.Value.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense).Sum(x => x.Amount) : 0;
+        ViewBag.ThisMonthsExpenses = db.TransactionsInfos.Any(w => w.Date.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense)
+            ? db.TransactionsInfos.Where(w => w.Date.Month == DateTime.Now.Month && w.TransactionType == TransactionType.Expense).Sum(x => x.Amount) : 0;
     }
     catch (Exception ex)
     {

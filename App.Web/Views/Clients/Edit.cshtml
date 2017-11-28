@@ -4,10 +4,7 @@
     ViewBag.Title = "Edit Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section AdditionalStyles
-{
-    <link href="~/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-}
+
 <div class="card">
     <h6 class="card-header bg-primary">CLIENTS / EDIT</h6>
     <div class="card-block">
@@ -114,7 +111,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.DoneBy, htmlAttributes: new { @class = "control-label col-sm-4 text-md-right" })
                 <div class="col-sm-4">
-                    @Html.EditorFor(model => model.DoneBy, new { htmlAttributes = new { @class = "form-control pickDateTime" } })
+                    @Html.EditorFor(model => model.DoneBy, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.DoneBy, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -184,11 +181,9 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script>
         var additionalFields = ["VISA CHECK", "E-MAIL", "STUDENT VISA", "TOURIST VISA", "TKT+MP", "NEW TICKET", "RE-CONFIRM", "DATE CHANGE", "CONFIRM"];
         var id = $("#Id").val();
-        $(".pickDateTime").datetimepicker({ format: 'yyyy-mm-dd hh:ii' });
         ReSelect2();
 
         function GetAdditionalReferralType() {

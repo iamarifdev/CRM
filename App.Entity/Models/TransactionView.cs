@@ -11,7 +11,7 @@ namespace App.Entity.Models
         public string TransactionType { get; set; }
         public string AccountFrom { get; set; }
         public string AccountTo { get; set; }
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
         public string Payer { get; set; }
         public string Method { get; set; }
         public decimal DepositAmount { get; set; }

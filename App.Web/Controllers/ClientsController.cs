@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using App.Entity.Models;
@@ -40,7 +41,10 @@ namespace App.Web.Controllers
                 TempData["Toastr"] = Toastr.BadRequest;
                 return RedirectToAction("Index");
             }
-            var clientInfo = _db.ClientInfos.Find(id);
+            var clientInfo = _db.ClientInfos.Include(x=>x.AgentInfo).Include(x=>x.BranchInfo)
+                .Include(x=>x.SectorFrom).Include(x=>x.SectorTo).Include(x=>x.Country)
+                .Include(x => x.AirLineInfo).Include(x=>x.SuppliersInfo)
+                .Include(x=> x.ServiceInfo).FirstOrDefault(x => x.Id == id);
 
             if (clientInfo != null) return View(clientInfo);
 
@@ -385,6 +389,20 @@ namespace App.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult GetContactNoByAgentId(int? agentId)
+        {
+            try
+            {
+                if (agentId == null) return Json(new {Flag = true, Msg = "Invalid Request"});
+                var contactNumber = _db.AgentInfos.Where(x=>x.Id == agentId).Select(x=>x.MobileNo).FirstOrDefault() ?? "";
+                return Json(new { Flag = true, ContactNo = contactNumber }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new {Flag = false, Msg = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -1,4 +1,5 @@
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using MVCGrid.Models;
 using MVCGrid.Web;
@@ -42,7 +43,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "EmployeeId")
+                .WithSorting(true, "EmployeeId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -126,7 +127,7 @@ namespace App.Web
                         +"<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "MenuId")
+                .WithSorting(true, "MenuId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -213,7 +214,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "Id")
+                .WithSorting(true, "Id", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -294,7 +295,7 @@ namespace App.Web
                         "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Groups/Edit/{Value}'>Edit</a>"
                      );
                 })
-                .WithSorting(true, "Name")
+                .WithSorting(true, "Name", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -380,7 +381,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "BranchId")
+                .WithSorting(true, "BranchId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -451,7 +452,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "CountryName")
+                .WithSorting(true, "CountryName", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -516,7 +517,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "DesignationId")
+                .WithSorting(true, "DesignationId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -579,7 +580,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "ServiceId")
+                .WithSorting(true, "ServiceId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -640,7 +641,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "SectorId")
+                .WithSorting(true, "SectorId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -708,7 +709,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "AirLineId")
+                .WithSorting(true, "AirLineId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -772,7 +773,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "SupplierId")
+                .WithSorting(true, "SupplierId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -839,7 +840,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "MethodId")
+                .WithSorting(true, "MethodId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -904,7 +905,7 @@ namespace App.Web
                         "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "AgentId")
+                .WithSorting(true, "AgentId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -980,7 +981,7 @@ namespace App.Web
                     cols.Add("EntryDate").WithHeaderText("Entry Date").WithValueExpression(p => p.EntryDate.ToString("yyyy-MM-dd")).WithSorting(true);
                     cols.Add("CustomerId").WithHeaderText("CID").WithValueExpression(p => p.CustomerId).WithSorting(true);
                     cols.Add("FullName").WithHeaderText("Name").WithValueExpression(p => p.FullName).WithSorting(true);
-                    cols.Add("ContactNo").WithHeaderText("Contact Number").WithValueExpression(p => p.ContactNo).WithSorting(true);
+                    cols.Add("ContactNo").WithHeaderText("Contact Number").WithValueExpression(p => p.AgentId != null ? p.AgentInfo.AgentName : p.ContactNo).WithSorting(true);
                     cols.Add("AirLineName").WithHeaderText("Air Line").WithValueExpression(p => p.AirLineInfo == null ? "" : p.AirLineInfo.AirLineName).WithSorting(true);
                     cols.Add("Service").WithHeaderText("Service").WithValueExpression(p => p.ServiceInfo == null ? "" : p.ServiceInfo.ServiceName).WithSorting(true);
                     cols.Add("ServiceCharge").WithHeaderText("Service Charge").WithValueExpression(p => p.ServiceCharge.ToString()).WithSorting(true);
@@ -988,7 +989,7 @@ namespace App.Web
                     cols.Add("WorkingStatus").WithHeaderText("Working Status").WithValueExpression(p => p.WorkingStatus > 0 ? "Done" : "Pending").WithSorting(true);
                     cols.Add("InfoStatus").WithHeaderText("Update Status").WithValueExpression(p => p.InfoStatus > 0 ? "Updated" : "Not Updated").WithSorting(true);
                     cols.Add("DeliveryStatus").WithHeaderText("Delivery Status").WithValueExpression(p => p.DeliveryStatus > 0 ? "Delivery" : "Not Delivery").WithSorting(true);
-                    cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => string.Format("{0:yyyy-MM-dd HH:mm}",p.DoneBy)).WithSorting(true);
+                    cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
                         .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
                             "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
@@ -997,7 +998,7 @@ namespace App.Web
                         );
                     
                 })
-                .WithSorting(true, "EntryDate")
+                .WithSorting(true, "EntryDate", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1008,6 +1009,7 @@ namespace App.Web
                     using (var db = new CrmDbContext())
                     {
                         var query = db.ClientInfos.AsQueryable()
+                            .Include(x=> x.AgentInfo)
                             .Include(x => x.ServiceInfo)
                             .Include(x => x.AirLineInfo)
                             .Include(x => x.UserServedBy);
@@ -1016,15 +1018,19 @@ namespace App.Web
                         if (!string.IsNullOrWhiteSpace(globalSearch))
                         {
                             query = query.Where(x =>
-                                    x.EntryDate.ToString().Contains(globalSearch)
+                                (SqlFunctions.DateName("year", x.EntryDate) + "-" +
+                                 SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double)x.EntryDate.Month).TrimStart().Length) +
+                                 SqlFunctions.StringConvert((double)x.EntryDate.Month).TrimStart() + "-" +
+                                 SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", x.EntryDate).Trim().Length) +
+                                 SqlFunctions.DateName("dd", x.EntryDate).Trim()).Contains(globalSearch)
                                     || x.CustomerId.Contains(globalSearch)
                                     || x.FirstName.Contains(globalSearch)
                                     || x.LastName.Contains(globalSearch)
-                                    || x.ContactNo.Contains(globalSearch)
+                                    || (x.AgentId != null ? x.AgentInfo.AgentName.Contains(globalSearch) : x.ContactNo.Contains(globalSearch))
                                     || x.AirLineInfo.AirLineName.Contains(globalSearch)
                                     || x.ServiceInfo.ServiceName.Contains(globalSearch)
                                     || x.UserServedBy.UserName.Contains(globalSearch)
-                                    //|| x.DoneBy.Contains(globalSearch)
+                                    || x.DoneBy.Contains(globalSearch)
                             );
                         }
 
@@ -1043,7 +1049,7 @@ namespace App.Web
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.FirstName) : query.OrderBy(p => p.FirstName);
                                     break;
                                 case "contactno":
-                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.ContactNo) : query.OrderBy(p => p.ContactNo);
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AgentId != null ? p.AgentInfo.AgentName : p.ContactNo) : query.OrderBy(p => p.AgentId != null ? p.AgentInfo.AgentName : p.ContactNo);
                                     break;
                                 case "airlinename":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.AirLineInfo.AirLineName) : query.OrderBy(p => p.AirLineInfo.AirLineName);
@@ -1060,15 +1066,15 @@ namespace App.Web
                                 case "workingstatus":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.WorkingStatus) : query.OrderBy(p => p.WorkingStatus);
                                     break;
-                                case "InfoStatus":
+                                case "infostatus":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.InfoStatus) : query.OrderBy(p => p.InfoStatus);
                                     break;
                                 case "deliverystatus":
                                     query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DeliveryStatus) : query.OrderBy(p => p.DeliveryStatus);
                                     break;
-                                //case "doneby":
-                                //    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
-                                //    break;
+                                case "doneby":
+                                    query = direction == SortDirection.Dsc ? query.OrderByDescending(p => p.DoneBy) : query.OrderBy(p => p.DoneBy);
+                                    break;
                             }
                         }
                         result.TotalRecords = query.Count();
@@ -1101,7 +1107,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "AccountId")
+                .WithSorting(true, "AccountId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1170,7 +1176,7 @@ namespace App.Web
                 .WithAuthorizationType(AuthorizationType.Authorized)
                 .AddColumns(cols =>
                 {
-                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
+                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.ToString("yyyy-MM-dd")).WithSorting(true);
                     cols.Add("AccountTo").WithHeaderText("Account").WithValueExpression(p => p.BankAccountTo.AccountId).WithSorting(true);
                     cols.Add("Amount").WithHeaderText("Amount").WithValueExpression(p => p.Amount.ToString()).WithSorting(true);
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
@@ -1181,7 +1187,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "Date")
+                .WithSorting(true, "Date", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1197,7 +1203,11 @@ namespace App.Web
                         if (!string.IsNullOrWhiteSpace(globalSearch))
                         {
                             query = query.Where(x =>
-                                    x.Date.NullDateToString().Contains(globalSearch)
+                                    (SqlFunctions.DateName("year", x.Date) + "-" + 
+                                    SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double)x.Date.Month).TrimStart().Length) + 
+                                    SqlFunctions.StringConvert((double)x.Date.Month).TrimStart() + "-" + 
+                                    SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", x.Date).Trim().Length) + 
+                                    SqlFunctions.DateName("dd", x.Date).Trim()).Contains(globalSearch)
                                     || x.BankAccountTo.AccountId.ToString().Contains(globalSearch)
                                     || x.Amount.ToString().Contains(globalSearch)
                                     || x.Description.Contains(globalSearch)
@@ -1239,7 +1249,7 @@ namespace App.Web
                 .WithAuthorizationType(AuthorizationType.Authorized)
                 .AddColumns(cols =>
                 {
-                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
+                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.ToString("yyyy-MM-dd")).WithSorting(true);
                     cols.Add("AccountFrom").WithHeaderText("Account").WithValueExpression(p => p.BankAccountFrom.AccountId).WithSorting(true);
                     cols.Add("Amount").WithHeaderText("Amount").WithValueExpression(p => p.Amount.ToString()).WithSorting(true);
                     cols.Add("Description").WithHeaderText("Description").WithValueExpression(p => p.Description).WithSorting(true);
@@ -1250,7 +1260,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "Date")
+                .WithSorting(true, "Date", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1266,7 +1276,11 @@ namespace App.Web
                         if (!string.IsNullOrWhiteSpace(globalSearch))
                         {
                             query = query.Where(x =>
-                                    x.Date.NullDateToString().Contains(globalSearch)
+                                    (SqlFunctions.DateName("year", x.Date) + "-" +
+                                     SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double)x.Date.Month).TrimStart().Length) +
+                                     SqlFunctions.StringConvert((double)x.Date.Month).TrimStart() + "-" +
+                                     SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", x.Date).Trim().Length) +
+                                     SqlFunctions.DateName("dd", x.Date).Trim()).Contains(globalSearch)
                                     || x.BankAccountFrom.AccountId.ToString().Contains(globalSearch)
                                     || x.Amount.ToString().Contains(globalSearch)
                                     || x.Description.Contains(globalSearch)
@@ -1309,7 +1323,7 @@ namespace App.Web
                 .AddColumns(cols =>
                 {
                     cols.Add("TransactionId").WithHeaderText("Deposit Id").WithValueExpression(p => p.TransactionId).WithSorting(true);
-                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
+                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.ToString("yyyy-MM-dd")).WithSorting(true);
                     cols.Add("AccountFrom").WithHeaderText("From Account").WithValueExpression(p => p.BankAccountFrom.AccountName).WithSorting(true);
                     cols.Add("AccountTo").WithHeaderText("To Account").WithValueExpression(p => p.BankAccountTo.AccountName).WithSorting(true);
                     cols.Add("Amount").WithHeaderText("Amount").WithValueExpression(p => p.Amount.ToString()).WithSorting(true);
@@ -1321,7 +1335,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "TransactionId")
+                .WithSorting(true, "TransactionId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1338,7 +1352,11 @@ namespace App.Web
                         {
                             query = query.Where(x =>
                                     x.TransactionId.Contains(globalSearch)
-                                    || x.Date.NullDateToString().Contains(globalSearch)
+                                    || (SqlFunctions.DateName("year", x.Date) + "-" +
+                                        SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double)x.Date.Month).TrimStart().Length) +
+                                        SqlFunctions.StringConvert((double)x.Date.Month).TrimStart() + "-" +
+                                        SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", x.Date).Trim().Length) +
+                                        SqlFunctions.DateName("dd", x.Date).Trim()).Contains(globalSearch)
                                     || x.BankAccountFrom.AccountName.ToString().Contains(globalSearch)
                                     || x.BankAccountTo.AccountName.ToString().Contains(globalSearch)
                                     || x.Amount.ToString().Contains(globalSearch)
@@ -1390,7 +1408,7 @@ namespace App.Web
                     cols.Add("TransactionType").WithHeaderText("Transaction Type").WithValueExpression(p => p.TransactionType).WithSorting(true);
                     cols.Add("AccountFrom").WithHeaderText("From Account").WithValueExpression(p => p.AccountFrom).WithSorting(true);
                     cols.Add("AccountTo").WithHeaderText("To Account").WithValueExpression(p => p.AccountTo).WithSorting(true);
-                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.NullDateToString()).WithSorting(true);
+                    cols.Add("Date").WithHeaderText("Date").WithValueExpression(p => p.Date.ToString("yyyy-MM-dd")).WithSorting(true);
                     cols.Add("Payer").WithHeaderText("Payer").WithValueExpression(p => p.Payer).WithSorting(true);
                     cols.Add("Method").WithHeaderText("Method").WithValueExpression(p => p.Method).WithSorting(true);
                     cols.Add("DepositAmount").WithHeaderText("Deposit").WithValueExpression(p => p.DepositAmount.ToString()).WithSorting(true);
@@ -1405,7 +1423,7 @@ namespace App.Web
                         + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
                      );
                 })
-                .WithSorting(true, "TransactionId")
+                .WithSorting(true, "TransactionId", SortDirection.Dsc)
                 .WithPaging(true, 10, true, 100)
                 .WithAdditionalQueryOptionNames("Search")
                 .WithAdditionalSetting("RenderLoadingDiv", false)
@@ -1425,7 +1443,11 @@ namespace App.Web
                                     || x.TransactionType.Contains(globalSearch)
                                     || x.AccountFrom.Contains(globalSearch)
                                     || x.AccountTo.Contains(globalSearch)
-                                    //|| x.Date.NullDateToString().Contains(globalSearch)
+                                    || (SqlFunctions.DateName("year", x.Date) + "-" +
+                                        SqlFunctions.Replicate("0", 2 - SqlFunctions.StringConvert((double)x.Date.Month).TrimStart().Length) +
+                                        SqlFunctions.StringConvert((double)x.Date.Month).TrimStart() + "-" +
+                                        SqlFunctions.Replicate("0", 2 - SqlFunctions.DateName("dd", x.Date).Trim().Length) +
+                                        SqlFunctions.DateName("dd", x.Date).Trim()).Contains(globalSearch)
                                     || x.Method.Contains(globalSearch)
                                     || x.Payer.Contains(globalSearch)
                                     || x.DepositAmount.ToString().Contains(globalSearch)
