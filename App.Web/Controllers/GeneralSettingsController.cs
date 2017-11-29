@@ -69,13 +69,13 @@ namespace App.Web.Controllers
                 }
 
                 var image = Image.FromStream(siteLogo.InputStream);
-                if (image.Width != 256 || image.Height != 256)
+                if (image.Width != image.Height)
                 {
-                    TempData["Toastr"] = Toastr.CustomError("Image size should be 256 px X 256 px.");
+                    TempData["Toastr"] = Toastr.CustomError("Image size should be Square.");
                     return RedirectToAction("Index");
                 }
 
-                var setting = new GeneralSetting { SettingName = "SiteLogo", SettingValue = siteLogo.FileName };
+                var setting = new GeneralSetting { SettingName = "SiteLogo", SettingValue = "site-logo"+extension };
                 generalSettings.Add(setting);
                 var serverPath = Server.MapPath("~/Content/Template/img/site");
                 if (!Directory.Exists(serverPath)) Directory.CreateDirectory(serverPath);

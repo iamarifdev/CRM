@@ -271,14 +271,37 @@ namespace App.Web.Controllers
             try
             {
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid data." }, JsonRequestBehavior.AllowGet);
-                var query = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
+                var transactionQuery = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
                 if (agentStatement.FromDate != null && agentStatement.ToDate != null) 
-                    query = query.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
+                    transactionQuery = transactionQuery.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
                 if (agentStatement.FromDate != null && agentStatement.ToDate == null) 
-                    query = query.Where(x => x.Date >= agentStatement.FromDate);
-                var data = query.ToList();
-                var statements = data.Select(s => new { No = s.TransactionId, Date = string.Format("{0:yyyy-MM-dd}", s.Date), Narration = s.Description, Debit = s.Amount, Credit = 0 }).ToList();
-                return Json(new { Flag = true, Statements = statements }, JsonRequestBehavior.AllowGet);
+                    transactionQuery = transactionQuery.Where(x => x.Date >= agentStatement.FromDate);
+                var transactionData = transactionQuery.ToList();
+                var statements = transactionData.Select(s => new
+                {
+                    No = s.TransactionId, 
+                    Date = string.Format("{0:yyyy-MM-dd}", s.Date), 
+                    Narration = s.Description, 
+                    Debit = (double)s.Amount, 
+                    Credit = 0
+                }).ToList();
+
+                var paymentQuery = _db.CustomerPayments.Where(x => x.Channel == Channel.IsAgent);
+                if (agentStatement.FromDate != null && agentStatement.ToDate != null)
+                    paymentQuery = paymentQuery.Where(x => x.PaymentDate >= agentStatement.FromDate && x.PaymentDate <= agentStatement.ToDate);
+                if (agentStatement.FromDate != null && agentStatement.ToDate == null)
+                    paymentQuery = paymentQuery.Where(x => x.PaymentDate >= agentStatement.FromDate);
+                var paymentData = paymentQuery.ToList();
+
+               var allStatements =  statements.Concat(paymentData.Select(s => new
+                {
+                    No = s.Id.ToString(),
+                    Date = string.Format("{0:yyyy-MM-dd}", s.PaymentDate),
+                    Narration = "Agent Payment",
+                    Debit = s.PaymentAmount,
+                    Credit = 0
+                })).OrderByDescending(x=>x.Date).ToList();
+               return Json(new { Flag = true, Statements = allStatements }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

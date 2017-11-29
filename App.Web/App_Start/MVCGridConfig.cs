@@ -6,6 +6,8 @@ using MVCGrid.Web;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
+using System.Web;
+using Microsoft.AspNet.Identity;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(App.Web.MVCGridConfig), "RegisterGrids")]
 
@@ -991,11 +993,12 @@ namespace App.Web
                     cols.Add("DeliveryStatus").WithHeaderText("Delivery Status").WithValueExpression(p => p.DeliveryStatus > 0 ? "Delivery" : "Not Delivery").WithSorting(true);
                     cols.Add("DoneBy").WithHeaderText("Flight Time").WithValueExpression(p => p.DoneBy).WithSorting(true);
                     cols.Add("ViewLink").WithSorting(false).WithHeaderText("Action").WithHtmlEncoding(false)
-                        .WithValueExpression(p => p.Id.ToString()).WithValueTemplate(
-                            "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Clients/Edit/{Value}'>Edit</a> "
-                            + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Clients/Details/{Value}'>Details</a> "
-                            + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='{Value}'>Delete</button>"
-                        );
+                        .WithValueExpression(p => HttpContext.Current.User.IsInRole("Admin") ? 
+                            "<a class='btn btn-sm m-b-0-25 btn-outline-primary' href='/Clients/Edit/"+p.Id+"'>Edit</a> "
+                            + "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Clients/Details/" + p.Id + "'>Details</a> "
+                            + "<button class='btn btn-sm m-b-0-25 btn-outline-danger delete' data-id='"+p.Id+"'>Delete</button>" :
+                            "<a class='btn btn-sm m-b-0-25 btn-outline-info' href='/Clients/Details/" + p.Id + "'>Details</a>"
+                            ).WithValueTemplate("{Value}");
                     
                 })
                 .WithSorting(true, "EntryDate", SortDirection.Dsc)
@@ -1013,6 +1016,12 @@ namespace App.Web
                             .Include(x => x.ServiceInfo)
                             .Include(x => x.AirLineInfo)
                             .Include(x => x.UserServedBy);
+                        if (HttpContext.Current.User.IsInRole("Agent"))
+                        {
+                            var agentUserName = HttpContext.Current.User.Identity.GetUserName();
+                            var agentId = db.AgentInfos.Where(w=>w.UserName.ToLower() == agentUserName.ToLower()).Select(x=>x.Id).FirstOrDefault();
+                            query = query.Where(x => x.AgentId == agentId);
+                        }
 
                         var globalSearch = options.GetAdditionalQueryOptionString("Search");
                         if (!string.IsNullOrWhiteSpace(globalSearch))

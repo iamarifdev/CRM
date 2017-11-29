@@ -119,7 +119,7 @@
         <br />
         @* Need to modify after that portion *@
         <button class="btn btn-warning pull-right new-line" id="print"><i class="fa fa-print"></i> Print</button>
-        <div id="clientReportInfo">
+        <div id="clientReportInfo" class="table-responsive">
             <br />
             <br />
             <div class="row text-center">
@@ -192,7 +192,7 @@
                     tbody.append(
                         '<tr>' +
                             '<td>' + (index+1) + '</td>' +
-                            '<td>' + value.Date + '</td>' +
+                            '<td>' + value.EntryDate + '</td>' +
                             '<td>' + value.CID + '</td>' +
                             '<td>' + value.PaxName + '</td>' +
                             '<td>' + value.Referral + '</td>' +

@@ -30,8 +30,8 @@ namespace App.Web.Helper
         public static string DbError(string exceptionMessage)
         {
             return !string.IsNullOrWhiteSpace(exceptionMessage) ?
-                string.Format("toastr.error('{0}', 'Database Error!');", exceptionMessage) :
-                "toastr.error('Error occured in database, Try again!', 'Database Error!');";
+            @"toastr.error('"+ exceptionMessage + "', 'Database Error!');" :
+                @"toastr.error('Error occured in database, Try again!', 'Database Error!');";
         }
 
         public static string CustomError(string errorMessage)

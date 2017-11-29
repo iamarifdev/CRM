@@ -56,12 +56,16 @@
                 <tr>
                     <th>No</th>
                     <th>Payment Date</th>
+                    <th>Payment Method</th>
+                    <th>Channel</th>
+                    <th>Payment By</th>
+                    <th>Branch</th>
                     <th>Payment Amount</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td colspan="3" class="text-center text-danger">NO DATA FOUND</td>
+                    <td colspan="7" class="text-center text-danger">NO DATA FOUND</td>
                 </tr>
                 </tbody>
             </table>
@@ -105,6 +109,10 @@
                         '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
                             '<td>' + value.PaymentDate + '</td>' +
+                            '<td>' + value.PaymentMethod + '</td>' +
+                            '<td>' + value.Channel + '</td>' +
+                            '<td>' + value.PaymentBy + '</td>' +
+                            '<td>' + value.Branch + '</td>' +
                             '<td>' + value.PaymentAmount + '</td>' +
                         '</tr>'
                     );
@@ -113,13 +121,13 @@
                 if (resp.DailyPayments.length === 0) {
                     tbody.append(
                         '<tr>' +
-                            '<td colspan="3" class="text-center text-danger">NO DATA FOUND</td>' +
+                            '<td colspan="7" class="text-center text-danger">NO DATA FOUND</td>' +
                         '</tr>'
                     );
                 }
                 tbody.append(
                     '<tr>' +
-                        '<td colspan="2" class="text-right">Total:</td>' +
+                        '<td colspan="6" class="text-right">Total:</td>' +
                         '<td>' + resp.TotalPayment + '</td>' +
                     '</tr>'
                 );

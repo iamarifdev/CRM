@@ -86,7 +86,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/vendor/toastr/toastr.min.js"></script>
     <script>
-        $("#generalSettingForm").validate({
+        @*$("#generalSettingForm").validate({
             rules: {
                 SiteName: "required",
                 Address: "required",
@@ -101,7 +101,7 @@
                 SmsPassword: "required",
                 SmsSender: "required"
             }
-        });
+        });*@
 
         @if (TempData["Toastr"]!=null)
         {

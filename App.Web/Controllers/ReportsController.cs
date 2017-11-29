@@ -53,7 +53,8 @@ namespace App.Web.Controllers
             {
                 if (!ModelState.IsValid) return View(clientInfo);
 
-                var query = _db.ClientInfos.Include(x => x.ServiceInfo).Include(x => x.AgentInfo).Include(x => x.UserServedBy).Where(x => x.Id == clientInfo.Id);
+                var query = _db.ClientInfos.Include(x => x.ServiceInfo).Include(x => x.AgentInfo).Include(x => x.UserServedBy);
+                if (clientInfo.Id != null) query = query.Where(x => x.Id == clientInfo.Id);
                 if (clientInfo.BranchId != null) query = query.Where(x => x.BranchId == clientInfo.BranchId);
                 if (clientInfo.ServedBy != null) query = query.Where(x => x.ServedBy == clientInfo.ServedBy);
                 if (clientInfo.ServiceId != null) query = query.Where(x => x.ServiceId == clientInfo.ServiceId);
@@ -87,7 +88,7 @@ namespace App.Web.Controllers
                     WorkingStatus = Common.GetDescription(x.WorkingStatus),
                     InfoStatus = Common.GetDescription(x.InfoStatus),
                     DeliveryStatus = Common.GetDescription(x.DeliveryStatus)
-                }).ToList();
+                }).OrderByDescending(x=>x.EntryDate).ToList();
                 return Json(new { Flag = true, ClientReports = clientReports, ServiceCharge = totalServiceCharge, Cost = totalCost, Profit = totalProfit });
 
             }
@@ -512,9 +513,20 @@ namespace App.Web.Controllers
             try
             {
                 if (model == null) return Json(new { Flag = false, Msg = "Select a date for report." }, JsonRequestBehavior.AllowGet);
-                var dailyPayments= _db.CustomerPayments
-                    .Where(x => DbFunctions.TruncateTime(x.PaymentDate) == model.FromDate.Date && x.Channel == Channel.IsCustomer)
-                    .Select(x => new { x.PaymentDate, x.PaymentAmount })
+                var dailyPayments= _db.CustomerPayments.Include(x=>x.PaymentMethod)
+                    .Where(x => DbFunctions.TruncateTime(x.PaymentDate) == model.FromDate.Date)
+                    .Select(x => new
+                    {
+                        x.PaymentDate, 
+                        x.PaymentAmount, 
+                        PaymentMethod = x.PaymentMethod != null ? x.PaymentMethod.MethodName : "",
+                        x.Channel,
+                        PaymentBy = 
+                            x.Channel == Channel.IsAgent ? _db.AgentInfos.Where(w=>w.Id == x.CustomerId).Select(s=>s.AgentName).FirstOrDefault()
+                            : x.Channel == Channel.IsSupplier ? _db.SuppliersInfos.Where(w=>w.Id == x.CustomerId).Select(s=>s.SupplierName).FirstOrDefault()
+                            : _db.ClientInfos.Where(w=>w.Id == x.CustomerId).Select(s=>s.FirstName).FirstOrDefault(),
+                        Branch = _db.BranchInfos.Where(w=>w.Id == x.BranchId).Select(s=>s.BranchName).FirstOrDefault()
+                    })
                     .ToList();
                 return Json(new
                 {
@@ -522,7 +534,11 @@ namespace App.Web.Controllers
                     DailyPayments = dailyPayments.OrderByDescending(x => x.PaymentDate).Select(x => new
                     {
                         PaymentDate = string.Format("{0:yyyy-MM-dd}",x.PaymentDate),
-                        x.PaymentAmount
+                        x.PaymentAmount,
+                        x.PaymentMethod,
+                        Channel = Common.GetDescription(x.Channel),
+                        x.PaymentBy,
+                        x.Branch
                     }),
                     TotalPayment = dailyPayments.Sum(s=>s.PaymentAmount)
                 });

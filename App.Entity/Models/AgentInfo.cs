@@ -52,6 +52,7 @@ namespace App.Entity.Models
         public string UserName { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password length must be 6-50 character.")]
         public string Password { get; set; }
 

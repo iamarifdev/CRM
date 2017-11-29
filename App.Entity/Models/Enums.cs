@@ -62,8 +62,11 @@ namespace App.Entity.Models
 
     public enum Channel
     {
+        [Display(Name = "Customer")]
         IsCustomer = 1,
+        [Display(Name = "Agent")]
         IsAgent = 2,
+        [Display(Name = "Supplier")]
         IsSupplier = 3
     }
 

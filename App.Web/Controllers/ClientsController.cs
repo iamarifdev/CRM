@@ -6,6 +6,7 @@ using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
 using EntityFramework.Extensions;
+using Microsoft.AspNet.Identity;
 
 namespace App.Web.Controllers
 {
@@ -41,10 +42,17 @@ namespace App.Web.Controllers
                 TempData["Toastr"] = Toastr.BadRequest;
                 return RedirectToAction("Index");
             }
-            var clientInfo = _db.ClientInfos.Include(x=>x.AgentInfo).Include(x=>x.BranchInfo)
-                .Include(x=>x.SectorFrom).Include(x=>x.SectorTo).Include(x=>x.Country)
-                .Include(x => x.AirLineInfo).Include(x=>x.SuppliersInfo)
-                .Include(x=> x.ServiceInfo).FirstOrDefault(x => x.Id == id);
+            ClientInfo clientInfo = null;
+            var query = _db.ClientInfos.Include(x => x.AgentInfo).Include(x => x.BranchInfo)
+                .Include(x => x.SectorFrom).Include(x => x.SectorTo).Include(x => x.Country)
+                .Include(x => x.AirLineInfo).Include(x => x.SuppliersInfo).Include(x => x.ServiceInfo);
+            if (User.IsInRole("Admin")) clientInfo = query.FirstOrDefault(x => x.Id == id);
+            if (User.IsInRole("Agent"))
+            {
+                var agentUserName = User.Identity.GetUserName();
+                var agentUserId = _db.AgentInfos.Where(x=>x.UserName.ToLower() == agentUserName.ToLower()).Select(x=>x.Id).FirstOrDefault();
+                clientInfo = query.FirstOrDefault(x => x.Id == id && x.AgentId == agentUserId);
+            }
 
             if (clientInfo != null) return View(clientInfo);
 

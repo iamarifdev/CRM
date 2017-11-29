@@ -8,7 +8,7 @@ namespace App.Web.Models
     {
 
         [Display(Name = "Client")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Display(Name = "Branch")]
         public int? BranchId { get; set; }

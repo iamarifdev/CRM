@@ -381,6 +381,7 @@ namespace App.Web.Controllers
         {
             try
             {
+                if (User.IsInRole("Agent")) return Json(null, JsonRequestBehavior.AllowGet); 
                 return PartialView("_ClientPaymentAdditional", new ClientPaymentViewModel());
             }
             catch (Exception ex)
