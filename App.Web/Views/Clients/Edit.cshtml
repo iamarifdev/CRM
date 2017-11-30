@@ -195,6 +195,7 @@
                     // ReSharper disable once QualifiedExpressionMaybeNull
                     if (html !== null) {
                         $("#ReferralAdditional").empty().html(html).slideDown(500);
+                        GetAgentContactNumber();
                         ReSelect2();
                         ReValidate();
                         return;
@@ -246,6 +247,21 @@
             $("#ServiceAdditional").empty().slideUp(500);
         }
 
+        function GetAgentContactNumber() {
+            var agentId = $("body #AgentId").val();
+            if (agentId !== "") {
+                $.get("@Url.Action("GetContactNoByAgentId","Clients")", { agentId: agentId }, function (resp) {
+                    if (resp.Flag) {
+                        $("#SmsNo").val(resp.ContactNo);
+                        return;
+                    }
+                    $("#SmsNo").val("");
+                });
+                return;
+            }
+            $("#SmsNo").val("");
+        }
+
         function ReValidate() {
             var form = $("#clientForm");
             form.removeData('validator');
@@ -271,9 +287,11 @@
             GetAdditionalReferralType();
             GetAdditionalSupplierFields();
             GetAdditionalServiceFields();
+            
 
             PickDate();
             ReSelect2();
+
             $("#ReferralType").on("change", function () {
                 GetAdditionalReferralType();
             });
@@ -284,6 +302,10 @@
 
             $("#ServiceId").on("change", function () {
                 GetAdditionalServiceFields();
+            });
+
+            $("body").on("change", "#AgentId", function() {
+                GetAgentContactNumber();
             });
 
             $("body").on("change", "#ContactNo", function () {
