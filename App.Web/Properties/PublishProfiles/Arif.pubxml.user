@@ -13,13 +13,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2017 19:02:37</publishTime>
     </File>
     <File Include="bin/App.Data.dll">
-      <publishTime>11/29/2017 12:23:32</publishTime>
+      <publishTime>11/30/2017 10:28:34</publishTime>
     </File>
     <File Include="bin/App.Entity.dll">
-      <publishTime>11/29/2017 12:23:32</publishTime>
+      <publishTime>11/30/2017 10:28:34</publishTime>
     </File>
     <File Include="bin/App.Web.dll">
-      <publishTime>11/29/2017 12:23:34</publishTime>
+      <publishTime>11/30/2017 10:28:37</publishTime>
     </File>
     <File Include="bin/DataTables.AspNet.Core.dll">
       <publishTime>07/27/2017 22:48:34</publishTime>
@@ -17083,7 +17083,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2017 22:51:26</publishTime>
     </File>
     <File Include="Views/Agents/Create.cshtml">
-      <publishTime>10/07/2017 11:32:27</publishTime>
+      <publishTime>11/29/2017 17:51:10</publishTime>
     </File>
     <File Include="Views/Agents/Delete.cshtml">
       <publishTime>08/16/2017 10:47:55</publishTime>
@@ -17140,7 +17140,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2017 22:52:22</publishTime>
     </File>
     <File Include="Views/Clients/Create.cshtml">
-      <publishTime>11/29/2017 01:02:23</publishTime>
+      <publishTime>11/30/2017 00:44:51</publishTime>
     </File>
     <File Include="Views/Clients/Delete.cshtml">
       <publishTime>08/17/2017 13:12:02</publishTime>
@@ -17149,7 +17149,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/28/2017 22:20:21</publishTime>
     </File>
     <File Include="Views/Clients/Edit.cshtml">
-      <publishTime>11/28/2017 22:18:44</publishTime>
+      <publishTime>11/30/2017 10:26:05</publishTime>
     </File>
     <File Include="Views/Clients/Index.cshtml">
       <publishTime>11/19/2017 19:23:02</publishTime>
@@ -17278,7 +17278,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2017 22:53:55</publishTime>
     </File>
     <File Include="Views/GeneralSettings/Index.cshtml">
-      <publishTime>10/07/2017 11:26:27</publishTime>
+      <publishTime>11/29/2017 20:31:16</publishTime>
     </File>
     <File Include="Views/Groups/Create.cshtml">
       <publishTime>11/25/2017 10:39:23</publishTime>
@@ -17350,13 +17350,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/19/2017 11:33:35</publishTime>
     </File>
     <File Include="Views/Reports/ClientInfoReport.cshtml">
-      <publishTime>11/19/2017 11:34:09</publishTime>
+      <publishTime>11/29/2017 22:41:52</publishTime>
     </File>
     <File Include="Views/Reports/ClientPaymentReport.cshtml">
       <publishTime>11/14/2017 01:24:52</publishTime>
     </File>
     <File Include="Views/Reports/DailyPaymentReport.cshtml">
-      <publishTime>11/19/2017 11:34:45</publishTime>
+      <publishTime>11/29/2017 23:51:29</publishTime>
     </File>
     <File Include="Views/Reports/SupplierDueReport.cshtml">
       <publishTime>11/19/2017 11:35:08</publishTime>
@@ -17410,7 +17410,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/20/2017 09:06:23</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/28/2017 11:38:24</publishTime>
+      <publishTime>11/29/2017 20:20:11</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>07/29/2017 19:27:09</publishTime>
@@ -17464,7 +17464,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/30/2017 19:40:22</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/29/2017 12:23:36</publishTime>
+      <publishTime>11/30/2017 10:28:38</publishTime>
     </File>
   </ItemGroup>
 </Project>

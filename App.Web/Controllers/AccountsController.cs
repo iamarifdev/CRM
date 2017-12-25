@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml.Xsl;
 using App.Entity.Models;
 using App.Web.Context;
 using App.Web.Helper;
@@ -268,21 +270,46 @@ namespace App.Web.Controllers
         [HttpPost]
         public ActionResult AgentStatement(AgentStatementViewModel agentStatement)
         {
+            //try
+            //{
+            //    var query = _db.CustomerPayments.Include(x=>x.PaymentMethod).Include(x=>x.User).Where(x => x.Channel == Channel.IsAgent);
+            //    if (agentStatement.FromDate != null && agentStatement.ToDate != null)
+            //        query = query.Where(x => x.PaymentDate >= agentStatement.FromDate && x.PaymentDate <= agentStatement.ToDate);
+            //    if (agentStatement.FromDate != null && agentStatement.ToDate == null)
+            //        query = query.Where(x => x.PaymentDate >= agentStatement.FromDate);
+            //    //var agentPayments = query.GroupBy(x => new {x.CustomerId, x.PaymentDate}).Select(s => new
+            //    //{
+            //    //    AgentId = s.Key.CustomerId,
+            //    //    s.Key.PaymentDate,
+            //    //    Credit = s.Sum(x => x.PaymentAmount)
+            //    //}).ToList();
+            //    var paymentData = query.Select(s => new
+            //    {
+            //        Date = string.Format("{0:dd/MMM/yy}", s.PaymentDate),
+            //        Narration = string.Format("Payment | {0} | {1}", s.PaymentMethod.MethodName, s.User.UserName),
+            //        Type = "P",
+            //        Debit = 0,
+            //        Credit = 0
+            //    }).ToList();
+                
+            //   return Json(new { Flag = true, Statements = "" }, JsonRequestBehavior.AllowGet);
+            //}
+
             try
             {
                 if (!ModelState.IsValid) return Json(new { Flag = false, Msg = "Invalid data." }, JsonRequestBehavior.AllowGet);
                 var transactionQuery = _db.TransactionsInfos.Where(x => x.PayerType == PayerType.Agent && x.TransactionType == TransactionType.Deposit);
-                if (agentStatement.FromDate != null && agentStatement.ToDate != null) 
+                if (agentStatement.FromDate != null && agentStatement.ToDate != null)
                     transactionQuery = transactionQuery.Where(x => x.Date >= agentStatement.FromDate && x.Date <= agentStatement.ToDate);
-                if (agentStatement.FromDate != null && agentStatement.ToDate == null) 
+                if (agentStatement.FromDate != null && agentStatement.ToDate == null)
                     transactionQuery = transactionQuery.Where(x => x.Date >= agentStatement.FromDate);
                 var transactionData = transactionQuery.ToList();
                 var statements = transactionData.Select(s => new
                 {
-                    No = s.TransactionId, 
-                    Date = string.Format("{0:yyyy-MM-dd}", s.Date), 
-                    Narration = s.Description, 
-                    Debit = (double)s.Amount, 
+                    No = s.TransactionId,
+                    Date = string.Format("{0:yyyy-MM-dd}", s.Date),
+                    Narration = s.Description,
+                    Debit = (double)s.Amount,
                     Credit = 0
                 }).ToList();
 
@@ -293,15 +320,15 @@ namespace App.Web.Controllers
                     paymentQuery = paymentQuery.Where(x => x.PaymentDate >= agentStatement.FromDate);
                 var paymentData = paymentQuery.ToList();
 
-               var allStatements =  statements.Concat(paymentData.Select(s => new
+                var allStatements = statements.Concat(paymentData.Select(s => new
                 {
                     No = s.Id.ToString(),
                     Date = string.Format("{0:yyyy-MM-dd}", s.PaymentDate),
                     Narration = "Agent Payment",
                     Debit = s.PaymentAmount,
                     Credit = 0
-                })).OrderByDescending(x=>x.Date).ToList();
-               return Json(new { Flag = true, Statements = allStatements }, JsonRequestBehavior.AllowGet);
+                })).OrderByDescending(x => x.Date).ToList();
+                return Json(new { Flag = true, Statements = allStatements }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

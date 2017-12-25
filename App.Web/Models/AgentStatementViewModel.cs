@@ -6,7 +6,7 @@ namespace App.Web.Models
     public class AgentStatementViewModel
     {
         [Display(Name = "Agent")]
-        public int AgentId { get; set; }
+        public int? AgentId { get; set; }
 
         [Display(Name = "From Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
